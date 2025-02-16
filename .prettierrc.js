@@ -1,10 +1,11 @@
 module.exports = {
-  semi: false,
+  semi: true,
   trailingComma: 'none',
   singleQuote: true,
   printWidth: 100,
   tabWidth: 2,
   useTabs: false,
+  parser: 'typescript',
   importOrderSeparation: true,
   importOrderSortSpecifiers: true,
   importOrderCaseInsensitive: true,

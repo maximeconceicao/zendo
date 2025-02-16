@@ -1,25 +1,28 @@
-import React from 'react'
-import { View, Text, StyleSheet } from 'react-native'
+import React from 'react';
+import { View } from 'react-native';
+import CustomText from 'src/components/CustomText';
+import { verifyInstallation } from 'nativewind';
 
 const ActivityScreen = () => {
+  verifyInstallation();
   return (
-    <View style={styles.container}>
-      <Text style={styles.text}>This is the Activity Screen yay!</Text>
+    <View className="h-full p-10 bg-platinium">
+      <CustomText className="text-3xl">Activity</CustomText>
     </View>
-  )
-}
+  );
+};
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#f8f9fa'
-  },
-  text: {
-    fontSize: 20,
-    color: '#333'
-  }
-})
+// const styles = StyleSheet.create({
+//   container: {
+//     flex: 1,
+//     justifyContent: 'center',
+//     alignItems: 'center',
+//     backgroundColor: '#f8f9fa'
+//   },
+//   text: {
+//     fontSize: 20,
+//     color: '#333'
+//   }
+// });
 
-export default ActivityScreen
+export default ActivityScreen;

@@ -18,6 +18,7 @@
       }
     },
     "web": {
+      "bundler": "metro",
       "favicon": "./assets/favicon.png"
     },
     "plugins": [
@@ -28,7 +29,8 @@
           "image": "./assets/splash-icon.png"
         }
       ],
-      "react-native-edge-to-edge"
+      "react-native-edge-to-edge",
+      "expo-font"
     ],
     "extra": {
       "eas": {

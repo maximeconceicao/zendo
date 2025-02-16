@@ -3,4 +3,4 @@ module.exports = {
   extends: 'expo',
   ignorePatterns: ['/dist/*'],
   plugins: ['jest']
-}
+};

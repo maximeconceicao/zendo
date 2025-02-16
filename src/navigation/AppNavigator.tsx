@@ -1,17 +1,20 @@
-import React from 'react'
-import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs'
-import { NavigationContainer } from '@react-navigation/native'
+import React from 'react';
+import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
+import { NavigationContainer } from '@react-navigation/native';
 
-import HomeScreen from '../screens/HomeScreen'
-import ActivityScreen from '../screens/ActivityScreen'
-import SettingsScreen from '../screens/SettingsScreen'
+import HomeScreen from '../screens/HomeScreen';
+import ActivityScreen from '../screens/ActivityScreen';
+import SettingsScreen from '../screens/SettingsScreen';
+import CountdownScreen from 'src/screens/CountdownScreen';
+import { View } from 'react-native';
 
-const Tab = createMaterialTopTabNavigator()
+const Tab = createMaterialTopTabNavigator();
 
 const AppNavigator = () => {
   return (
     <NavigationContainer>
       <Tab.Navigator
+        initialRouteName="Activity"
         screenOptions={{
           tabBarShowLabel: false,
           tabBarStyle: { height: 0 },
@@ -19,11 +22,12 @@ const AppNavigator = () => {
         }}
       >
         <Tab.Screen name="Home" component={HomeScreen} />
+        <Tab.Screen name="Countdown" component={CountdownScreen} />
         <Tab.Screen name="Activity" component={ActivityScreen} />
         <Tab.Screen name="Settings" component={SettingsScreen} />
       </Tab.Navigator>
     </NavigationContainer>
-  )
-}
+  );
+};
 
-export default AppNavigator
+export default AppNavigator;
