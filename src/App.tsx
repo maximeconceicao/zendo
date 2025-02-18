@@ -5,6 +5,7 @@ import './styles/global.css';
 import * as React from 'react';
 import AppNavigator from './navigation/AppNavigator';
 import { useFonts } from 'expo-font';
+import { SafeAreaProvider } from 'react-native-safe-area-context';
 
 // Asset.loadAsync([
 //   ...NavigationAssets,
@@ -24,5 +25,9 @@ export function App() {
     return null;
   }
 
-  return <AppNavigator />;
+  return (
+    <SafeAreaProvider>
+      <AppNavigator />
+    </SafeAreaProvider>
+  );
 }

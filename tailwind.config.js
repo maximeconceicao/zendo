@@ -1,3 +1,5 @@
+const { PALETTE } = require('./src/theme/palette');
+
 /** @type {import('tailwindcss').Config} */
 module.exports = {
   // NOTE: Update this to include the paths to all of your component files.
@@ -6,7 +8,7 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        platinium: '#E8E8E8'
+        platinium: PALETTE.background.light
       },
       fontFamily: {
         sfLight: ['SFProDisplay-Light']
