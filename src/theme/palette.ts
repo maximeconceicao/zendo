@@ -2,14 +2,14 @@
 
 export const PALETTE = {
   primary: {
-    light: '#6D28D9', // Violet clair
-    main: '#5B21B6', // Violet principal
-    dark: '#4C1D95' // Violet foncé
+    light: '#6D28D9',
+    main: '#5B21B6',
+    dark: '#4C1D95'
   },
   secondary: {
-    light: '#FDE047', // Jaune clair
-    main: '#FACC15', // Jaune principal
-    dark: '#EAB308' // Jaune foncé
+    light: '#FDE047',
+    main: '#FACC15',
+    dark: '#EAB308'
   },
   neutral: {
     white: '#FFFFFF',

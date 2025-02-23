@@ -9,6 +9,7 @@ import SettingsScreen from '../screens/SettingsScreen';
 import CountdownScreen from 'src/screens/CountdownScreen';
 import { StatusBar } from 'react-native';
 import SessionScreen from 'src/screens/SessionScreen';
+import ScreenName from 'src/constants/screenNames';
 
 const Tab = createMaterialTopTabNavigator();
 const Stack = createStackNavigator();
@@ -35,8 +36,8 @@ const AppNavigator = () => {
     <NavigationContainer>
       <StatusBar hidden />
       <Stack.Navigator screenOptions={{ headerShown: false }}>
-        <Stack.Screen name="MainTabs" component={MainTabs} />
-        <Stack.Screen name="Session" component={SessionScreen} />
+        <Stack.Screen name={ScreenName.MAIN_TABS} component={MainTabs} />
+        <Stack.Screen name={ScreenName.SESSION} component={SessionScreen} />
       </Stack.Navigator>
     </NavigationContainer>
   );
