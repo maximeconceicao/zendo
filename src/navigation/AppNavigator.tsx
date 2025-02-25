@@ -6,7 +6,6 @@ import { createStackNavigator } from '@react-navigation/stack';
 import HomeScreen from '../screens/HomeScreen';
 import ActivityScreen from '../screens/ActivityScreen';
 import SettingsScreen from '../screens/SettingsScreen';
-import CountdownScreen from 'src/screens/CountdownScreen';
 import { StatusBar } from 'react-native';
 import SessionScreen from 'src/screens/SessionScreen';
 import ScreenName from 'src/constants/screenNames';
@@ -23,10 +22,9 @@ const MainTabs = () => (
       swipeEnabled: true
     }}
   >
-    <Tab.Screen name="HomeStack" component={HomeScreen} />
-    <Tab.Screen name="Countdown" component={CountdownScreen} />
-    <Tab.Screen name="Activity" component={ActivityScreen} />
     <Tab.Screen name="Settings" component={SettingsScreen} />
+    <Tab.Screen name="HomeStack" component={HomeScreen} />
+    <Tab.Screen name="Activity" component={ActivityScreen} />
   </Tab.Navigator>
 );
 

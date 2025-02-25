@@ -3,7 +3,7 @@ import { useState, useEffect } from 'react';
 
 const useSessionTimer = (initialTime: number = 60) => {
   const [timeLeft, setTimeLeft] = useState(initialTime);
-  const [isRunning, setIsRunning] = useState(false);
+  const [isRunning, setIsRunning] = useState(true);
 
   useEffect(() => {
     let timer: NodeJS.Timeout;
