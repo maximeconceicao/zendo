@@ -32,7 +32,11 @@ const HomeScreen = ({ navigation }) => {
         <View className="p-10">
           <TouchableOpacity
             className="bg-black p-4 rounded-lg"
-            onPress={() => navigation.navigate(ScreenName.SESSION, { duration: sliderValue })}
+            onPress={() =>
+              navigation.navigate(ScreenName.MEDITATION_TIMER, {
+                durationSeconds: sliderValue * 60
+              })
+            }
           >
             <CustomText className="text-white text-center text-lg">
               Démarrer la méditation

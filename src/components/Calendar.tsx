@@ -3,14 +3,16 @@ import React, { useMemo, useState } from 'react';
 import { getCurrentMonthTitle, generateCalendar, getWeekDays } from 'src/utils/date.utils';
 
 interface CalendarRowProps {
-  week: string[];
+  week: { day: number; isCurrentMonth: boolean }[];
 }
 
 const CalendarRow: React.FC<CalendarRowProps> = ({ week }) => (
   <View className="flex flex-row justify-between w-72">
-    {week.map((day: string, index: number) => (
+    {week.map(({ day, isCurrentMonth }, index) => (
       <View key={`${day}-${index}`} className="w-8 h-8 flex justify-center items-center">
-        <Text className="text-black text-sm">{day}</Text>
+        <Text className={isCurrentMonth ? 'text-black text-sm' : 'text-gray-400 text-sm'}>
+          {day}
+        </Text>
       </View>
     ))}
   </View>
@@ -44,13 +46,13 @@ export function DashboardCalendar(): JSX.Element {
   };
 
   return (
-    <View className="bg-white mt-5 pt-4 rounded-lg shadow-md">
+    <View>
       <View className="flex flex-row justify-between items-center mb-4">
         <Button title="<" onPress={goToPreviousMonth} />
-        <Text className="text-2xl font-bold text-center">{title}</Text>
+        <Text className="text-xl font-bold text-center">{title}</Text>
         <Button title=">" onPress={goToNextMonth} />
       </View>
-      <View className="flex items-center mt-6">
+      <View className="flex items-center mt-3">
         <CalendarHeader />
         {calendar.map((week: string[], index: number) => (
           <CalendarRow key={index} week={week} />

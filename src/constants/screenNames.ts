@@ -1,8 +1,9 @@
 const enum ScreenName {
   MAIN_TABS = 'MainTabs',
-  HOME = 'HomeMain',
-  SESSION = 'Session',
-  COUNTDOWN = 'Countdown',
+  HOME = 'Home',
+  MEDITATION_TIMER = 'MeditationTimer',
+  MEDITATION_SUMMARY = 'MeditationSummary',
+  CALENDAR = 'Calendar',
   ACTIVITY = 'Activity',
   SETTINGS = 'Settings'
 }

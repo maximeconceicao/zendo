@@ -1,27 +1,40 @@
+import { Pause, Play, Square } from 'lucide-react-native';
 import React, { useState } from 'react';
-import { View, TouchableWithoutFeedback, TouchableOpacity } from 'react-native';
+import { TouchableOpacity, TouchableWithoutFeedback, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { ConfirmationModal } from 'src/components/ConfirmationModal';
 import CustomText from 'src/components/CustomText';
+import ScreenName from 'src/constants/screenNames';
 import useSessionTimer from 'src/hooks/useSessionTimer';
 import { PALETTE } from 'src/theme/palette';
-import { Play, Pause, Square } from 'lucide-react-native';
+import { MeditationSession } from 'src/types/storage.types';
+import { saveMeditationSession } from 'src/utils/storage';
 
-const formatTime = (seconds) => {
+const formatTime = (seconds: number) => {
   const minutes = Math.floor(seconds / 60);
   const secs = seconds % 60;
   return `${String(minutes).padStart(2, '0')}:${String(secs).padStart(2, '0')}`;
 };
 
-const SessionScreen = ({ navigation, route }) => {
-  const { duration } = route.params || { duration: 10 };
-  const { timeLeft, isRunning, start, pause } = useSessionTimer(duration * 60);
+const MeditationTimerScreen = ({ navigation, route }) => {
+  const { durationSeconds } = route.params || { duration: 10 };
+  const { timeLeft, elapsedTime, isRunning, start, pause } = useSessionTimer(durationSeconds);
   const [modalVisible, setModalVisible] = useState(false);
-  const [counter, setCounter] = useState(0);
+
+  const [meditationSession, setMeditationSession] = useState<MeditationSession>({
+    id: Date.now().toString(),
+    date: new Date().toISOString(),
+    focusPoints: [],
+    planneDurationSeconds: durationSeconds,
+    actualDurationSeconds: 0
+  });
 
   const handleScreenPress = () => {
     if (isRunning) {
-      setCounter((prevCounter) => prevCounter + 1);
+      setMeditationSession((prev) => ({
+        ...prev,
+        focusPoints: [...prev.focusPoints, { elapsedTime }]
+      }));
     }
   };
 
@@ -31,7 +44,9 @@ const SessionScreen = ({ navigation, route }) => {
         <TouchableWithoutFeedback onPress={handleScreenPress}>
           <View className="flex-1 p-10 bg-platinium">
             <View className="flex-1 justify-center items-center mt-10">
-              <CustomText className="text-5xl font-bold text-gray-600">{counter}</CustomText>
+              <CustomText className="text-5xl font-bold text-gray-600">
+                {meditationSession.focusPoints.length}
+              </CustomText>
             </View>
 
             <View className="items-center pb-10">
@@ -76,7 +91,14 @@ const SessionScreen = ({ navigation, route }) => {
           },
           {
             label: 'Enregistrer',
-            action: () => setModalVisible(false),
+            action: () => {
+              console.log('???????');
+              saveMeditationSession(meditationSession);
+              setModalVisible(false);
+              navigation.navigate(ScreenName.MEDITATION_SUMMARY, {
+                meditationSession: { ...meditationSession, actualDurationSeconds: elapsedTime }
+              });
+            },
             style: 'text-blue-500 text-xl text-center'
           },
           {
@@ -93,4 +115,4 @@ const SessionScreen = ({ navigation, route }) => {
   );
 };
 
-export default SessionScreen;
+export default MeditationTimerScreen;

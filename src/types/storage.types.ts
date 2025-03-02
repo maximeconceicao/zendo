@@ -1,8 +1,13 @@
 export type MeditationSession = {
   id: string; // UUID ou timestamp
   date: string; // Format ISO 8601: YYYY-MM-DDTHH:mm:ss.sssZ
-  duration: number; // Durée en secondes
-  focusPoints: { timestamp: number }[]; // Liste des moments où l'attention a été recentrée (en secondes)
+  planneDurationSeconds: number; // Duration in seconds
+  actualDurationSeconds: number;
+  focusPoints: FocusPoint[]; //List of moments when attention was refocused (in seconds)
+};
+
+export type FocusPoint = {
+  elapsedTime: number;
 };
 
 export type UserSettings = {
