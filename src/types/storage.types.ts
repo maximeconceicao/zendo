@@ -22,9 +22,16 @@ export type MeditationStats = {
   lastSession: string;
 };
 
+export type MeditationQuote = {
+  quote: string;
+  author: string;
+  book?: string;
+};
+
 export interface StorageSchema {
   userSettings: UserSettings;
   authToken: string | null;
   meditationStats: MeditationStats;
   meditationSessions: MeditationSession[];
+  meditationQuotes: MeditationQuote[];
 }

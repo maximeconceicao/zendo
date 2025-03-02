@@ -1,6 +1,11 @@
 import { View, Text, Button } from 'react-native';
 import React, { useMemo, useState } from 'react';
-import { getCurrentMonthTitle, generateCalendar, getWeekDays } from 'src/utils/date.utils';
+import {
+  getCurrentMonthTitle,
+  generateCalendar,
+  getWeekDays,
+  CalendarDay
+} from 'src/utils/date.utils';
 
 interface CalendarRowProps {
   week: { day: number; isCurrentMonth: boolean }[];
@@ -31,11 +36,11 @@ const CalendarHeader: React.FC = () => {
   );
 };
 
-export function DashboardCalendar(): JSX.Element {
+export function Calendar(): JSX.Element {
   const [currentDate, setCurrentDate] = useState(new Date());
 
   const title: string = useMemo(() => getCurrentMonthTitle(currentDate), [currentDate]);
-  const calendar: string[][] = useMemo(() => generateCalendar(currentDate), [currentDate]);
+  const calendar: CalendarDay[][] = useMemo(() => generateCalendar(currentDate), [currentDate]);
 
   const goToPreviousMonth = () => {
     setCurrentDate((prevDate) => new Date(prevDate.getFullYear(), prevDate.getMonth() - 1, 1));
@@ -54,7 +59,7 @@ export function DashboardCalendar(): JSX.Element {
       </View>
       <View className="flex items-center mt-3">
         <CalendarHeader />
-        {calendar.map((week: string[], index: number) => (
+        {calendar.map((week: CalendarDay[], index: number) => (
           <CalendarRow key={index} week={week} />
         ))}
       </View>

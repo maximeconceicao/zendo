@@ -4,7 +4,7 @@ export const getCurrentMonthTitle = (date: Date): string => {
   return format(date, 'MMMM yyyy');
 };
 
-interface CalendarDay {
+export interface CalendarDay {
   day: number;
   isCurrentMonth: boolean;
 }
