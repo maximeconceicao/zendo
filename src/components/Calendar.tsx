@@ -1,11 +1,9 @@
-import { View, Text, Button } from 'react-native';
+import { format } from 'date-fns';
+import { ChevronLeft, ChevronRight } from 'lucide-react-native';
 import React, { useMemo, useState } from 'react';
-import {
-  getCurrentMonthTitle,
-  generateCalendar,
-  getWeekDays,
-  CalendarDay
-} from 'src/utils/date.utils';
+import { Text, TouchableOpacity, View } from 'react-native';
+import { CalendarDay, generateCalendar, getWeekDays } from 'src/utils/date.utils';
+import CustomText from './CustomText';
 
 interface CalendarRowProps {
   week: { day: number; isCurrentMonth: boolean }[];
@@ -29,7 +27,7 @@ const CalendarHeader: React.FC = () => {
     <View className="flex flex-row justify-between w-72">
       {weekDays.map((day, index) => (
         <View key={index} className="w-8 h-8 flex justify-center items-center">
-          <Text className="text-black text-sm font-bold">{day}</Text>
+          <CustomText className="text-black text-base">{day}</CustomText>
         </View>
       ))}
     </View>
@@ -39,7 +37,6 @@ const CalendarHeader: React.FC = () => {
 export function Calendar(): JSX.Element {
   const [currentDate, setCurrentDate] = useState(new Date());
 
-  const title: string = useMemo(() => getCurrentMonthTitle(currentDate), [currentDate]);
   const calendar: CalendarDay[][] = useMemo(() => generateCalendar(currentDate), [currentDate]);
 
   const goToPreviousMonth = () => {
@@ -52,10 +49,26 @@ export function Calendar(): JSX.Element {
 
   return (
     <View>
-      <View className="flex flex-row justify-between items-center mb-4">
-        <Button title="<" onPress={goToPreviousMonth} />
-        <Text className="text-xl font-bold text-center">{title}</Text>
-        <Button title=">" onPress={goToNextMonth} />
+      <View className="flex flex-row justify-between items-center mb-2">
+        <View>
+          <CustomText className="text-4xl mb-1">{format(currentDate, 'MMMM')}</CustomText>
+          <CustomText className="text-base">{format(currentDate, 'yyyy')}</CustomText>
+        </View>
+
+        <View className="flex flex-row">
+          <TouchableOpacity
+            onPress={goToPreviousMonth}
+            className="bg-black w-9 h-9 rounded-full mr-3 flex items-center justify-center"
+          >
+            <ChevronLeft stroke={'white'} />
+          </TouchableOpacity>
+          <TouchableOpacity
+            onPress={goToNextMonth}
+            className="bg-black w-9 h-9 rounded-full flex items-center justify-center"
+          >
+            <ChevronRight stroke={'white'} />
+          </TouchableOpacity>
+        </View>
       </View>
       <View className="flex items-center mt-3">
         <CalendarHeader />

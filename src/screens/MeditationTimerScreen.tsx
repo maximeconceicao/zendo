@@ -92,7 +92,6 @@ const MeditationTimerScreen = ({ navigation, route }) => {
           {
             label: 'Enregistrer',
             action: () => {
-              console.log('???????');
               saveMeditationSession(meditationSession);
               setModalVisible(false);
               navigation.navigate(ScreenName.MEDITATION_SUMMARY, {
