@@ -8,6 +8,7 @@ const CalendarScreen = () => {
   return (
     <View className="h-full p-10 bg-platinium">
       <Calendar />
+      <View className="border-t border-black mt-9" />
     </View>
   );
 };

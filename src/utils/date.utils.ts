@@ -7,6 +7,7 @@ export const getCurrentMonthTitle = (date: Date): string => {
 export interface CalendarDay {
   day: number;
   isCurrentMonth: boolean;
+  date: Date;
 }
 
 export const generateCalendar = (date: Date): CalendarDay[][] => {
@@ -17,7 +18,8 @@ export const generateCalendar = (date: Date): CalendarDay[][] => {
     end: lastDayOfMonth
   }).map((day) => ({
     day: day.getDate(),
-    isCurrentMonth: true
+    isCurrentMonth: true,
+    date: day
   }));
 
   const offset: number = (getDay(firstDayOfMonth) + 6) % 7;
@@ -27,13 +29,21 @@ export const generateCalendar = (date: Date): CalendarDay[][] => {
   // Ajouter les jours du mois précédent
   const lastDayOfPrevMonth = subDays(firstDayOfMonth, 1).getDate();
   for (let i = offset; i > 0; i--) {
-    previousMonthDays.push({ day: lastDayOfPrevMonth - i + 1, isCurrentMonth: false });
+    previousMonthDays.push({
+      day: lastDayOfPrevMonth - i + 1,
+      isCurrentMonth: false,
+      date: new Date(date.getFullYear(), date.getMonth() - 1, lastDayOfPrevMonth - i + 1)
+    });
   }
 
   // Ajouter les jours du mois suivant si nécessaire
   const remainingCells = (7 - ((previousMonthDays.length + daysInMonth.length) % 7)) % 7;
   for (let i = 1; i <= remainingCells; i++) {
-    nextMonthDays.push({ day: i, isCurrentMonth: false });
+    nextMonthDays.push({
+      day: i,
+      isCurrentMonth: false,
+      date: new Date(date.getFullYear(), date.getMonth() + 1, i)
+    });
   }
 
   // Construire le calendrier

@@ -1,4 +1,4 @@
-import { format } from 'date-fns';
+import { format, isToday } from 'date-fns';
 import { ChevronLeft, ChevronRight } from 'lucide-react-native';
 import React, { useMemo, useState } from 'react';
 import { Text, TouchableOpacity, View } from 'react-native';
@@ -6,18 +6,42 @@ import { CalendarDay, generateCalendar, getWeekDays } from 'src/utils/date.utils
 import CustomText from './CustomText';
 
 interface CalendarRowProps {
-  week: { day: number; isCurrentMonth: boolean }[];
+  week: CalendarDay[];
+  selectedDate: Date | null;
+  onSelectDate: (date: Date) => void;
 }
 
-const CalendarRow: React.FC<CalendarRowProps> = ({ week }) => (
+const CalendarRow: React.FC<CalendarRowProps> = ({ week, selectedDate, onSelectDate }) => (
   <View className="flex flex-row justify-between w-72">
-    {week.map(({ day, isCurrentMonth }, index) => (
-      <View key={`${day}-${index}`} className="w-8 h-8 flex justify-center items-center">
-        <Text className={isCurrentMonth ? 'text-black text-sm' : 'text-gray-400 text-sm'}>
-          {day}
-        </Text>
-      </View>
-    ))}
+    {week.map(({ day, isCurrentMonth, date }, index) => {
+      const isSelected = selectedDate && date.toDateString() === selectedDate.toDateString();
+      const today = isToday(date);
+      return (
+        <TouchableOpacity
+          key={`${day}-${index}`}
+          className="w-8 h-8 flex justify-center items-center"
+          onPress={() => onSelectDate(date)}
+        >
+          <View
+            className={`w-8 h-8 rounded-full flex items-center justify-center ${
+              isSelected ? 'bg-black' : today ? 'border border-black' : ''
+            }`}
+          >
+            <Text
+              className={
+                isSelected
+                  ? 'text-white text-sm'
+                  : isCurrentMonth
+                    ? 'text-black text-sm'
+                    : 'text-gray-400 text-sm'
+              }
+            >
+              {day}
+            </Text>
+          </View>
+        </TouchableOpacity>
+      );
+    })}
   </View>
 );
 
@@ -27,7 +51,7 @@ const CalendarHeader: React.FC = () => {
     <View className="flex flex-row justify-between w-72">
       {weekDays.map((day, index) => (
         <View key={index} className="w-8 h-8 flex justify-center items-center">
-          <CustomText className="text-black text-base">{day}</CustomText>
+          <CustomText className="text-gray-400 text-xs">{day}</CustomText>
         </View>
       ))}
     </View>
@@ -36,6 +60,7 @@ const CalendarHeader: React.FC = () => {
 
 export function Calendar(): JSX.Element {
   const [currentDate, setCurrentDate] = useState(new Date());
+  const [selectedDate, setSelectedDate] = useState<Date | null>(null);
 
   const calendar: CalendarDay[][] = useMemo(() => generateCalendar(currentDate), [currentDate]);
 
@@ -45,6 +70,10 @@ export function Calendar(): JSX.Element {
 
   const goToNextMonth = () => {
     setCurrentDate((prevDate) => new Date(prevDate.getFullYear(), prevDate.getMonth() + 1, 1));
+  };
+
+  const handleSelectDate = (date: Date) => {
+    setSelectedDate((prev) => (prev && prev.toDateString() === date.toDateString() ? null : date));
   };
 
   return (
@@ -73,7 +102,12 @@ export function Calendar(): JSX.Element {
       <View className="flex items-center mt-3">
         <CalendarHeader />
         {calendar.map((week: CalendarDay[], index: number) => (
-          <CalendarRow key={index} week={week} />
+          <CalendarRow
+            key={index}
+            week={week}
+            selectedDate={selectedDate}
+            onSelectDate={handleSelectDate}
+          />
         ))}
       </View>
     </View>
