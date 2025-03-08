@@ -23,14 +23,14 @@ const HomeScreen = ({ navigation }) => {
 
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: PALETTE.background.light }}>
-      <View className="flex-1 p-10 bg-platinium">
+      <View className="flex-1 p-10">
         <CustomText className="text-4xl">Meditation Diary</CustomText>
 
         <View className="flex-1 justify-center">
           <DailyQuote quotes={meditationQuotes} />
         </View>
 
-        <View className=" justify-end">
+        <View className="justify-end">
           <CustomText className="text-base text-center">Durée: {sliderValue} minutes</CustomText>
           <Slider
             style={{ width: '100%', height: 40 }}

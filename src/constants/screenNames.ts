@@ -4,6 +4,7 @@ const enum ScreenName {
   MEDITATION_TIMER = 'MeditationTimer',
   MEDITATION_SUMMARY = 'MeditationSummary',
   CALENDAR = 'Calendar',
+  PIXEL_YEAR = 'PixelYear',
   ACTIVITY = 'Activity',
   SETTINGS = 'Settings'
 }

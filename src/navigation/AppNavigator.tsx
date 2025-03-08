@@ -11,6 +11,7 @@ import HomeScreen from '../screens/HomeScreen';
 import SettingsScreen from '../screens/SettingsScreen';
 import MeditationSummaryScreen from 'src/screens/MeditationSummaryScreen';
 import CalendarScreen from 'src/screens/CalendarScreen';
+import PixelYearScreen from 'src/screens/PixelYearScreen';
 
 const Tab = createMaterialTopTabNavigator();
 const Stack = createStackNavigator();
@@ -28,6 +29,7 @@ const MainTabs = () => (
     <Tab.Screen name={ScreenName.ACTIVITY} component={ActivityScreen} />
     <Tab.Screen name={ScreenName.HOME} component={HomeScreen} />
     <Tab.Screen name={ScreenName.CALENDAR} component={CalendarScreen} />
+    <Tab.Screen name={ScreenName.PIXEL_YEAR} component={PixelYearScreen} />
   </Tab.Navigator>
 );
 
@@ -37,7 +39,15 @@ const AppNavigator = () => {
       <StatusBar hidden />
       <Stack.Navigator screenOptions={{ headerShown: false }}>
         <Stack.Screen name={ScreenName.MAIN_TABS} component={MainTabs} />
-        <Stack.Screen name={ScreenName.MEDITATION_TIMER} component={MeditationTimerScreen} />
+        <Stack.Screen
+          name={ScreenName.MEDITATION_TIMER}
+          component={MeditationTimerScreen}
+          options={
+            {
+              //...TransitionPresets.ModalFadeTransition
+            }
+          }
+        />
         <Stack.Screen name={ScreenName.MEDITATION_SUMMARY} component={MeditationSummaryScreen} />
       </Stack.Navigator>
     </NavigationContainer>

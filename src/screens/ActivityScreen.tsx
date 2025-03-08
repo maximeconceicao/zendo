@@ -1,14 +1,12 @@
-import { verifyInstallation } from 'nativewind';
 import React from 'react';
 import { View } from 'react-native';
-import CustomText from 'src/components/CustomText';
+import ScreenLayout from 'src/layouts/ScreenLayout';
 
 const ActivityScreen = () => {
-  verifyInstallation();
   return (
-    <View className="h-full p-10 bg-platinium">
-      <CustomText className="text-3xl">Activity</CustomText>
-    </View>
+    <ScreenLayout title="Activity">
+      <View>{/* Contenu spécifique à Activity */}</View>
+    </ScreenLayout>
   );
 };
 

@@ -1,7 +1,7 @@
-import { format, isToday } from 'date-fns';
-import { ChevronLeft, ChevronRight } from 'lucide-react-native';
-import React, { useMemo, useState } from 'react';
+import { isToday } from 'date-fns';
+import React, { useMemo } from 'react';
 import { Text, TouchableOpacity, View } from 'react-native';
+import { MeditationSession } from 'src/types/storage.types';
 import { CalendarDay, generateCalendar, getWeekDays } from 'src/utils/date.utils';
 import CustomText from './CustomText';
 
@@ -9,36 +9,45 @@ interface CalendarRowProps {
   week: CalendarDay[];
   selectedDate: Date | null;
   onSelectDate: (date: Date) => void;
+  sessions: MeditationSession[];
 }
 
-const CalendarRow: React.FC<CalendarRowProps> = ({ week, selectedDate, onSelectDate }) => (
+const CalendarRow: React.FC<CalendarRowProps> = ({
+  week,
+  selectedDate,
+  onSelectDate,
+  sessions
+}) => (
   <View className="flex flex-row justify-between w-72">
     {week.map(({ day, isCurrentMonth, date }, index) => {
       const isSelected = selectedDate && date.toDateString() === selectedDate.toDateString();
       const today = isToday(date);
+      const hasSession = sessions.some(
+        (session) => new Date(session.date).toDateString() === date.toDateString()
+      );
+
+      const textColor = isSelected ? 'text-white' : isCurrentMonth ? 'text-black' : 'text-gray-400';
+
       return (
         <TouchableOpacity
+          disabled={true}
           key={`${day}-${index}`}
           className="w-8 h-8 flex justify-center items-center"
           onPress={() => onSelectDate(date)}
         >
           <View
-            className={`w-8 h-8 rounded-full flex items-center justify-center ${
+            className={`w-7 h-7 rounded-full flex items-center justify-center ${
               isSelected ? 'bg-black' : today ? 'border border-black' : ''
             }`}
           >
-            <Text
-              className={
-                isSelected
-                  ? 'text-white text-sm'
-                  : isCurrentMonth
-                    ? 'text-black text-sm'
-                    : 'text-gray-400 text-sm'
-              }
-            >
-              {day}
-            </Text>
+            <Text className={`${textColor} text-sm`}>{day}</Text>
           </View>
+          {hasSession && (
+            <View
+              className={`absolute  rounded-full ${isCurrentMonth ? 'bg-black' : 'bg-gray-400'}`}
+              style={{ width: 3.5, height: 3.5, bottom: 0.5 }}
+            />
+          )}
         </TouchableOpacity>
       );
     })}
@@ -58,19 +67,22 @@ const CalendarHeader: React.FC = () => {
   );
 };
 
-export function Calendar(): JSX.Element {
-  const [currentDate, setCurrentDate] = useState(new Date());
-  const [selectedDate, setSelectedDate] = useState<Date | null>(null);
+interface CalendarProps {
+  selectedDate: Date | null;
+  setSelectedDate: React.Dispatch<React.SetStateAction<Date | null>>;
+  currentMonth: Date;
+  setCurrentMonth: React.Dispatch<React.SetStateAction<Date>>;
+  sessions: MeditationSession[];
+}
 
-  const calendar: CalendarDay[][] = useMemo(() => generateCalendar(currentDate), [currentDate]);
-
-  const goToPreviousMonth = () => {
-    setCurrentDate((prevDate) => new Date(prevDate.getFullYear(), prevDate.getMonth() - 1, 1));
-  };
-
-  const goToNextMonth = () => {
-    setCurrentDate((prevDate) => new Date(prevDate.getFullYear(), prevDate.getMonth() + 1, 1));
-  };
+export function Calendar({
+  selectedDate,
+  setSelectedDate,
+  currentMonth,
+  setCurrentMonth,
+  sessions
+}: CalendarProps): JSX.Element {
+  const calendar: CalendarDay[][] = useMemo(() => generateCalendar(currentMonth), [currentMonth]);
 
   const handleSelectDate = (date: Date) => {
     setSelectedDate((prev) => (prev && prev.toDateString() === date.toDateString() ? null : date));
@@ -78,27 +90,6 @@ export function Calendar(): JSX.Element {
 
   return (
     <View>
-      <View className="flex flex-row justify-between items-center mb-2">
-        <View>
-          <CustomText className="text-4xl mb-1">{format(currentDate, 'MMMM')}</CustomText>
-          <CustomText className="text-base">{format(currentDate, 'yyyy')}</CustomText>
-        </View>
-
-        <View className="flex flex-row">
-          <TouchableOpacity
-            onPress={goToPreviousMonth}
-            className="bg-black w-9 h-9 rounded-full mr-3 flex items-center justify-center"
-          >
-            <ChevronLeft stroke={'white'} />
-          </TouchableOpacity>
-          <TouchableOpacity
-            onPress={goToNextMonth}
-            className="bg-black w-9 h-9 rounded-full flex items-center justify-center"
-          >
-            <ChevronRight stroke={'white'} />
-          </TouchableOpacity>
-        </View>
-      </View>
       <View className="flex items-center mt-3">
         <CalendarHeader />
         {calendar.map((week: CalendarDay[], index: number) => (
@@ -107,6 +98,7 @@ export function Calendar(): JSX.Element {
             week={week}
             selectedDate={selectedDate}
             onSelectDate={handleSelectDate}
+            sessions={sessions}
           />
         ))}
       </View>
