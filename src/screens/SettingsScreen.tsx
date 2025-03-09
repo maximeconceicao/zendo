@@ -1,13 +1,16 @@
 import React from 'react';
-import { View } from 'react-native';
+import Settings from 'src/components/Settings';
+import { useAppData } from 'src/hooks/useAppData';
 import ScreenLayout from 'src/layouts/ScreenLayout';
 
-const ActivityScreen = () => {
+const SettingsScreen = () => {
+  const { userSettings, updateUserSettings } = useAppData();
+
   return (
-    <ScreenLayout title="Settings">
-      <View>{/* Contenu spécifique à Activity */}</View>
+    <ScreenLayout title="Paramètres">
+      <Settings userSettings={userSettings} updateUserSettings={updateUserSettings} />
     </ScreenLayout>
   );
 };
 
-export default ActivityScreen;
+export default SettingsScreen;

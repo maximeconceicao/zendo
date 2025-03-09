@@ -1,5 +1,5 @@
 import { MMKV } from 'react-native-mmkv';
-import { StorageSchema, MeditationSession } from 'src/types/storage.types';
+import { StorageSchema, MeditationSession, UserSettings } from 'src/types/storage.types';
 
 export const storage = new MMKV();
 
@@ -11,6 +11,10 @@ export function getItem<K extends keyof StorageSchema>(key: K): StorageSchema[K]
   const value = storage.getString(key);
   return value ? JSON.parse(value) : null;
 }
+
+/*
+ * Meditation sessions
+ */
 
 export const getMeditationSessions = (): MeditationSession[] | null => {
   return getItem('meditationSessions');
@@ -26,4 +30,23 @@ export const saveMeditationSession = (session: MeditationSession) => {
 
   sessions.push(session);
   setItem('meditationSessions', sessions);
+};
+
+/*
+ * User Settings
+ */
+
+export const getUserSettings = (): UserSettings | null => {
+  return getItem('userSettings');
+};
+
+export const saveUserSettings = (settings: Partial<UserSettings>) => {
+  const currentSettings = getUserSettings();
+  console.log('currentSettings', currentSettings);
+  if (!currentSettings) {
+    setItem('userSettings', settings);
+    return;
+  }
+  console.log('set Items', { ...currentSettings, ...settings });
+  setItem('userSettings', { ...currentSettings, ...settings });
 };

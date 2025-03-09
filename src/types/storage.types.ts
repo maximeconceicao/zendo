@@ -1,7 +1,7 @@
 export type MeditationSession = {
   id: string; // UUID ou timestamp
   date: string; // Format ISO 8601: YYYY-MM-DDTHH:mm:ss.sssZ
-  planneDurationSeconds: number; // Duration in seconds
+  plannedDurationSeconds: number; // Duration in seconds
   actualDurationSeconds: number;
   focusPoints: FocusPoint[]; //List of moments when attention was refocused (in seconds)
 };
@@ -11,10 +11,10 @@ export type FocusPoint = {
 };
 
 export type UserSettings = {
-  theme: 'light' | 'dark';
-  endSound: string;
-  volume: number;
-  vibration: boolean;
+  volume?: number;
+  vibrateOnSessionStart?: boolean;
+  vibrateOnSessionEnd?: boolean;
+  vibrateOnFocus?: boolean;
 };
 
 export type MeditationStats = {
@@ -30,7 +30,6 @@ export type MeditationQuote = {
 
 export interface StorageSchema {
   userSettings: UserSettings;
-  authToken: string | null;
   meditationStats: MeditationStats;
   meditationSessions: MeditationSession[];
   meditationQuotes: MeditationQuote[];

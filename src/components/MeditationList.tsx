@@ -3,8 +3,6 @@ import CustomText from './CustomText';
 import { MeditationSession } from 'src/types/storage.types';
 
 const MeditationList = ({ sessions }: { sessions: MeditationSession[] }) => {
-  console.log('sessions', sessions);
-
   return (
     <FlatList
       data={sessions}

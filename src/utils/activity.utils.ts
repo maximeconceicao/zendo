@@ -1,0 +1,120 @@
+import { MeditationMetrics } from 'src/types/activity.types';
+import { MeditationSession } from 'src/types/storage.types';
+
+export type MetricData = {
+  label: string;
+  value: string;
+};
+
+/*
+ * Meditation Metrics Calculations
+ */
+
+export const calculateTotalMeditationTime = (
+  sessions: MeditationSession[]
+): { days: number; hours: number; minutes: number } => {
+  const totalSeconds = sessions.reduce((acc, session) => acc + session.actualDurationSeconds, 0);
+
+  const days = Math.floor(totalSeconds / (3600 * 24));
+  const remainingSecondsAfterDays = totalSeconds % (3600 * 24);
+
+  const hours = Math.floor(remainingSecondsAfterDays / 3600);
+  const minutes = Math.floor((remainingSecondsAfterDays % 3600) / 60);
+
+  return { days, hours, minutes };
+};
+
+export const calculateCurrentConsecutiveDays = (sessions: MeditationSession[]): number => {
+  const dates = sessions.map((session) => new Date(session.date));
+  const sortedDates = dates.sort((a, b) => b.getTime() - a.getTime());
+
+  return sortedDates.reduce((streak, current, index, arr) => {
+    if (index === 0) return 1;
+    const prev = arr[index - 1];
+    const diffInDays = (current.getTime() - prev.getTime()) / (1000 * 3600 * 24);
+    return diffInDays === 1 ? streak + 1 : streak;
+  }, 1);
+};
+
+export const calculateLongestSessionMinutes = (sessions: MeditationSession[]): number => {
+  const longestSessionSeconds = Math.max(
+    ...sessions.map((session) => session.actualDurationSeconds)
+  );
+  return longestSessionSeconds / 60;
+};
+
+export const calculateAverageSessionDurationMinutes = (sessions: MeditationSession[]): number => {
+  if (sessions.length === 0) return 0;
+  const totalDuration = sessions.reduce((sum, session) => sum + session.actualDurationSeconds, 0);
+  return Math.round(totalDuration / sessions.length / 60);
+};
+
+export const calculateAverageSessionDurationOffset = (sessions: MeditationSession[]): number => {
+  if (sessions.length === 0) return 0;
+  const totalOffset = sessions.reduce(
+    (sum, session) => sum + (session.actualDurationSeconds - session.plannedDurationSeconds),
+    0
+  );
+  return Math.round(totalOffset / sessions.length / 60);
+};
+
+export const calculateLongestConsecutiveDays = (sessions: MeditationSession[]): number => {
+  if (sessions.length === 0) return 0;
+
+  const dates = new Set(sessions.map((session) => session.date.split('T')[0]));
+  let longestStreak = 0;
+  let currentStreak = 0;
+  let prevDate: string | null = null;
+
+  Array.from(dates)
+    .sort()
+    .forEach((date) => {
+      if (prevDate && new Date(date).getTime() - new Date(prevDate).getTime() === 86400000) {
+        currentStreak++;
+      } else {
+        currentStreak = 1;
+      }
+      longestStreak = Math.max(longestStreak, currentStreak);
+      prevDate = date;
+    });
+
+  return longestStreak;
+};
+
+export const calculateAverageWeeklyMeditationDuration = (sessions: MeditationSession[]) => {
+  if (sessions.length === 0) return { hours: 0, minutes: 0 };
+
+  const totalDurationSeconds = sessions.reduce(
+    (sum, session) => sum + session.actualDurationSeconds,
+    0
+  );
+  const totalWeeks = Math.max(1, new Set(sessions.map((s) => s.date.split('-W')[1])).size);
+
+  const averageDurationMinutes = Math.round(totalDurationSeconds / totalWeeks / 60);
+  return {
+    hours: Math.floor(averageDurationMinutes / 60),
+    minutes: averageDurationMinutes % 60
+  };
+};
+
+/*
+ * Meditation Metrics Formating
+ */
+
+export const formatGlobalMetrics = (metrics: MeditationMetrics): MetricData[] => {
+  return [
+    { label: 'Total de sessions', value: `${metrics.totalSessions}` },
+    {
+      label: 'Total de temps médité',
+      value: `${metrics.totalMeditatedTimeSpent.days}j ${metrics.totalMeditatedTimeSpent.hours}h ${metrics.totalMeditatedTimeSpent.minutes}min`
+    },
+    {
+      label: 'Série actuelle de jours consécutifs',
+      value: `${metrics.currentConsecutiveDays} jours`
+    },
+    {
+      label: 'Record de la plus longue session',
+      value: `${metrics.longestSessionMinutes}min`
+    }
+  ];
+};

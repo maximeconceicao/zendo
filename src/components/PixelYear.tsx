@@ -1,6 +1,7 @@
 import React from 'react';
 import { View } from 'react-native';
 import CustomText from './CustomText';
+import { isSameDay } from 'date-fns';
 
 const daysInMonth = (year: number, month: number) => new Date(year, month, 0).getDate();
 const monthLetters = ['J', 'F', 'M', 'A', 'M', 'J', 'J', 'A', 'S', 'O', 'N', 'D'];
@@ -10,8 +11,9 @@ const PixelYear = ({ year, items }: { year: number; items: { date: string; color
     Array.from({ length: 31 }, (_, day) => {
       const daysInCurrentMonth = daysInMonth(year, month + 1);
       const isOutOfMonth = day + 1 > daysInCurrentMonth;
-      const dateStr = `${year}-${String(month + 1).padStart(2, '0')}-${String(day + 1).padStart(2, '0')}`;
-      const item = items.find((item) => item.date === dateStr);
+      const currentDate = new Date(year, month, day + 1); // mois est 0-indexé, donc on ajoute 1 à `day`
+      const item = items.find((item) => isSameDay(new Date(item.date), currentDate));
+
       return {
         color: isOutOfMonth ? 'transparent' : item ? item.color : 'transparent',
         isOutOfMonth

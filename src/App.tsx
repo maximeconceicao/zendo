@@ -6,6 +6,7 @@ import * as React from 'react';
 import AppNavigator from './navigation/AppNavigator';
 import { useFonts } from 'expo-font';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
+import { AppDataProvider } from './contexts/AppDataContext';
 
 // Asset.loadAsync([
 //   ...NavigationAssets,
@@ -27,7 +28,9 @@ export function App() {
 
   return (
     <SafeAreaProvider>
-      <AppNavigator />
+      <AppDataProvider>
+        <AppNavigator />
+      </AppDataProvider>
     </SafeAreaProvider>
   );
 }
