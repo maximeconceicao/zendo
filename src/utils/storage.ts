@@ -42,11 +42,9 @@ export const getUserSettings = (): UserSettings | null => {
 
 export const saveUserSettings = (settings: Partial<UserSettings>) => {
   const currentSettings = getUserSettings();
-  console.log('currentSettings', currentSettings);
   if (!currentSettings) {
     setItem('userSettings', settings);
     return;
   }
-  console.log('set Items', { ...currentSettings, ...settings });
   setItem('userSettings', { ...currentSettings, ...settings });
 };

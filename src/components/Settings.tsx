@@ -48,13 +48,23 @@ const Settings = ({
       title: 'Exporter les données',
       type: 'button',
       onPress: () => {}
+    },
+    {
+      id: '2',
+      title: 'Supprimer les données',
+      type: 'button',
+      onPress: () => {}
     }
   ];
 
   return (
-    <View>
-      <SettingGroup title="Session" settings={sessionOptions} />
-      <SettingGroup title="Données" settings={dataOptions} />
+    <View className="mt-4">
+      <SettingGroup
+        title="Session"
+        description="Personnalisez votre expérience"
+        settings={sessionOptions}
+      />
+      <SettingGroup title="Données" description="Gestion des données" settings={dataOptions} />
     </View>
   );
 };

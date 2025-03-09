@@ -1,10 +1,15 @@
 import { Pause, Play, Square } from 'lucide-react-native';
-import React, { useState } from 'react';
-import { TouchableOpacity, TouchableWithoutFeedback, View } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { TouchableOpacity, TouchableWithoutFeedback, Vibration, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { ConfirmationModal } from 'src/components/ConfirmationModal';
 import CustomText from 'src/components/CustomText';
 import ScreenName from 'src/constants/screenNames';
+import {
+  FOCUS_VIBRATION_PATTERN,
+  START_SESSION_VIBRATION_PATTERN
+} from 'src/constants/session.constants';
+import { useAppData } from 'src/hooks/useAppData';
 import useSessionTimer from 'src/hooks/useSessionTimer';
 import { PALETTE } from 'src/theme/palette';
 import { MeditationSession } from 'src/types/storage.types';
@@ -18,6 +23,9 @@ const formatTime = (seconds: number) => {
 
 const MeditationTimerScreen = ({ navigation, route }) => {
   const { durationSeconds } = route.params || { duration: 10 };
+
+  const { userSettings } = useAppData();
+
   const { timeLeft, elapsedTime, isRunning, start, pause } = useSessionTimer(durationSeconds);
   const [modalVisible, setModalVisible] = useState(false);
 
@@ -25,18 +33,27 @@ const MeditationTimerScreen = ({ navigation, route }) => {
     id: Date.now().toString(),
     date: new Date().toISOString(),
     focusPoints: [],
-    planneDurationSeconds: durationSeconds,
+    plannedDurationSeconds: durationSeconds,
     actualDurationSeconds: 0
   });
 
   const handleScreenPress = () => {
     if (isRunning) {
+      if (userSettings?.vibrateOnFocus) {
+        Vibration.vibrate(FOCUS_VIBRATION_PATTERN);
+      }
       setMeditationSession((prev) => ({
         ...prev,
         focusPoints: [...prev.focusPoints, { elapsedTime }]
       }));
     }
   };
+
+  useEffect(() => {
+    if (userSettings?.vibrateOnSessionStart) {
+      Vibration.vibrate(START_SESSION_VIBRATION_PATTERN);
+    }
+  }, []);
 
   return (
     <>

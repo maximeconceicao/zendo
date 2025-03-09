@@ -34,7 +34,7 @@ const PixelYearScreen = () => {
       <View className="h-full justify-center">
         <PixelYear
           year={currentYear.getFullYear()}
-          items={filteredSessions?.map((item) => ({ date: item.date, color: 'grey' })) || []}
+          items={filteredSessions?.map((item) => ({ date: item.date, color: 'black' })) || []}
         />
       </View>
     </ScreenLayout>
