@@ -15,9 +15,11 @@ const SettingGroup = ({
   const renderItem = ({ item }: { item: SettingOption }) => (
     <Pressable
       className="flex-row justify-between items-center py-3 border-b border-gray-300"
-      onPress={() => (item.type === 'link' && item.screen ? null : null)}
+      onPress={() => (item.type === 'button' && item.onPress ? item.onPress() : null)}
     >
-      <CustomText className="text-lg text-gray-900">{item.title}</CustomText>
+      <CustomText className={`text-lg text-gray-900 ${item.className || ''}`}>
+        {item.title}
+      </CustomText>
       {item.type === 'switch' ? (
         <Switch
           value={item.value}

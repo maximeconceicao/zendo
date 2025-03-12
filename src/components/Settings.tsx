@@ -1,8 +1,10 @@
-import React from 'react';
-import { UserSettings } from 'src/types/storage.types';
-import SettingGroup from './SettingGroup';
+import React, { useState } from 'react';
 import { View } from 'react-native';
 import { SettingOption } from 'src/types/setting.types';
+import { UserSettings } from 'src/types/storage.types';
+import { softDeleteMeditationSessions } from 'src/utils/storage';
+import CustomAlert from './CustomAlert';
+import SettingGroup from './SettingGroup';
 
 const Settings = ({
   userSettings,
@@ -12,6 +14,8 @@ const Settings = ({
   updateUserSettings: (settings: Partial<UserSettings>) => void;
 }) => {
   console.log('userSettings', userSettings);
+  const [alertVisible, setAlertVisible] = useState(false);
+
   const sessionOptions: SettingOption[] = [
     {
       id: '1',
@@ -53,7 +57,8 @@ const Settings = ({
       id: '2',
       title: 'Supprimer les données',
       type: 'button',
-      onPress: () => {}
+      onPress: () => setAlertVisible(true),
+      className: 'text-red-400'
     }
   ];
 
@@ -65,6 +70,16 @@ const Settings = ({
         settings={sessionOptions}
       />
       <SettingGroup title="Données" description="Gestion des données" settings={dataOptions} />
+      <CustomAlert
+        visible={alertVisible}
+        title="Confirmation"
+        message="Êtes-vous sûr de vouloir supprimer toutes les séances de méditation ? Cette action est irréversible."
+        onClose={() => setAlertVisible(false)}
+        onConfirm={() => {
+          softDeleteMeditationSessions();
+          setAlertVisible(false);
+        }}
+      />
     </View>
   );
 };

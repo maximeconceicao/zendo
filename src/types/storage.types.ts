@@ -4,6 +4,7 @@ export type MeditationSession = {
   plannedDurationSeconds: number; // Duration in seconds
   actualDurationSeconds: number;
   focusPoints: FocusPoint[]; //List of moments when attention was refocused (in seconds)
+  deletedAt?: string;
 };
 
 export type FocusPoint = {

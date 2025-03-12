@@ -2,12 +2,14 @@ import { format } from 'date-fns';
 import React, { useMemo, useState } from 'react';
 import { View } from 'react-native';
 import ArrowButtons from 'src/components/ArrowButtons';
+import { fr } from 'date-fns/locale';
 
 import { Calendar } from 'src/components/Calendar';
 import MeditationList from 'src/components/MeditationList';
 import MonthlyMeditationStats from 'src/components/MeditationStats';
 import ScreenLayout from 'src/layouts/ScreenLayout';
 import { getMeditationSessions } from 'src/utils/storage';
+import { capitalizeFirstLetter } from 'src/utils/common.utils';
 
 const CalendarScreen = () => {
   const sessions = useMemo(() => getMeditationSessions(), []);
@@ -98,7 +100,7 @@ const CalendarScreen = () => {
 
   return (
     <ScreenLayout
-      title={format(currentMonth, 'MMMM')}
+      title={capitalizeFirstLetter(format(currentMonth, 'MMMM', { locale: fr }))}
       subtitle={format(currentMonth, 'yyyy')}
       topRightComponent={<ArrowButtons onPrevious={goToPreviousMonth} onNext={goToNextMonth} />}
     >

@@ -1,4 +1,6 @@
 import { startOfMonth, getDay, eachDayOfInterval, endOfMonth, format, subDays } from 'date-fns';
+import { fr } from 'date-fns/locale';
+import { capitalizeFirstLetter } from './common.utils';
 
 export const getCurrentMonthTitle = (date: Date): string => {
   return format(date, 'MMMM yyyy');
@@ -57,5 +59,7 @@ export const generateCalendar = (date: Date): CalendarDay[][] => {
   return calendar;
 };
 export const getWeekDays = (): string[] => {
-  return Array.from({ length: 7 }, (_, i) => format(new Date(2022, 0, i + 3), 'EEE'));
+  return Array.from({ length: 7 }, (_, i) =>
+    capitalizeFirstLetter(format(new Date(2022, 0, i + 3), 'EEE', { locale: fr }))
+  );
 };

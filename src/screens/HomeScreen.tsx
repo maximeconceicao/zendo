@@ -33,7 +33,7 @@ const HomeScreen = ({ navigation }) => {
           style={{ width: '100%', height: 40 }}
           minimumValue={1}
           maximumValue={90}
-          step={1}
+          step={5}
           value={sliderValue}
           onValueChange={setSliderValue}
           minimumTrackTintColor={PALETTE.neutral.black}
