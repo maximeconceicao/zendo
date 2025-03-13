@@ -30,7 +30,6 @@ const CalendarRow: React.FC<CalendarRowProps> = ({
 
       return (
         <TouchableOpacity
-          disabled={true}
           key={`${day}-${index}`}
           className="w-8 h-8 flex justify-center items-center"
           onPress={() => onSelectDate(date)}

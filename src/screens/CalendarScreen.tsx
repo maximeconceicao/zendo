@@ -1,4 +1,4 @@
-import { format } from 'date-fns';
+import { format, isSameDay } from 'date-fns';
 import React, { useMemo, useState } from 'react';
 import { View } from 'react-native';
 import ArrowButtons from 'src/components/ArrowButtons';
@@ -25,78 +25,32 @@ const CalendarScreen = () => {
     setCurrentMonth((prevDate) => new Date(prevDate.getFullYear(), prevDate.getMonth() + 1, 1));
   };
 
-  const mockSessions: MeditationSession[] = [
-    {
-      id: '1',
-      date: new Date('2025-03-03').toISOString(),
-      actualDurationSeconds: 10,
-      focusPoints: [],
-      planneDurationSeconds: 10
-    },
-    {
-      id: '2',
-      date: new Date('2025-03-01').toISOString(),
-      actualDurationSeconds: 20,
-      focusPoints: [],
-      planneDurationSeconds: 10
-    },
-    {
-      id: '3',
-      date: new Date().toISOString(),
-      actualDurationSeconds: 30,
-      focusPoints: [],
-      planneDurationSeconds: 10
-    },
-    {
-      id: '4',
-      date: new Date().toISOString(),
-      actualDurationSeconds: 40,
-      focusPoints: [],
-      planneDurationSeconds: 10
-    },
-    {
-      id: '5',
-      date: new Date().toISOString(),
-      actualDurationSeconds: 50,
-      focusPoints: [],
-      planneDurationSeconds: 10
-    },
-    {
-      id: '6',
-      date: new Date().toISOString(),
-      actualDurationSeconds: 60,
-      focusPoints: [],
-      planneDurationSeconds: 10
-    },
-    {
-      id: '7',
-      date: new Date().toISOString(),
-      actualDurationSeconds: 70,
-      focusPoints: [],
-      planneDurationSeconds: 10
-    },
-    {
-      id: '8',
-      date: new Date().toISOString(),
-      actualDurationSeconds: 80,
-      focusPoints: [],
-      planneDurationSeconds: 10
-    },
-    {
-      id: '9',
-      date: new Date().toISOString(),
-      actualDurationSeconds: 90,
-      focusPoints: [],
-      planneDurationSeconds: 10
-    },
-    {
-      id: '10',
-      date: new Date().toISOString(),
-      actualDurationSeconds: 100,
-      focusPoints: [],
-      planneDurationSeconds: 10
+  const monthlySessions = useMemo(() => {
+    return (
+      sessions
+        ?.filter((session) => {
+          const sessionDate = new Date(session.date);
+          return (
+            sessionDate.getFullYear() === currentMonth.getFullYear() &&
+            sessionDate.getMonth() === currentMonth.getMonth()
+          );
+        })
+        .sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime()) || []
+    );
+  }, [sessions, currentMonth]);
+
+  const filteredSessions = useMemo(() => {
+    if (!selectedDate) {
+      return monthlySessions;
     }
-  ];
+
+    return (
+      sessions?.filter((session) => {
+        const sessionDate = new Date(session.date);
+        return isSameDay(sessionDate, selectedDate);
+      }) || []
+    );
+  }, [sessions, monthlySessions, selectedDate]);
 
   return (
     <ScreenLayout
@@ -110,10 +64,10 @@ const CalendarScreen = () => {
           setSelectedDate={setSelectedDate}
           currentMonth={currentMonth}
           setCurrentMonth={setCurrentMonth}
-          sessions={mockSessions}
+          sessions={monthlySessions}
         />
         <View className="border-t border-black mt-9" />
-        <MeditationList sessions={mockSessions || []} />
+        <MeditationList sessions={filteredSessions} />
         {/* <MonthlyMeditationStats sessions={sessions || []} /> */}
       </View>
     </ScreenLayout>

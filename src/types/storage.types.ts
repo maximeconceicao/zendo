@@ -1,9 +1,13 @@
+import { MeditationFeeling } from 'src/constants/session.constants';
+
 export type MeditationSession = {
   id: string; // UUID ou timestamp
   date: string; // Format ISO 8601: YYYY-MM-DDTHH:mm:ss.sssZ
   plannedDurationSeconds: number; // Duration in seconds
   actualDurationSeconds: number;
   focusPoints: FocusPoint[]; //List of moments when attention was refocused (in seconds)
+  feeling: MeditationFeeling;
+  note?: string;
   deletedAt?: string;
 };
 
