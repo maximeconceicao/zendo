@@ -3,6 +3,7 @@ const enum ScreenName {
   HOME = 'Home',
   MEDITATION_TIMER = 'MeditationTimer',
   MEDITATION_SUMMARY = 'MeditationSummary',
+  MEDITATION_DETAIL = 'MeditationDetail',
   CALENDAR = 'Calendar',
   PIXEL_YEAR = 'PixelYear',
   ACTIVITY = 'Activity',
