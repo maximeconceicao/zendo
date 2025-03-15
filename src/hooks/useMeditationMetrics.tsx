@@ -11,28 +11,26 @@ import {
   calculateLongestConsecutiveDays
 } from 'src/utils/activity.utils';
 
-const useMeditationMetrics = (sessions: MeditationSession[]): MeditationMetrics => {
+const useMeditationMetrics = (
+  sessions: MeditationSession[],
+  excludedMetrics: (keyof MeditationMetrics)[] = []
+): Partial<MeditationMetrics> => {
   return useMemo(() => {
-    const totalSessions = sessions.length;
-    const totalMeditatedTimeSpent = calculateTotalMeditationTime(sessions);
-    const averageWeeklyMeditationDuration = calculateAverageWeeklyMeditationDuration(sessions);
-    const averageSessionDurationMinutes = calculateAverageSessionDurationMinutes(sessions);
-    const averageSessionDurationOffset = calculateAverageSessionDurationOffset(sessions);
-    const currentConsecutiveDays = calculateCurrentConsecutiveDays(sessions);
-    const longestConsecutiveDays = calculateLongestConsecutiveDays(sessions);
-    const longestSessionMinutes = calculateLongestSessionMinutes(sessions);
-
-    return {
-      totalSessions,
-      totalMeditatedTimeSpent,
-      averageWeeklyMeditationDuration,
-      averageSessionDurationMinutes,
-      averageSessionDurationOffset,
-      currentConsecutiveDays,
-      longestConsecutiveDays,
-      longestSessionMinutes
+    const metrics: MeditationMetrics = {
+      totalSessions: sessions.length,
+      totalMeditatedTimeSpent: calculateTotalMeditationTime(sessions),
+      averageWeeklyMeditationDuration: calculateAverageWeeklyMeditationDuration(sessions),
+      averageSessionDurationMinutes: calculateAverageSessionDurationMinutes(sessions),
+      averageSessionDurationOffset: calculateAverageSessionDurationOffset(sessions),
+      currentConsecutiveDays: calculateCurrentConsecutiveDays(sessions),
+      longestConsecutiveDays: calculateLongestConsecutiveDays(sessions),
+      longestSessionMinutes: calculateLongestSessionMinutes(sessions)
     };
-  }, [sessions]);
+
+    excludedMetrics.forEach((metric) => delete metrics[metric]);
+
+    return metrics;
+  }, [sessions, excludedMetrics]);
 };
 
 export default useMeditationMetrics;

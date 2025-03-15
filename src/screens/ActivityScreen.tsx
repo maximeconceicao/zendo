@@ -1,34 +1,46 @@
 import React from 'react';
+import { View } from 'react-native';
 import MetricGroup from 'src/components/MetricGroup';
+import { MeditationFeeling } from 'src/constants/session.constants';
+import { useAppData } from 'src/hooks/useAppData';
 import useMeditationMetrics from 'src/hooks/useMeditationMetrics';
 import ScreenLayout from 'src/layouts/ScreenLayout';
 import { MeditationSession } from 'src/types/storage.types';
-import { formatGlobalMetrics } from 'src/utils/activity.utils';
-
-const sessions: MeditationSession[] = [
-  {
-    id: '1',
-    date: '2025-03-01T10:00:00.000Z',
-    plannedDurationSeconds: 1800,
-    actualDurationSeconds: 1500,
-    focusPoints: [{ elapsedTime: 300 }, { elapsedTime: 1200 }]
-  },
-  {
-    id: '2',
-    date: '2025-03-02T10:00:00.000Z',
-    plannedDurationSeconds: 1800,
-    actualDurationSeconds: 1800,
-    focusPoints: [{ elapsedTime: 900 }, { elapsedTime: 1800 }]
-  }
-];
+import {
+  formatMeditationMetrics,
+  getLast30DaysSessions,
+  getLast365DaysSessions
+} from 'src/utils/activity.utils';
 
 const ActivityScreen = () => {
+  const { meditationSessions } = useAppData();
+
+  const sessions = meditationSessions ?? [];
+
+  const last30DaysSessions = getLast30DaysSessions(sessions);
+  const last365DaysSessions = getLast365DaysSessions(sessions);
+
   const globalMetrics = useMeditationMetrics(sessions);
-  const globalMetricsData = formatGlobalMetrics(globalMetrics);
+  const pastMonthMetrics = useMeditationMetrics(last30DaysSessions, [
+    'longestConsecutiveDays',
+    'longestSessionMinutes'
+  ]);
+  const pastYearMetrics = useMeditationMetrics(last365DaysSessions, [
+    'longestConsecutiveDays',
+    'longestSessionMinutes'
+  ]);
+
+  const globalMetricsData = formatMeditationMetrics(globalMetrics);
+  const pastMonthMetricsData = formatMeditationMetrics(pastMonthMetrics);
+  const pastYearMetricsData = formatMeditationMetrics(pastYearMetrics);
 
   return (
     <ScreenLayout title="Activités">
-      <MetricGroup title="Général" data={globalMetricsData} />
+      <View className="mt-4">
+        <MetricGroup title="Général" data={globalMetricsData} />
+        <MetricGroup title="Dernier mois" data={pastMonthMetricsData} />
+        <MetricGroup title="Dernière année" data={pastYearMetricsData} />
+      </View>
     </ScreenLayout>
   );
 };

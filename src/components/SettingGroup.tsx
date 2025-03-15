@@ -35,7 +35,9 @@ const SettingGroup = ({
   return (
     <View className="mb-6">
       <View>
-        <CustomText className="text-xl font-bold text-gray-900">{title}</CustomText>
+        <CustomText className="text-lg text-gray-900" bold>
+          {title}
+        </CustomText>
         <CustomText className="text-gray-600">{description}</CustomText>
       </View>
 

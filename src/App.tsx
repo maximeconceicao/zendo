@@ -18,8 +18,9 @@ import { AppDataProvider } from './contexts/AppDataContext';
 
 export function App() {
   const [fontsLoaded] = useFonts({
-    'SFProDisplay-Light': require('./assets/fonts/SF-Pro-Display-Light.otf')
-    //'SFProDisplay-Bold': require('./assets/fonts/SF-Pro-Display-Bold.ttf')
+    'SFProDisplay-Light': require('./assets/fonts/SF-Pro-Display-Light.otf'),
+    'SFProDisplay-Bold': require('./assets/fonts/SF-Pro-Display-Bold.otf'),
+    'SFProDisplay-Semibold': require('./assets/fonts/SF-Pro-Display-Semibold.otf')
   });
 
   if (!fontsLoaded) {

@@ -7,6 +7,29 @@ export type MetricData = {
 };
 
 /*
+ * Meditation Sessions Filters
+ */
+
+const getSessionsFromLastDays = (
+  sessions: MeditationSession[],
+  days: number
+): MeditationSession[] => {
+  const now = new Date();
+  const pastDate = new Date();
+  pastDate.setDate(now.getDate() - days);
+
+  return sessions.filter((session) => new Date(session.date) >= pastDate);
+};
+
+export const getLast30DaysSessions = (sessions: MeditationSession[]): MeditationSession[] => {
+  return getSessionsFromLastDays(sessions, 30);
+};
+
+export const getLast365DaysSessions = (sessions: MeditationSession[]): MeditationSession[] => {
+  return getSessionsFromLastDays(sessions, 365);
+};
+
+/*
  * Meditation Metrics Calculations
  */
 
@@ -101,20 +124,19 @@ export const calculateAverageWeeklyMeditationDuration = (sessions: MeditationSes
  * Meditation Metrics Formating
  */
 
-export const formatGlobalMetrics = (metrics: MeditationMetrics): MetricData[] => {
-  return [
-    { label: 'Total de sessions', value: `${metrics.totalSessions}` },
-    {
-      label: 'Total de temps médité',
-      value: `${metrics.totalMeditatedTimeSpent.days}j ${metrics.totalMeditatedTimeSpent.hours}h ${metrics.totalMeditatedTimeSpent.minutes}min`
-    },
-    {
-      label: 'Série actuelle de jours consécutifs',
-      value: `${metrics.currentConsecutiveDays} jours`
-    },
-    {
-      label: 'Record de la plus longue session',
-      value: `${metrics.longestSessionMinutes}min`
-    }
-  ];
+export const formatMeditationMetrics = (metrics: Partial<MeditationMetrics>): MetricData[] => {
+  const metricMap: Record<string, string | undefined> = {
+    'Total de sessions': metrics.totalSessions?.toString(),
+    'Total de temps médité': metrics.totalMeditatedTimeSpent
+      ? `${metrics.totalMeditatedTimeSpent.days ? metrics.totalMeditatedTimeSpent.days + 'j ' : ''}${metrics.totalMeditatedTimeSpent.hours ? metrics.totalMeditatedTimeSpent.hours + 'h ' : ''}${metrics.totalMeditatedTimeSpent.minutes ?? 0}min`
+      : undefined,
+    'Série actuelle de jours consécutifs': metrics.currentConsecutiveDays?.toString() + ' jours',
+    'Record de la plus longue session': metrics.longestSessionMinutes
+      ? metrics.longestSessionMinutes.toString() + 'min'
+      : undefined
+  };
+
+  return Object.entries(metricMap)
+    .filter(([, value]) => value !== undefined)
+    .map(([label, value]) => ({ label, value: value! }));
 };

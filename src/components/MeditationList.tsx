@@ -31,7 +31,7 @@ const MeditationList = ({ sessions }: { sessions: MeditationSession[] }) => {
           style={{ marginBottom: 10 }}
         >
           <View>
-            <CustomText className="text-lg font-bold">
+            <CustomText className="text-lg" bold>
               {capitalizeFirstLetter(
                 format(new Date(item.date), "EEEE dd/MM à HH':'mm", { locale: fr })
               )}

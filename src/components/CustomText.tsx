@@ -1,7 +1,16 @@
 import { Text, TextProps } from 'react-native';
 
-const CustomText = ({ style, ...props }: TextProps) => {
-  return <Text {...props} style={[{ fontFamily: 'SFProDisplay-Light' }, style]} />;
+interface CustomTextProps extends TextProps {
+  bold?: boolean;
+}
+
+const CustomText = ({ style, bold, ...props }: CustomTextProps) => {
+  return (
+    <Text
+      {...props}
+      style={[{ fontFamily: bold ? 'SFProDisplay-Semibold' : 'SFProDisplay-Light' }, style]}
+    />
+  );
 };
 
 export default CustomText;
