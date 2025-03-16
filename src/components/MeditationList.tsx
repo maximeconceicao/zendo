@@ -8,6 +8,20 @@ import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { StackParamList } from 'src/navigation/AppNavigator';
 import ScreenName from 'src/constants/screenNames';
+import { Icon } from 'lucide-react-native';
+import { MeditationFeeling } from 'src/constants/session.constants';
+import { Smile, Meh, Frown } from 'lucide-react-native';
+
+const feelingIcons = {
+  [MeditationFeeling.Good]: Smile,
+  [MeditationFeeling.Neutral]: Meh,
+  [MeditationFeeling.Bad]: Frown
+};
+
+const FeelingIcon = ({ feeling }: { feeling: MeditationFeeling }) => {
+  const Icon = feelingIcons[feeling] || Meh; // Icône par défaut si feeling est invalide
+  return <Icon size={24} color="black" />;
+};
 
 const MeditationList = ({ sessions }: { sessions: MeditationSession[] }) => {
   const navigation = useNavigation<StackNavigationProp<StackParamList>>();
@@ -30,13 +44,20 @@ const MeditationList = ({ sessions }: { sessions: MeditationSession[] }) => {
           }
           style={{ marginBottom: 10 }}
         >
-          <View>
-            <CustomText className="text-lg" bold>
-              {capitalizeFirstLetter(
-                format(new Date(item.date), "EEEE dd/MM à HH':'mm", { locale: fr })
-              )}
-            </CustomText>
-            <CustomText className="text-sm mt-2">{item.actualDurationSeconds} secondes</CustomText>
+          <View className="flex-row justify-between items-center">
+            <View className="flex-col justify-between">
+              <CustomText className="text-lg" bold>
+                {capitalizeFirstLetter(
+                  format(new Date(item.date), "EEEE dd/MM à HH':'mm", { locale: fr })
+                )}
+              </CustomText>
+              <CustomText className="text-sm mt-2">
+                {item.actualDurationSeconds < 60
+                  ? `${item.actualDurationSeconds} secondes`
+                  : `${Math.floor(item.actualDurationSeconds / 60)} minutes`}
+              </CustomText>
+            </View>
+            <FeelingIcon feeling={item.feeling} />
           </View>
         </TouchableOpacity>
       )}
