@@ -2,7 +2,11 @@ import React, { useState } from 'react';
 import { View } from 'react-native';
 import { SettingOption } from 'src/types/setting.types';
 import { UserSettings } from 'src/types/storage.types';
-import { deleteMeditationSessions, softDeleteMeditationSessions } from 'src/utils/storage';
+import {
+  deleteMeditationSessions,
+  exportMeditationSessions,
+  softDeleteMeditationSessions
+} from 'src/utils/storage';
 import CustomAlert from './CustomAlert';
 import SettingGroup from './SettingGroup';
 
@@ -51,7 +55,7 @@ const Settings = ({
       id: '1',
       title: 'Exporter les données',
       type: 'button',
-      onPress: () => {}
+      onPress: exportMeditationSessions
     },
     {
       id: '2',

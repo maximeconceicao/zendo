@@ -1,5 +1,8 @@
 import { MMKV } from 'react-native-mmkv';
 import { StorageSchema, MeditationSession, UserSettings } from 'src/types/storage.types';
+import * as FileSystem from 'expo-file-system';
+import * as Sharing from 'expo-sharing';
+import { format } from 'date-fns';
 
 export const storage = new MMKV();
 
@@ -47,6 +50,36 @@ export const softDeleteMeditationSessions = () => {
 
 export const deleteMeditationSessions = () => {
   setItem('meditationSessions', []);
+};
+
+export const exportMeditationSessions = async () => {
+  try {
+    const todayDate = format(new Date(), 'yyyy_MM_dd');
+    const fileName = `meditation_data_${todayDate}.json`;
+
+    // 1. Get sessions
+    const sessions = getMeditationSessions();
+
+    // 2. Convert to JSON
+    const jsonString = JSON.stringify(sessions, null, 2);
+
+    // 3. Determine the file path
+    const fileUri = FileSystem.documentDirectory + fileName;
+
+    // 4. Write the JSON string to the file
+    await FileSystem.writeAsStringAsync(fileUri, jsonString, {
+      encoding: FileSystem.EncodingType.UTF8
+    });
+
+    // 5. Share the file
+    if (await Sharing.isAvailableAsync()) {
+      await Sharing.shareAsync(fileUri);
+    } else {
+      console.log('Le partage n’est pas disponible sur cet appareil.');
+    }
+  } catch (error) {
+    console.error('Erreur lors de l’export des données :', error);
+  }
 };
 
 /*
