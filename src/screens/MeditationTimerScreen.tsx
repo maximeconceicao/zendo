@@ -7,13 +7,13 @@ import CustomText from 'src/components/CustomText';
 import ScreenName from 'src/constants/screenNames';
 import {
   FOCUS_VIBRATION_PATTERN,
+  MeditationFeeling,
   START_SESSION_VIBRATION_PATTERN
 } from 'src/constants/session.constants';
 import { useAppData } from 'src/hooks/useAppData';
 import useSessionTimer from 'src/hooks/useSessionTimer';
 import { PALETTE } from 'src/theme/palette';
 import { MeditationSession } from 'src/types/storage.types';
-import { saveMeditationSession } from 'src/utils/storage';
 
 const formatTime = (seconds: number) => {
   const minutes = Math.floor(seconds / 60);
@@ -24,7 +24,7 @@ const formatTime = (seconds: number) => {
 const MeditationTimerScreen = ({ navigation, route }) => {
   const { durationSeconds } = route.params || { duration: 10 };
 
-  const { userSettings } = useAppData();
+  const { userSettings, addSession } = useAppData();
 
   const { timeLeft, elapsedTime, isRunning, start, pause } = useSessionTimer(durationSeconds);
   const [modalVisible, setModalVisible] = useState(false);
@@ -34,7 +34,8 @@ const MeditationTimerScreen = ({ navigation, route }) => {
     date: new Date().toISOString(),
     focusPoints: [],
     plannedDurationSeconds: durationSeconds,
-    actualDurationSeconds: 0
+    actualDurationSeconds: 0,
+    feeling: MeditationFeeling.Neutral
   });
 
   const handleScreenPress = () => {
@@ -109,10 +110,11 @@ const MeditationTimerScreen = ({ navigation, route }) => {
           {
             label: 'Enregistrer',
             action: () => {
-              //saveMeditationSession(meditationSession);
+              const session = { ...meditationSession, actualDurationSeconds: elapsedTime };
+              addSession(session);
               setModalVisible(false);
               navigation.navigate(ScreenName.MEDITATION_SUMMARY, {
-                meditationSession: { ...meditationSession, actualDurationSeconds: elapsedTime }
+                meditationSession: session
               });
             },
             style: 'text-blue-500 text-xl text-center'

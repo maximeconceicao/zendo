@@ -4,13 +4,15 @@ import {
   getMeditationSessions,
   getUserSettings,
   saveMeditationSession,
-  saveUserSettings
+  saveUserSettings,
+  updateMeditationSession
 } from 'src/utils/storage';
 
 interface AppData {
   meditationSessions: MeditationSession[] | null;
   userSettings: UserSettings | null;
-  addMeditationSession: (session: MeditationSession) => void;
+  addSession: (session: MeditationSession) => void;
+  updateSession: (session: MeditationSession) => void;
   updateUserSettings: (settings: UserSettings) => void;
 }
 
@@ -20,7 +22,8 @@ export const AppDataProvider = ({ children }: { children: React.ReactNode }) => 
   const [appData, setAppData] = useState<AppData>({
     meditationSessions: null,
     userSettings: null,
-    addMeditationSession: () => {},
+    addSession: () => {},
+    updateSession: () => {},
     updateUserSettings: () => {}
   });
 
@@ -39,7 +42,7 @@ export const AppDataProvider = ({ children }: { children: React.ReactNode }) => 
     fetchData();
   }, []);
 
-  const addMeditationSession = async (session: MeditationSession) => {
+  const addSession = async (session: MeditationSession) => {
     const newSessions = appData.meditationSessions
       ? [...appData.meditationSessions, session]
       : [session];
@@ -48,6 +51,20 @@ export const AppDataProvider = ({ children }: { children: React.ReactNode }) => 
       meditationSessions: newSessions
     }));
     saveMeditationSession(session);
+  };
+
+  const updateSession = async (session: MeditationSession) => {
+    if (!appData.meditationSessions) return;
+
+    const updatedSessions = appData.meditationSessions.map((s) =>
+      s.id === session.id ? { ...s, ...session } : s
+    );
+
+    setAppData((prevData) => ({
+      ...prevData,
+      meditationSessions: updatedSessions
+    }));
+    updateMeditationSession(session);
   };
 
   const updateUserSettings = async (settings: Partial<UserSettings>) => {
@@ -63,7 +80,8 @@ export const AppDataProvider = ({ children }: { children: React.ReactNode }) => 
     <AppDataContext.Provider
       value={{
         ...appData,
-        addMeditationSession,
+        addSession,
+        updateSession,
         updateUserSettings
       }}
     >

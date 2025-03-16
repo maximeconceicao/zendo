@@ -1,18 +1,17 @@
 import { format, isSameDay } from 'date-fns';
+import { fr } from 'date-fns/locale';
 import React, { useMemo, useState } from 'react';
 import { View } from 'react-native';
 import ArrowButtons from 'src/components/ArrowButtons';
-import { fr } from 'date-fns/locale';
 
 import { Calendar } from 'src/components/Calendar';
 import MeditationList from 'src/components/MeditationList';
-import MonthlyMeditationStats from 'src/components/MeditationStats';
+import { useAppData } from 'src/hooks/useAppData';
 import ScreenLayout from 'src/layouts/ScreenLayout';
-import { getMeditationSessions } from 'src/utils/storage';
 import { capitalizeFirstLetter } from 'src/utils/common.utils';
 
 const CalendarScreen = () => {
-  const sessions = useMemo(() => getMeditationSessions(), []);
+  const { meditationSessions } = useAppData();
 
   const [selectedDate, setSelectedDate] = useState<Date | null>(null);
   const [currentMonth, setCurrentMonth] = useState(new Date());
@@ -27,7 +26,7 @@ const CalendarScreen = () => {
 
   const monthlySessions = useMemo(() => {
     return (
-      sessions
+      meditationSessions
         ?.filter((session) => {
           const sessionDate = new Date(session.date);
           return (
@@ -37,7 +36,7 @@ const CalendarScreen = () => {
         })
         .sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime()) || []
     );
-  }, [sessions, currentMonth]);
+  }, [meditationSessions, currentMonth]);
 
   const filteredSessions = useMemo(() => {
     if (!selectedDate) {
@@ -45,12 +44,12 @@ const CalendarScreen = () => {
     }
 
     return (
-      sessions?.filter((session) => {
+      meditationSessions?.filter((session) => {
         const sessionDate = new Date(session.date);
         return isSameDay(sessionDate, selectedDate);
       }) || []
     );
-  }, [sessions, monthlySessions, selectedDate]);
+  }, [meditationSessions, monthlySessions, selectedDate]);
 
   return (
     <ScreenLayout

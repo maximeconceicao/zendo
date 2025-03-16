@@ -19,7 +19,7 @@ const feelingOptions: { feeling: MeditationFeeling; Icon: any }[] = [
 
 const FeelingSelector: React.FC<FeelingSelectorProps> = ({ selectedFeeling, onSelect }) => {
   return (
-    <View className="mb-6">
+    <View className="my-3">
       <CustomText className="text-lg text-center mb-4">Comment vous sentez-vous ?</CustomText>
       <View className="flex-row justify-center space-x-6">
         {feelingOptions.map(({ feeling, Icon }) => (

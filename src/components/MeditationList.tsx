@@ -8,7 +8,6 @@ import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { StackParamList } from 'src/navigation/AppNavigator';
 import ScreenName from 'src/constants/screenNames';
-import { Icon } from 'lucide-react-native';
 import { MeditationFeeling } from 'src/constants/session.constants';
 import { Smile, Meh, Frown } from 'lucide-react-native';
 

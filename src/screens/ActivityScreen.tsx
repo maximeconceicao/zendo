@@ -1,11 +1,9 @@
 import React from 'react';
 import { View } from 'react-native';
 import MetricGroup from 'src/components/MetricGroup';
-import { MeditationFeeling } from 'src/constants/session.constants';
 import { useAppData } from 'src/hooks/useAppData';
 import useMeditationMetrics from 'src/hooks/useMeditationMetrics';
 import ScreenLayout from 'src/layouts/ScreenLayout';
-import { MeditationSession } from 'src/types/storage.types';
 import {
   formatMeditationMetrics,
   getLast30DaysSessions,

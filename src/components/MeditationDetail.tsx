@@ -1,25 +1,31 @@
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import React, { useState } from 'react';
-import { Dimensions, TouchableOpacity, View } from 'react-native';
-import { LineChart } from 'react-native-chart-kit';
+import { TouchableOpacity, View } from 'react-native';
 import CustomText from 'src/components/CustomText';
 import FeelingSelector from 'src/components/FeelingSelector';
 import ScreenName from 'src/constants/screenNames';
 import { MeditationFeeling } from 'src/constants/session.constants';
 import { useAppData } from 'src/hooks/useAppData';
 import { StackParamList } from 'src/navigation/AppNavigator';
-import { PALETTE } from 'src/theme/palette';
 import { MeditationSession } from 'src/types/storage.types';
+import FocusChart from './FocusChart';
 
-const screenWidth = Dimensions.get('window').width;
+type MeditationDetailMode = 'summary' | 'detail';
 
-const MeditationDetail = ({ meditationSession }: { meditationSession: MeditationSession }) => {
-  const { addMeditationSession } = useAppData();
+const MeditationDetail = ({
+  meditationSession,
+  mode = 'detail'
+}: {
+  meditationSession: MeditationSession;
+  mode?: MeditationDetailMode;
+}) => {
   const navigation = useNavigation<StackNavigationProp<StackParamList>>();
 
+  const { updateSession } = useAppData();
+
   const [selectedFeeling, setSelectedFeeling] = useState<MeditationFeeling>(
-    MeditationFeeling.Neutral
+    meditationSession.feeling || MeditationFeeling.Neutral
   );
 
   const focusPoints = meditationSession.focusPoints || [];
@@ -30,26 +36,6 @@ const MeditationDetail = ({ meditationSession }: { meditationSession: Meditation
     durationSeconds < 60
       ? `${durationSeconds} secondes`
       : `${Math.floor(durationSeconds / 60)}m ${durationSeconds % 60}s`;
-
-  // Regroupement des focus points par minute avec valeurs par défaut
-  const focusPointsPerMinute = Array(durationMinutes).fill(0);
-  focusPoints.forEach((fp) => {
-    const minute = Math.floor(fp.elapsedTime / 60);
-    if (minute < durationMinutes) {
-      focusPointsPerMinute[minute] += 1;
-    }
-  });
-
-  const chartData = {
-    labels: focusPointsPerMinute.map((_, i) => `${i}m`),
-    datasets: [
-      {
-        data: focusPointsPerMinute,
-        color: (opacity = 1) => `rgba(0, 122, 255, ${opacity})`,
-        strokeWidth: 2
-      }
-    ]
-  };
 
   return (
     <View>
@@ -64,48 +50,34 @@ const MeditationDetail = ({ meditationSession }: { meditationSession: Meditation
       </View>
 
       {focusPoints.length > 0 && (
-        <View className="my-2">
-          <CustomText className="text-lg text-center mb-5">Recentrages par minute :</CustomText>
-          <LineChart
-            data={chartData}
-            width={screenWidth}
-            height={220}
-            yAxisSuffix=""
-            yAxisInterval={1}
-            chartConfig={{
-              backgroundColor: PALETTE.background.light,
-              backgroundGradientFrom: PALETTE.background.light,
-              backgroundGradientTo: PALETTE.background.light,
-              decimalPlaces: 0,
-              color: (opacity = 1) => `rgba(0, 0, 0, ${opacity})`,
-              labelColor: (opacity = 1) => `rgba(0, 0, 0, ${opacity})`,
-              style: { borderRadius: 16 },
-              propsForDots: { r: '4', fill: '#000' }
-            }}
-            bezier
-            style={{ borderRadius: 16, alignSelf: 'center' }}
-            fromZero={true}
-          />
-        </View>
+        <FocusChart focusPoints={focusPoints} durationMinutes={durationMinutes} />
       )}
 
-      <FeelingSelector selectedFeeling={selectedFeeling} onSelect={setSelectedFeeling} />
+      <FeelingSelector
+        selectedFeeling={selectedFeeling}
+        onSelect={(feeling: MeditationFeeling) => {
+          updateSession({ ...meditationSession, feeling });
+          setSelectedFeeling(feeling);
+        }}
+      />
 
-      <View className="p-6 flex-1 justify-end">
+      <View className="p-6 mt-auto">
         <TouchableOpacity
           className="bg-black p-4 rounded-lg"
           onPress={() => {
-            addMeditationSession({
-              ...meditationSession,
-              feeling: selectedFeeling
-            });
-            navigation.reset({
-              index: 0,
-              routes: [{ name: ScreenName.MAIN_TABS }]
-            });
+            if (mode === 'summary') {
+              navigation.reset({
+                index: 0,
+                routes: [{ name: ScreenName.MAIN_TABS }]
+              });
+            } else {
+              navigation.goBack();
+            }
           }}
         >
-          <CustomText className="text-white text-center text-lg">OK</CustomText>
+          <CustomText className="text-white text-center text-lg">
+            {mode === 'summary' ? 'OK' : 'Retour'}
+          </CustomText>
         </TouchableOpacity>
       </View>
     </View>

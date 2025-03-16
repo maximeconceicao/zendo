@@ -15,7 +15,7 @@ const MeditationSummaryScreen = ({ route }: MeditationSummaryProps) => {
 
   return (
     <ScreenLayout title="Résumé">
-      <MeditationDetail meditationSession={meditationSession} />
+      <MeditationDetail meditationSession={meditationSession} mode="summary" />
     </ScreenLayout>
   );
 };

@@ -1,6 +1,6 @@
 import { isToday } from 'date-fns';
 import React, { useMemo } from 'react';
-import { Text, TouchableOpacity, View } from 'react-native';
+import { TouchableOpacity, View } from 'react-native';
 import { MeditationSession } from 'src/types/storage.types';
 import { CalendarDay, generateCalendar, getWeekDays } from 'src/utils/date.utils';
 import CustomText from './CustomText';
@@ -39,7 +39,7 @@ const CalendarRow: React.FC<CalendarRowProps> = ({
               isSelected ? 'bg-black' : today ? 'border border-black' : ''
             }`}
           >
-            <Text className={`${textColor} text-sm`}>{day}</Text>
+            <CustomText className={`${textColor} text-sm`}>{day}</CustomText>
           </View>
           {hasSession && (
             <View

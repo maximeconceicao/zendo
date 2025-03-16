@@ -36,6 +36,17 @@ export const saveMeditationSession = (session: MeditationSession) => {
   setItem('meditationSessions', sessions);
 };
 
+export const updateMeditationSession = (updatedSession: MeditationSession) => {
+  const sessions = getItem('meditationSessions');
+  if (!sessions) return;
+
+  const updatedSessions = sessions.map((session) =>
+    session.id === updatedSession.id ? { ...session, ...updatedSession } : session
+  );
+
+  setItem('meditationSessions', updatedSessions);
+};
+
 export const softDeleteMeditationSessions = () => {
   const sessions = getMeditationSessions();
   if (!sessions) return;
