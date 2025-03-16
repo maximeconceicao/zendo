@@ -22,10 +22,12 @@ const ActivityScreen = () => {
 
   const globalMetrics = useMeditationMetrics(sessions);
   const pastMonthMetrics = useMeditationMetrics(last30DaysSessions, [
+    'currentConsecutiveDays',
     'longestConsecutiveDays',
     'longestSessionMinutes'
   ]);
   const pastYearMetrics = useMeditationMetrics(last365DaysSessions, [
+    'currentConsecutiveDays',
     'longestConsecutiveDays',
     'longestSessionMinutes'
   ]);

@@ -1,4 +1,5 @@
 import { useNavigation } from '@react-navigation/native';
+import { StackNavigationProp } from '@react-navigation/stack';
 import React, { useState } from 'react';
 import { Dimensions, TouchableOpacity, View } from 'react-native';
 import { LineChart } from 'react-native-chart-kit';
@@ -6,13 +7,16 @@ import CustomText from 'src/components/CustomText';
 import FeelingSelector from 'src/components/FeelingSelector';
 import ScreenName from 'src/constants/screenNames';
 import { MeditationFeeling } from 'src/constants/session.constants';
+import { useAppData } from 'src/hooks/useAppData';
+import { StackParamList } from 'src/navigation/AppNavigator';
 import { PALETTE } from 'src/theme/palette';
 import { MeditationSession } from 'src/types/storage.types';
 
 const screenWidth = Dimensions.get('window').width;
 
 const MeditationDetail = ({ meditationSession }: { meditationSession: MeditationSession }) => {
-  const navigation = useNavigation();
+  const { addMeditationSession } = useAppData();
+  const navigation = useNavigation<StackNavigationProp<StackParamList>>();
 
   const [selectedFeeling, setSelectedFeeling] = useState<MeditationFeeling>(
     MeditationFeeling.Neutral
@@ -90,12 +94,16 @@ const MeditationDetail = ({ meditationSession }: { meditationSession: Meditation
       <View className="p-6 flex-1 justify-end">
         <TouchableOpacity
           className="bg-black p-4 rounded-lg"
-          onPress={() =>
+          onPress={() => {
+            addMeditationSession({
+              ...meditationSession,
+              feeling: selectedFeeling
+            });
             navigation.reset({
               index: 0,
               routes: [{ name: ScreenName.MAIN_TABS }]
-            })
-          }
+            });
+          }}
         >
           <CustomText className="text-white text-center text-lg">OK</CustomText>
         </TouchableOpacity>

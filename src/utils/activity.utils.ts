@@ -63,7 +63,7 @@ export const calculateLongestSessionMinutes = (sessions: MeditationSession[]): n
   const longestSessionSeconds = Math.max(
     ...sessions.map((session) => session.actualDurationSeconds)
   );
-  return longestSessionSeconds / 60;
+  return Math.floor(longestSessionSeconds / 60);
 };
 
 export const calculateAverageSessionDurationMinutes = (sessions: MeditationSession[]): number => {
@@ -130,7 +130,9 @@ export const formatMeditationMetrics = (metrics: Partial<MeditationMetrics>): Me
     'Total de temps médité': metrics.totalMeditatedTimeSpent
       ? `${metrics.totalMeditatedTimeSpent.days ? metrics.totalMeditatedTimeSpent.days + 'j ' : ''}${metrics.totalMeditatedTimeSpent.hours ? metrics.totalMeditatedTimeSpent.hours + 'h ' : ''}${metrics.totalMeditatedTimeSpent.minutes ?? 0}min`
       : undefined,
-    'Série actuelle de jours consécutifs': metrics.currentConsecutiveDays?.toString() + ' jours',
+    'Série actuelle de jours consécutifs': metrics.currentConsecutiveDays
+      ? metrics.currentConsecutiveDays.toString() + ' jours'
+      : undefined,
     'Record de la plus longue session': metrics.longestSessionMinutes
       ? metrics.longestSessionMinutes.toString() + 'min'
       : undefined

@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { View } from 'react-native';
 import { SettingOption } from 'src/types/setting.types';
 import { UserSettings } from 'src/types/storage.types';
-import { softDeleteMeditationSessions } from 'src/utils/storage';
+import { deleteMeditationSessions, softDeleteMeditationSessions } from 'src/utils/storage';
 import CustomAlert from './CustomAlert';
 import SettingGroup from './SettingGroup';
 
@@ -76,7 +76,7 @@ const Settings = ({
         message="Êtes-vous sûr de vouloir supprimer toutes les séances de méditation ? Cette action est irréversible."
         onClose={() => setAlertVisible(false)}
         onConfirm={() => {
-          softDeleteMeditationSessions();
+          deleteMeditationSessions();
           setAlertVisible(false);
         }}
       />

@@ -17,7 +17,8 @@ export function getItem<K extends keyof StorageSchema>(key: K): StorageSchema[K]
  */
 
 export const getMeditationSessions = (): MeditationSession[] | null => {
-  return getItem('meditationSessions');
+  const sessions = getItem('meditationSessions');
+  return sessions?.filter((session) => !session.deletedAt) || null;
 };
 
 export const saveMeditationSession = (session: MeditationSession) => {
@@ -42,6 +43,10 @@ export const softDeleteMeditationSessions = () => {
   }));
 
   setItem('meditationSessions', updatedSessions);
+};
+
+export const deleteMeditationSessions = () => {
+  setItem('meditationSessions', []);
 };
 
 /*
