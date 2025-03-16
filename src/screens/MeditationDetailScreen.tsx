@@ -1,4 +1,5 @@
 import { StackScreenProps } from '@react-navigation/stack';
+import { format } from 'date-fns';
 import React from 'react';
 import MeditationDetail from 'src/components/MeditationDetail';
 import ScreenName from 'src/constants/screenNames';
@@ -14,7 +15,7 @@ const MeditationDetailScreen = ({ route }: MeditationDetailProps) => {
   };
 
   return (
-    <ScreenLayout title="Session">
+    <ScreenLayout title={format(new Date(meditationSession.date), 'dd/MM/yyyy')}>
       <MeditationDetail meditationSession={meditationSession} />
     </ScreenLayout>
   );
