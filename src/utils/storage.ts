@@ -63,6 +63,15 @@ export const deleteMeditationSessions = () => {
   setItem('meditationSessions', []);
 };
 
+export const deleteMeditationSession = (id: string) => {
+  const sessions = getMeditationSessions();
+  if (!sessions) return;
+
+  const updatedSessions = sessions.filter((session) => session.id !== id);
+
+  setItem('meditationSessions', updatedSessions);
+};
+
 export const exportMeditationSessions = async () => {
   try {
     const todayDate = format(new Date(), 'yyyy_MM_dd');

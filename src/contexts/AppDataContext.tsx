@@ -1,6 +1,7 @@
 import React, { createContext, useState, useEffect } from 'react';
 import { MeditationSession, UserSettings } from 'src/types/storage.types';
 import {
+  deleteMeditationSession,
   getMeditationSessions,
   getUserSettings,
   saveMeditationSession,
@@ -14,6 +15,7 @@ interface AppData {
   addSession: (session: MeditationSession) => void;
   updateSession: (session: MeditationSession) => void;
   updateUserSettings: (settings: UserSettings) => void;
+  deleteSession: (id: string) => void;
 }
 
 export const AppDataContext = createContext<AppData | undefined>(undefined);
@@ -24,7 +26,8 @@ export const AppDataProvider = ({ children }: { children: React.ReactNode }) => 
     userSettings: null,
     addSession: () => {},
     updateSession: () => {},
-    updateUserSettings: () => {}
+    updateUserSettings: () => {},
+    deleteSession: () => {}
   });
 
   useEffect(() => {
@@ -67,6 +70,18 @@ export const AppDataProvider = ({ children }: { children: React.ReactNode }) => 
     updateMeditationSession(session);
   };
 
+  const deleteSession = async (sessionId: string) => {
+    if (!appData.meditationSessions) return;
+
+    const filteredSessions = appData.meditationSessions.filter((s) => s.id !== sessionId);
+
+    setAppData((prevData) => ({
+      ...prevData,
+      meditationSessions: filteredSessions
+    }));
+    deleteMeditationSession(sessionId);
+  };
+
   const updateUserSettings = async (settings: Partial<UserSettings>) => {
     setAppData((prevData) => ({
       ...prevData,
@@ -82,7 +97,8 @@ export const AppDataProvider = ({ children }: { children: React.ReactNode }) => 
         ...appData,
         addSession,
         updateSession,
-        updateUserSettings
+        updateUserSettings,
+        deleteSession
       }}
     >
       {children}
