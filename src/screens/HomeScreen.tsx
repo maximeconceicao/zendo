@@ -1,12 +1,12 @@
-import React, { useState } from 'react';
-import { TouchableOpacity, View } from 'react-native';
-import Slider from '@react-native-community/slider';
+import React, { useMemo, useState } from 'react';
+import { TouchableOpacity, View, Platform, Pressable } from 'react-native';
+import DateTimePicker from '@react-native-community/datetimepicker';
 import CustomText from 'src/components/CustomText';
 import ScreenName from 'src/constants/screenNames';
-import { PALETTE } from 'src/theme/palette';
 import DailyQuote from 'src/components/DailyQuote';
 import { MeditationQuote } from 'src/types/storage.types';
 import ScreenLayout from 'src/layouts/ScreenLayout';
+import { Hourglass } from 'lucide-react-native';
 
 const meditationQuotes: MeditationQuote[] = [
   { quote: 'Le calme est la clé de la maîtrise.', author: 'James Allen' },
@@ -19,7 +19,26 @@ const meditationQuotes: MeditationQuote[] = [
 ];
 
 const HomeScreen = ({ navigation }) => {
-  const [sliderValue, setSliderValue] = useState(20);
+  const [selectedDate, setSelectedDate] = useState(new Date());
+  const [showPicker, setShowPicker] = useState(false);
+
+  const formattedDuration = useMemo(() => {
+    const durationInMinutes = selectedDate.getHours() * 60 + selectedDate.getMinutes();
+    const hours = Math.floor(durationInMinutes / 60);
+    const minutes = durationInMinutes % 60;
+
+    return hours > 0 ? `${hours} h ${minutes} min` : `${minutes} min`;
+  }, [selectedDate]);
+
+  const onChange = (event, date) => {
+    setShowPicker(Platform.OS === 'ios');
+    if (date) {
+      if (date.getHours() === 0 && date.getMinutes() === 0) {
+        date.setMinutes(5);
+      }
+      setSelectedDate(date);
+    }
+  };
 
   return (
     <ScreenLayout title="Carnet de Méditation">
@@ -27,27 +46,37 @@ const HomeScreen = ({ navigation }) => {
         <DailyQuote quotes={meditationQuotes} />
       </View>
 
-      <View className="justify-end">
-        <CustomText className="text-base text-center">Durée: {sliderValue} minutes</CustomText>
-        <Slider
-          style={{ width: '100%', height: 40 }}
-          minimumValue={1}
-          maximumValue={90}
-          step={5}
-          value={sliderValue}
-          onValueChange={setSliderValue}
-          minimumTrackTintColor={PALETTE.neutral.black}
-          maximumTrackTintColor="#000000"
-          thumbTintColor={PALETTE.neutral.black}
-        />
-      </View>
+      <Pressable
+        className="flex-row justify-between items-center p-4"
+        onPress={() => setShowPicker(true)}
+      >
+        <View className="flex-row items-center">
+          <Hourglass size={20} color="black" />
+          <CustomText className="text-base pl-3">DURÉE</CustomText>
+        </View>
+
+        <CustomText className="text-base">{formattedDuration}</CustomText>
+
+        {showPicker && (
+          <DateTimePicker
+            value={selectedDate}
+            minuteInterval={5}
+            mode="time"
+            display="spinner"
+            is24Hour={true}
+            onChange={onChange}
+          />
+        )}
+      </Pressable>
+
+      <View className="border-b border-gray-300 mx-4 mb-2" />
 
       <View className="p-9">
         <TouchableOpacity
           className="bg-black p-4 rounded-lg"
           onPress={() =>
             navigation.navigate(ScreenName.MEDITATION_TIMER, {
-              durationSeconds: sliderValue * 60
+              durationSeconds: selectedDate.getHours() * 3600 + selectedDate.getMinutes() * 60
             })
           }
         >
