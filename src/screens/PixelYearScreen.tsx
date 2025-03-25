@@ -18,6 +18,11 @@ const PixelYearScreen = () => {
     });
   }, [meditationSessions, currentYear]);
 
+  const earliestYear = useMemo(() => {
+    if (!meditationSessions || meditationSessions.length === 0) return null;
+    return Math.min(...meditationSessions.map((session) => new Date(session.date).getFullYear()));
+  }, [meditationSessions]);
+
   const goToPreviousYear = () => {
     setCurrentYear((prevDate) => new Date(prevDate.setFullYear(prevDate.getFullYear() - 1)));
   };
@@ -29,7 +34,13 @@ const PixelYearScreen = () => {
   return (
     <ScreenLayout
       title={format(currentYear, 'yyyy')}
-      topRightComponent={<ArrowButtons onPrevious={goToPreviousYear} onNext={goToNextYear} />}
+      topRightComponent={
+        <ArrowButtons
+          onPrevious={goToPreviousYear}
+          onNext={goToNextYear}
+          disablePrevious={currentYear.getFullYear() === earliestYear}
+        />
+      }
     >
       <View className="h-full justify-center">
         <PixelYear

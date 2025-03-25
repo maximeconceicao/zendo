@@ -20,6 +20,7 @@ export type UserSettings = {
   vibrateOnSessionStart?: boolean;
   vibrateOnSessionEnd?: boolean;
   vibrateOnFocus?: boolean;
+  showQuotes?: boolean;
 };
 
 export type MeditationStats = {

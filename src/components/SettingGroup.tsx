@@ -2,6 +2,7 @@ import React from 'react';
 import { FlatList, Pressable, Switch, View } from 'react-native';
 import { SettingOption } from 'src/types/setting.types';
 import CustomText from './CustomText';
+import { ChevronRight } from 'lucide-react-native';
 
 const SettingGroup = ({
   title,
@@ -20,15 +21,15 @@ const SettingGroup = ({
       <CustomText className={`text-lg text-gray-900 ${item.className || ''}`}>
         {item.title}
       </CustomText>
-      {item.type === 'switch' ? (
+      {item.type === 'switch' && (
         <Switch
           value={item.value}
           onValueChange={item.onToggle}
           trackColor={{ false: '#A0A0A0', true: '#505050' }}
           thumbColor={'#000000'}
         />
-      ) : // <ArrowRight size={20} className="text-gray-500 dark:text-gray-400" />
-      null}
+      )}
+      {item.type === 'link' && <ChevronRight size={20} color="black" />}
     </Pressable>
   );
 

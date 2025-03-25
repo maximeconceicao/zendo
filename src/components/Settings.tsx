@@ -46,6 +46,25 @@ const Settings = ({
     }
   ];
 
+  const quoteOptions: SettingOption[] = [
+    {
+      id: '1',
+      title: 'Afficher les citations',
+      type: 'switch',
+      value: Boolean(userSettings?.showQuotes),
+      onToggle: () =>
+        updateUserSettings({
+          vibrateOnSessionEnd: !Boolean(userSettings?.showQuotes)
+        })
+    },
+    {
+      id: '2',
+      title: 'Gérer les citations',
+      type: 'link',
+      screen: ''
+    }
+  ];
+
   const dataOptions: SettingOption[] = [
     {
       id: '1',
@@ -68,6 +87,11 @@ const Settings = ({
         title="Session"
         description="Personnalisez votre expérience"
         settings={sessionOptions}
+      />
+      <SettingGroup
+        title="Citations"
+        description="Afficher et gérer vos citations"
+        settings={quoteOptions}
       />
       <SettingGroup title="Données" description="Gestion des données" settings={dataOptions} />
       <CustomAlert
