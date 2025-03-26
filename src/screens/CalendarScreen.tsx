@@ -57,7 +57,7 @@ const CalendarScreen = () => {
       subtitle={format(currentMonth, 'yyyy')}
       topRightComponent={<ArrowButtons onPrevious={goToPreviousMonth} onNext={goToNextMonth} />}
     >
-      <View>
+      <View style={{ flex: 1 }}>
         <Calendar
           selectedDate={selectedDate}
           setSelectedDate={setSelectedDate}
@@ -65,9 +65,10 @@ const CalendarScreen = () => {
           setCurrentMonth={setCurrentMonth}
           sessions={monthlySessions}
         />
-        <View className="border-t border-black mt-9" />
+        <View className="border-t border-gray-300 mt-9" />
+
         <MeditationList sessions={filteredSessions} />
-        {/* <MonthlyMeditationStats sessions={sessions || []} /> */}
+        <View className="border-t border-gray-300 " />
       </View>
     </ScreenLayout>
   );

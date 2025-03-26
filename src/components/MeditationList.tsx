@@ -25,14 +25,24 @@ const FeelingIcon = ({ feeling }: { feeling: MeditationFeeling }) => {
 const MeditationList = ({ sessions }: { sessions: MeditationSession[] }) => {
   const navigation = useNavigation<StackNavigationProp<StackParamList>>();
 
+  const sessionCount = sessions.length;
+
   return (
     <FlatList
       data={sessions}
       keyExtractor={(item) => item.id + Math.floor(Math.random() * 100)}
       nestedScrollEnabled={true}
-      contentContainerStyle={{ paddingBottom: 20, paddingTop: 20 }}
+      contentContainerStyle={{ paddingBottom: 0, paddingTop: 0 }}
+      showsVerticalScrollIndicator={false}
+      ListHeaderComponent={
+        sessionCount > 0 ? (
+          <CustomText className="text-base text-gray-500 my-5">
+            Méditation ({sessionCount})
+          </CustomText>
+        ) : null
+      }
       ListEmptyComponent={
-        <CustomText className="text-base mt-2 text-gray-500">
+        <CustomText className="text-base mt-5 text-gray-500">
           Aucune méditation enregistrée.
         </CustomText>
       }

@@ -36,7 +36,7 @@ const MeditationDetailScreen = ({ route }: MeditationDetailProps) => {
       <MeditationDetail meditationSession={meditationSession} />
       <CustomAlert
         visible={alertVisible}
-        title="Confirmation"
+        title="Suppression"
         message={`Êtes-vous sûr de vouloir supprimer cette méditation du ${formattedDate} ? Cette action est irréversible.`}
         onClose={() => setAlertVisible(false)}
         onConfirm={() => {
@@ -44,6 +44,7 @@ const MeditationDetailScreen = ({ route }: MeditationDetailProps) => {
           navigation.goBack();
           setAlertVisible(false);
         }}
+        confirmText="Supprimer"
       />
     </ScreenLayout>
   );

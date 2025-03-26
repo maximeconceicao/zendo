@@ -34,12 +34,15 @@ const ActivityScreen = () => {
   const pastMonthMetricsData = formatMeditationMetrics(pastMonthMetrics);
   const pastYearMetricsData = formatMeditationMetrics(pastYearMetrics);
 
+  const focusPointsMetricsData = [] as MetricData[];
+
   return (
     <ScreenLayout title="Activités">
-      <View className="mt-4">
+      <View className="mt-4 flex-1">
         <MetricGroup title="Général" data={globalMetricsData} />
         <MetricGroup title="Dernier mois" data={pastMonthMetricsData} />
         <MetricGroup title="Dernière année" data={pastYearMetricsData} />
+        <MetricGroup title="Recentrages" data={focusPointsMetricsData} />
       </View>
     </ScreenLayout>
   );

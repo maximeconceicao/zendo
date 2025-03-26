@@ -1,10 +1,13 @@
 import { MeditationMetrics } from 'src/types/activity.types';
 import { MeditationSession } from 'src/types/storage.types';
 
-export type MetricData = {
-  label: string;
-  value: string;
-};
+export type MetricData =
+  | {
+      type: 'data';
+      label: string;
+      value: string;
+    }
+  | { type: 'button'; label: string; onPress: () => void };
 
 /*
  * Meditation Sessions Filters
@@ -127,11 +130,21 @@ export const calculateAverageWeeklyMeditationDuration = (sessions: MeditationSes
 export const formatMeditationMetrics = (metrics: Partial<MeditationMetrics>): MetricData[] => {
   const metricMap: Record<string, string | undefined> = {
     'Total de sessions': metrics.totalSessions?.toString(),
-    'Total de temps médité': metrics.totalMeditatedTimeSpent
+    'Temps total de méditation': metrics.totalMeditatedTimeSpent
       ? `${metrics.totalMeditatedTimeSpent.days ? metrics.totalMeditatedTimeSpent.days + 'j ' : ''}${metrics.totalMeditatedTimeSpent.hours ? metrics.totalMeditatedTimeSpent.hours + 'h ' : ''}${metrics.totalMeditatedTimeSpent.minutes ?? 0}min`
       : undefined,
-    'Série actuelle de jours consécutifs': metrics.currentConsecutiveDays
+    "Durée moyenne d'une session":
+      metrics.averageSessionDurationMinutes !== undefined
+        ? metrics.averageSessionDurationMinutes.toString() + 'min'
+        : undefined,
+    'Moyenne par semaine': metrics.averageWeeklyMeditationDuration
+      ? `${metrics.averageWeeklyMeditationDuration.hours ? metrics.averageWeeklyMeditationDuration.hours + 'h ' : ''} ${metrics.averageWeeklyMeditationDuration.minutes}min`
+      : undefined,
+    'Série actuelle': metrics.currentConsecutiveDays
       ? metrics.currentConsecutiveDays.toString() + ' jours'
+      : undefined,
+    'Plus longue série': metrics.longestConsecutiveDays
+      ? metrics.longestConsecutiveDays.toString() + ' jours'
       : undefined,
     'Record de la plus longue session': metrics.longestSessionMinutes
       ? metrics.longestSessionMinutes.toString() + 'min'
