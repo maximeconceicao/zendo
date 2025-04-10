@@ -1,8 +1,27 @@
 import { MMKV } from 'react-native-mmkv';
-import { StorageSchema, MeditationSession, UserSettings } from 'src/types/storage.types';
+import {
+  StorageSchema,
+  MeditationSession,
+  UserSettings,
+  MeditationQuote,
+  MeditationQuoteUpsert
+} from 'src/types/storage.types';
 import * as FileSystem from 'expo-file-system';
 import * as Sharing from 'expo-sharing';
 import { format } from 'date-fns';
+import 'react-native-get-random-values';
+import { v4 as uuidv4 } from 'uuid';
+
+const defaultMeditationQuotes = [
+  { id: uuidv4(), text: 'Le calme est la clé de la maîtrise.', author: 'James Allen' },
+  { id: uuidv4(), text: 'Là où est ton attention, là est ton énergie.', author: 'Joe Dispenza' },
+  {
+    id: uuidv4(),
+    text: 'Apprendre à méditer est le plus grand don que vous puissiez vous accorder dans cette vie. En effet, seule la méditation vous permettra de partir à la découverte de votre vraie nature et de trouver ainsi la stabilité et l’assurance nécessaire pour vivre bien et mourir bien.',
+    author: 'Sogyal Rinpoché'
+  },
+  { id: uuidv4(), text: 'La paix vient de l’intérieur.', author: 'Bouddha' }
+];
 
 export const storage = new MMKV();
 
@@ -14,6 +33,15 @@ export function getItem<K extends keyof StorageSchema>(key: K): StorageSchema[K]
   const value = storage.getString(key);
   return value ? JSON.parse(value) : null;
 }
+
+export const initStorageIfFirstLaunch = () => {
+  const hasBeenLaunched = storage.getBoolean('hasBeenLaunched');
+  if (!hasBeenLaunched) {
+    setItem('meditationQuotes', defaultMeditationQuotes);
+
+    storage.set('hasBeenLaunched', true);
+  }
+};
 
 /*
  * Meditation sessions
@@ -100,6 +128,25 @@ export const exportMeditationSessions = async () => {
   } catch (error) {
     console.error('Erreur lors de l’export des données :', error);
   }
+};
+
+/*
+ * Meditation quotes
+ */
+
+export const getMeditationQuotes = (): MeditationQuote[] | null => {
+  return getItem('meditationQuotes');
+};
+
+export const upsertMeditationQuote = (quote: MeditationQuoteUpsert) => {
+  const existingQuotes = getItem('meditationQuotes') || [];
+
+  const quoteExists = existingQuotes.some((q) => q.id === quote.id);
+  const updatedQuotes = quoteExists
+    ? existingQuotes.map((q) => (q.id === quote.id ? { ...q, ...quote } : q))
+    : [...existingQuotes, { id: uuidv4(), ...quote }];
+
+  setItem('meditationQuotes', updatedQuotes);
 };
 
 /*

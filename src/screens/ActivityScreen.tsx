@@ -7,7 +7,8 @@ import ScreenLayout from 'src/layouts/ScreenLayout';
 import {
   formatMeditationMetrics,
   getLast30DaysSessions,
-  getLast365DaysSessions
+  getLast365DaysSessions,
+  MetricData
 } from 'src/utils/activity.utils';
 
 const ActivityScreen = () => {

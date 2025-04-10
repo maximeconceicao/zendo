@@ -18,7 +18,7 @@ const DailyQuote = ({ quotes }: { quotes: MeditationQuote[] }) => {
   return (
     quote && (
       <View className="my-4">
-        <CustomText className="text-center text-lg italic">"{quote.quote}"</CustomText>
+        <CustomText className="text-center text-lg italic">"{quote.text}"</CustomText>
         <CustomText className="text-center text-sm mt-2">- {quote.author}</CustomText>
       </View>
     )

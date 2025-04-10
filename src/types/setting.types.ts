@@ -1,3 +1,5 @@
+import ScreenName from 'src/constants/screenNames';
+
 export type SettingOption =
   | {
       id: string;
@@ -7,5 +9,5 @@ export type SettingOption =
       onToggle: () => void;
       className?: string;
     }
-  | { id: string; title: string; type: 'link'; screen: string; className?: string }
+  | { id: string; title: string; type: 'link'; onPress: () => void; className?: string }
   | { id: string; title: string; type: 'button'; onPress: () => void; className?: string };

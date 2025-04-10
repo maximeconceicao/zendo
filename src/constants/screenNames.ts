@@ -7,7 +7,8 @@ const enum ScreenName {
   CALENDAR = 'Calendar',
   PIXEL_YEAR = 'PixelYear',
   ACTIVITY = 'Activity',
-  SETTINGS = 'Settings'
+  SETTINGS = 'Settings',
+  QUOTE_MANAGER = 'QuoteManager'
 }
 
 export default ScreenName;

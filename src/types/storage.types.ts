@@ -29,12 +29,17 @@ export type MeditationStats = {
 };
 
 export type MeditationQuote = {
-  quote: string;
+  id: string;
+  text: string;
   author: string;
   book?: string;
 };
 
+export type MeditationQuoteUpsert = Omit<MeditationQuote, 'id'> &
+  Partial<Pick<MeditationQuote, 'id'>>;
+
 export interface StorageSchema {
+  hasBeenLaunched: boolean;
   userSettings: UserSettings;
   meditationStats: MeditationStats;
   meditationSessions: MeditationSession[];

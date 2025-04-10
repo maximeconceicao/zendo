@@ -1,8 +1,8 @@
+import { ChevronRight } from 'lucide-react-native';
 import React from 'react';
 import { FlatList, Pressable, Switch, View } from 'react-native';
 import { SettingOption } from 'src/types/setting.types';
 import CustomText from './CustomText';
-import { ChevronRight } from 'lucide-react-native';
 
 const SettingGroup = ({
   title,
@@ -16,7 +16,7 @@ const SettingGroup = ({
   const renderItem = ({ item }: { item: SettingOption }) => (
     <Pressable
       className="flex-row justify-between items-center py-3 border-b border-gray-300"
-      onPress={() => (item.type === 'button' && item.onPress ? item.onPress() : null)}
+      onPress={() => (item.type === 'button' || item.type === 'link' ? item.onPress() : null)}
     >
       <CustomText className={`text-lg text-gray-900 ${item.className || ''}`}>
         {item.title}

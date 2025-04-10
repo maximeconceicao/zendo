@@ -4,23 +4,15 @@ import DateTimePicker from '@react-native-community/datetimepicker';
 import CustomText from 'src/components/CustomText';
 import ScreenName from 'src/constants/screenNames';
 import DailyQuote from 'src/components/DailyQuote';
-import { MeditationQuote } from 'src/types/storage.types';
 import ScreenLayout from 'src/layouts/ScreenLayout';
 import { Hourglass } from 'lucide-react-native';
-
-const meditationQuotes: MeditationQuote[] = [
-  { quote: 'Le calme est la clé de la maîtrise.', author: 'James Allen' },
-  { quote: 'Là où est ton attention, là est ton énergie.', author: 'Joe Dispenza' },
-  {
-    quote:
-      'Apprendre à méditer est le plus grand don que vous puissiez vous accorder dans cette vie. En effet, seule la méditation vous permettra de partir à la découverte de votre vraie nature et de trouver ainsi la stabilité et l’assurance nécessaire pour vivre bien et mourir bien.',
-    author: 'Sogyal Rinpoché'
-  }
-];
+import { useAppData } from 'src/hooks/useAppData';
 
 const HomeScreen = ({ navigation }) => {
   const [selectedDate, setSelectedDate] = useState(new Date());
   const [showPicker, setShowPicker] = useState(false);
+
+  const { meditationQuotes } = useAppData();
 
   const formattedDuration = useMemo(() => {
     const durationInMinutes = selectedDate.getHours() * 60 + selectedDate.getMinutes();
@@ -43,7 +35,7 @@ const HomeScreen = ({ navigation }) => {
   return (
     <ScreenLayout title="Carnet de Méditation">
       <View className="flex-1 justify-center">
-        <DailyQuote quotes={meditationQuotes} />
+        <DailyQuote quotes={meditationQuotes || []} />
       </View>
 
       <Pressable

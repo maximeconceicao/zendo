@@ -14,12 +14,14 @@ import CalendarScreen from 'src/screens/CalendarScreen';
 import PixelYearScreen from 'src/screens/PixelYearScreen';
 import { MeditationSession } from 'src/types/storage.types';
 import MeditationDetailScreen from 'src/screens/MeditationDetailScreen';
+import QuoteManagerScreen from 'src/screens/QuoteManagerScreen';
 
 export type StackParamList = {
   [ScreenName.MAIN_TABS]: undefined;
   [ScreenName.MEDITATION_TIMER]: undefined;
   [ScreenName.MEDITATION_SUMMARY]: { meditationSession: MeditationSession };
   [ScreenName.MEDITATION_DETAIL]: { meditationSession: MeditationSession };
+  [ScreenName.QUOTE_MANAGER]: undefined;
 };
 
 const Tab = createMaterialTopTabNavigator();
@@ -45,7 +47,7 @@ const MainTabs = () => (
 const AppNavigator = () => {
   return (
     <NavigationContainer>
-      <StatusBar hidden />
+      {/* <StatusBar hidden /> */}
       <Stack.Navigator screenOptions={{ headerShown: false }}>
         <Stack.Screen name={ScreenName.MAIN_TABS} component={MainTabs} />
         <Stack.Screen
@@ -59,6 +61,7 @@ const AppNavigator = () => {
         />
         <Stack.Screen name={ScreenName.MEDITATION_SUMMARY} component={MeditationSummaryScreen} />
         <Stack.Screen name={ScreenName.MEDITATION_DETAIL} component={MeditationDetailScreen} />
+        <Stack.Screen name={ScreenName.QUOTE_MANAGER} component={QuoteManagerScreen} />
       </Stack.Navigator>
     </NavigationContainer>
   );

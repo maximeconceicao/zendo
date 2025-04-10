@@ -1,5 +1,9 @@
+import { useNavigation } from '@react-navigation/native';
+import { StackNavigationProp } from '@react-navigation/stack';
 import React, { useState } from 'react';
 import { View } from 'react-native';
+import ScreenName from 'src/constants/screenNames';
+import { StackParamList } from 'src/navigation/AppNavigator';
 import { SettingOption } from 'src/types/setting.types';
 import { UserSettings } from 'src/types/storage.types';
 import { deleteMeditationSessions, exportMeditationSessions } from 'src/utils/storage';
@@ -13,7 +17,8 @@ const Settings = ({
   userSettings: UserSettings | null;
   updateUserSettings: (settings: Partial<UserSettings>) => void;
 }) => {
-  console.log('userSettings', userSettings);
+  const navigation = useNavigation<StackNavigationProp<StackParamList>>();
+
   const [alertVisible, setAlertVisible] = useState(false);
 
   const sessionOptions: SettingOption[] = [
@@ -61,7 +66,7 @@ const Settings = ({
       id: '2',
       title: 'Gérer les citations',
       type: 'link',
-      screen: ''
+      onPress: () => navigation.navigate(ScreenName.QUOTE_MANAGER)
     }
   ];
 
