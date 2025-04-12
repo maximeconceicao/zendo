@@ -1,5 +1,6 @@
 import React from 'react';
-import { View } from 'react-native';
+import { ScrollView } from 'react-native';
+import HorizontalLine from 'src/components/HorizontalLine';
 import MetricGroup from 'src/components/MetricGroup';
 import { useAppData } from 'src/hooks/useAppData';
 import useMeditationMetrics from 'src/hooks/useMeditationMetrics';
@@ -37,14 +38,22 @@ const ActivityScreen = () => {
 
   const focusPointsMetricsData = [] as MetricData[];
 
+  const metricGroups = [
+    { title: 'Général', data: globalMetricsData },
+    { title: 'Dernier mois', data: pastMonthMetricsData },
+    { title: 'Dernière année', data: pastYearMetricsData },
+    { title: 'Recentrages', data: focusPointsMetricsData }
+  ];
+
   return (
     <ScreenLayout title="Activités">
-      <View className="mt-4 flex-1">
-        <MetricGroup title="Général" data={globalMetricsData} />
-        <MetricGroup title="Dernier mois" data={pastMonthMetricsData} />
-        <MetricGroup title="Dernière année" data={pastYearMetricsData} />
-        <MetricGroup title="Recentrages" data={focusPointsMetricsData} />
-      </View>
+      <HorizontalLine />
+      <ScrollView contentContainerStyle={{ paddingTop: 16 }} showsVerticalScrollIndicator={false}>
+        {metricGroups.map(({ title, data }) => (
+          <MetricGroup key={title} title={title} data={data} />
+        ))}
+      </ScrollView>
+      <HorizontalLine />
     </ScreenLayout>
   );
 };
