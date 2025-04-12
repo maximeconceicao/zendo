@@ -19,7 +19,14 @@ const DailyQuote = ({ quotes }: { quotes: MeditationQuote[] }) => {
     quote && (
       <View className="my-4">
         <CustomText className="text-center text-lg italic">"{quote.text}"</CustomText>
-        <CustomText className="text-center text-sm mt-2">- {quote.author}</CustomText>
+        <View className="flex flex-row justify-center">
+          {quote.author && (
+            <CustomText className="text-sm italic text-gray-600">{quote.author}</CustomText>
+          )}
+          {quote.book && (
+            <CustomText className="text-sm italic text-gray-600"> - {quote.book}</CustomText>
+          )}
+        </View>
       </View>
     )
   );
