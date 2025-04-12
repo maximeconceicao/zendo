@@ -47,7 +47,7 @@ const AppNavigator = () => {
   return (
     <NavigationContainer>
       {/* <StatusBar hidden /> */}
-      <Stack.Navigator screenOptions={{ headerShown: false }}>
+      <Stack.Navigator screenOptions={{ headerShown: false, animation: 'fade' }}>
         <Stack.Screen name={ScreenName.MAIN_TABS} component={MainTabs} />
         <Stack.Screen
           name={ScreenName.MEDITATION_TIMER}

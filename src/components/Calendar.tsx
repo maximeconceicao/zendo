@@ -1,4 +1,4 @@
-import { isToday } from 'date-fns';
+import { isSameMonth, isToday, startOfMonth } from 'date-fns';
 import React, { useMemo } from 'react';
 import { TouchableOpacity, View } from 'react-native';
 import { MeditationSession } from 'src/types/storage.types';
@@ -84,6 +84,10 @@ export function Calendar({
   const calendar: CalendarDay[][] = useMemo(() => generateCalendar(currentMonth), [currentMonth]);
 
   const handleSelectDate = (date: Date) => {
+    if (!isSameMonth(date, currentMonth)) {
+      setCurrentMonth(startOfMonth(date));
+    }
+
     setSelectedDate((prev) => (prev && prev.toDateString() === date.toDateString() ? null : date));
   };
 

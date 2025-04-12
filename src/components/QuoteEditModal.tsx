@@ -46,6 +46,11 @@ export const QuoteEditModal = ({
     onClose();
   };
 
+  const handleDelete = () => {
+    onDelete(quote.id!);
+    onClose();
+  };
+
   return (
     <Modal transparent visible={visible} animationType="fade">
       <TouchableWithoutFeedback onPress={onClose}>
@@ -90,7 +95,7 @@ export const QuoteEditModal = ({
 
               <View className="flex-row justify-between items-center">
                 {quote.id && (
-                  <Pressable onPress={() => onDelete(quote.id!)}>
+                  <Pressable onPress={() => handleDelete()}>
                     <CustomText className="text-red-500">Supprimer</CustomText>
                   </Pressable>
                 )}

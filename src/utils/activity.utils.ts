@@ -153,5 +153,5 @@ export const formatMeditationMetrics = (metrics: Partial<MeditationMetrics>): Me
 
   return Object.entries(metricMap)
     .filter(([, value]) => value !== undefined)
-    .map(([label, value]) => ({ label, value: value! }));
+    .map(([label, value]) => ({ label, value: value!, type: 'data' }));
 };

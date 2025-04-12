@@ -18,17 +18,17 @@ const ArrowButtons: React.FC<ArrowButtonsProps> = ({
       <TouchableOpacity
         disabled={disablePrevious}
         onPress={onPrevious}
-        className={`w-9 h-9 rounded-full mr-3 flex items-center justify-center ${
+        className={`w-9 h-9 rounded-full mr-3 items-center justify-center ${
           disablePrevious ? 'bg-gray-400' : 'bg-black'
         }`}
       >
-        <ChevronLeft stroke={'white'} />
+        <ChevronLeft stroke="white" size={20} />
       </TouchableOpacity>
       <TouchableOpacity
         onPress={onNext}
-        className="bg-black w-9 h-9 rounded-full flex items-center justify-center"
+        className="bg-black w-9 h-9 rounded-full items-center justify-center"
       >
-        <ChevronRight stroke={'white'} />
+        <ChevronRight stroke="white" size={20} />
       </TouchableOpacity>
     </View>
   );

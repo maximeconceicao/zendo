@@ -104,7 +104,7 @@ export const AppDataProvider = ({ children }: { children: React.ReactNode }) => 
       const quoteExists = existingQuotes.some((q) => q.id === quote.id);
       const updatedQuotes = quoteExists
         ? existingQuotes.map((q) => (q.id === quote.id ? { ...q, ...quote } : q))
-        : [...existingQuotes, { ...quote, id: uuidv4() }];
+        : [...existingQuotes, { ...quote, id: uuidv4(), createdAt: new Date().toISOString() }];
       return {
         ...prevData,
         meditationQuotes: updatedQuotes

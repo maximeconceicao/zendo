@@ -59,7 +59,7 @@ const Settings = ({
       value: Boolean(userSettings?.showQuotes),
       onToggle: () =>
         updateUserSettings({
-          vibrateOnSessionEnd: !Boolean(userSettings?.showQuotes)
+          showQuotes: !Boolean(userSettings?.showQuotes)
         })
     },
     {

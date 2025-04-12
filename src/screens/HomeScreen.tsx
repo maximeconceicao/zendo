@@ -45,7 +45,9 @@ const HomeScreen = ({ navigation }) => {
   return (
     <ScreenLayout title="Carnet de Méditation">
       <View className="flex-1 justify-center">
-        <DailyQuote quotes={meditationQuotes || []} />
+        {userSettings?.showQuotes && meditationQuotes?.length && (
+          <DailyQuote quotes={meditationQuotes || []} />
+        )}
       </View>
 
       <Pressable

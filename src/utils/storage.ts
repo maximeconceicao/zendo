@@ -13,15 +13,31 @@ import 'react-native-get-random-values';
 import { v4 as uuidv4 } from 'uuid';
 import { DEFAULT_SESSION_DURATION_SECONDS } from 'src/constants/session.constants';
 
-const defaultMeditationQuotes = [
-  { id: uuidv4(), text: 'Le calme est la clé de la maîtrise.', author: 'James Allen' },
-  { id: uuidv4(), text: 'Là où est ton attention, là est ton énergie.', author: 'Joe Dispenza' },
+const defaultMeditationQuotes: MeditationQuote[] = [
+  {
+    id: uuidv4(),
+    text: 'Le calme est la clé de la maîtrise.',
+    author: 'James Allen',
+    createdAt: new Date().toISOString()
+  },
+  {
+    id: uuidv4(),
+    text: 'Là où est ton attention, là est ton énergie.',
+    author: 'Joe Dispenza',
+    createdAt: new Date().toISOString()
+  },
   {
     id: uuidv4(),
     text: 'Apprendre à méditer est le plus grand don que vous puissiez vous accorder dans cette vie. En effet, seule la méditation vous permettra de partir à la découverte de votre vraie nature et de trouver ainsi la stabilité et l’assurance nécessaire pour vivre bien et mourir bien.',
-    author: 'Sogyal Rinpoché'
+    author: 'Sogyal Rinpoché',
+    createdAt: new Date().toISOString()
   },
-  { id: uuidv4(), text: 'La paix vient de l’intérieur.', author: 'Bouddha' }
+  {
+    id: uuidv4(),
+    text: 'La paix vient de l’intérieur.',
+    author: 'Bouddha',
+    createdAt: new Date().toISOString()
+  }
 ];
 
 const defaultUserSettings: UserSettings = {
@@ -145,7 +161,9 @@ export const exportMeditationSessions = async () => {
  */
 
 export const getMeditationQuotes = (): MeditationQuote[] | null => {
-  return getItem('meditationQuotes');
+  return (
+    getItem('meditationQuotes')?.sort((a, b) => a.createdAt.localeCompare(b.createdAt)) || null
+  );
 };
 
 export const upsertMeditationQuote = (quote: MeditationQuoteUpsert) => {
@@ -154,7 +172,7 @@ export const upsertMeditationQuote = (quote: MeditationQuoteUpsert) => {
   const quoteExists = existingQuotes.some((q) => q.id === quote.id);
   const updatedQuotes = quoteExists
     ? existingQuotes.map((q) => (q.id === quote.id ? { ...q, ...quote } : q))
-    : [...existingQuotes, { id: uuidv4(), ...quote }];
+    : [...existingQuotes, { ...quote, id: uuidv4(), createdAt: new Date().toISOString() }];
 
   setItem('meditationQuotes', updatedQuotes);
 };
