@@ -1,5 +1,5 @@
 import { Plus } from 'lucide-react-native';
-import React, { useState } from 'react';
+import React, { useRef, useState } from 'react';
 import { FlatList, TouchableOpacity, View } from 'react-native';
 import { MeditationQuote, MeditationQuoteUpsert } from 'src/types/storage.types';
 import CustomText from './CustomText';
@@ -18,13 +18,26 @@ const QuoteManager = ({ meditationQuotes, upsertQuote, deleteQuote }: QuoteManag
   const [modalVisible, setModalVisible] = useState(false);
   const [quoteToEdit, setQuoteToEdit] = useState<MeditationQuoteUpsert>(emptyQuote);
 
+  const flatListRef = useRef<FlatList>(null);
+
+  const handleSave = (quote: MeditationQuoteUpsert) => {
+    upsertQuote(quote);
+    if (!quote.id) {
+      setTimeout(() => {
+        flatListRef.current?.scrollToEnd({ animated: true });
+      }, 100);
+    }
+  };
+
   return (
     <>
       <View className="flex-1">
         <View className="flex-1">
           <FlatList
+            ref={flatListRef}
             data={meditationQuotes}
             showsVerticalScrollIndicator={false}
+            contentContainerStyle={{ paddingTop: 12, paddingBottom: 12 }}
             keyExtractor={(item, index) => index.toString()}
             renderItem={({ item, index }) => (
               <TouchableOpacity
@@ -69,9 +82,7 @@ const QuoteManager = ({ meditationQuotes, upsertQuote, deleteQuote }: QuoteManag
         visible={modalVisible}
         onClose={() => setModalVisible(false)}
         quote={quoteToEdit}
-        onSave={function (quote: MeditationQuoteUpsert): void {
-          upsertQuote(quote);
-        }}
+        onSave={handleSave}
         onDelete={function (quoteId: string): void {
           deleteQuote(quoteId);
         }}
