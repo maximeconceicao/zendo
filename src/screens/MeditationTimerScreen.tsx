@@ -63,7 +63,7 @@ const MeditationTimerScreen = ({ navigation, route }) => {
         <TouchableWithoutFeedback onPress={handleScreenPress}>
           <View className="flex-1 p-10 bg-platinium">
             <View className="flex-1 justify-center items-center ">
-              {/* Here we hide the counter so Animated.view doesn't interfere with ConfirmationModal */}
+              {/* Hack : here we hide the counter so Animated.view doesn't interfere with ConfirmationModal */}
               {!modalVisible && (
                 <FocusPointCounter
                   count={meditationSession.focusPoints.length}
@@ -83,14 +83,14 @@ const MeditationTimerScreen = ({ navigation, route }) => {
                     pause();
                     setModalVisible(true);
                   }}
-                  className="border-solid border-black border-2 p-4 rounded-full"
+                  className="w-14 h-14 border-solid border-black border-2 rounded-full items-center justify-center"
                 >
                   <Square size={24} fill="black" />
                 </TouchableOpacity>
 
                 <TouchableOpacity
                   onPress={isRunning ? pause : start}
-                  className="bg-black p-4 rounded-full"
+                  className="w-14 h-14 bg-black rounded-full items-center justify-center"
                 >
                   {isRunning ? <Pause size={24} color="white" /> : <Play size={24} color="white" />}
                 </TouchableOpacity>
@@ -110,7 +110,7 @@ const MeditationTimerScreen = ({ navigation, route }) => {
               setModalVisible(false);
               start();
             },
-            style: 'text-blue-500 text-xl text-center'
+            style: 'text-black text-xl text-center'
           },
           {
             label: 'Enregistrer',
@@ -122,7 +122,7 @@ const MeditationTimerScreen = ({ navigation, route }) => {
                 meditationSession: session
               });
             },
-            style: 'text-blue-500 text-xl text-center'
+            style: 'text-black text-xl text-center'
           },
           {
             label: 'Quitter',

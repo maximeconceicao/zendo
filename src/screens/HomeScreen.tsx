@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { TouchableOpacity, View, Platform, Pressable } from 'react-native';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import CustomText from 'src/components/CustomText';
@@ -7,12 +7,22 @@ import DailyQuote from 'src/components/DailyQuote';
 import ScreenLayout from 'src/layouts/ScreenLayout';
 import { Hourglass } from 'lucide-react-native';
 import { useAppData } from 'src/hooks/useAppData';
+import { DEFAULT_SESSION_DURATION_SECONDS } from 'src/constants/session.constants';
 
 const HomeScreen = ({ navigation }) => {
   const [selectedDate, setSelectedDate] = useState(new Date());
   const [showPicker, setShowPicker] = useState(false);
 
-  const { meditationQuotes } = useAppData();
+  const { meditationQuotes, userSettings, updateUserSettings } = useAppData();
+
+  const lastSelectedDurationSeconds =
+    userSettings?.lastSelectedDurationSeconds || DEFAULT_SESSION_DURATION_SECONDS;
+
+  useEffect(() => {
+    const newDate = new Date();
+    newDate.setHours(0, 0, lastSelectedDurationSeconds, 0);
+    setSelectedDate(newDate);
+  }, [lastSelectedDurationSeconds]);
 
   const formattedDuration = useMemo(() => {
     const durationInMinutes = selectedDate.getHours() * 60 + selectedDate.getMinutes();
@@ -44,10 +54,10 @@ const HomeScreen = ({ navigation }) => {
       >
         <View className="flex-row items-center">
           <Hourglass size={20} color="black" />
-          <CustomText className="text-base pl-3">DURÉE</CustomText>
+          <CustomText className="text-base leading-5 pl-3">DURÉE</CustomText>
         </View>
 
-        <CustomText className="text-base">{formattedDuration}</CustomText>
+        <CustomText className="text-base leading-5">{formattedDuration}</CustomText>
 
         {showPicker && (
           <DateTimePicker
@@ -66,11 +76,19 @@ const HomeScreen = ({ navigation }) => {
       <View className="p-9">
         <TouchableOpacity
           className="bg-black p-4 rounded-lg"
-          onPress={() =>
+          onPress={() => {
+            const durationSeconds = selectedDate.getHours() * 3600 + selectedDate.getMinutes() * 60;
+
+            if (durationSeconds !== lastSelectedDurationSeconds) {
+              updateUserSettings({
+                lastSelectedDurationSeconds: durationSeconds
+              });
+            }
+
             navigation.navigate(ScreenName.MEDITATION_TIMER, {
-              durationSeconds: selectedDate.getHours() * 3600 + selectedDate.getMinutes() * 60
-            })
-          }
+              durationSeconds
+            });
+          }}
         >
           <CustomText className="text-white text-center text-lg">Démarrer la méditation</CustomText>
         </TouchableOpacity>

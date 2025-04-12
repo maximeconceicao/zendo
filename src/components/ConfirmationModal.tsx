@@ -18,7 +18,7 @@ export const ConfirmationModal = ({ visible, onClose, title, options }: Confirma
         <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
           <View className="bg-white p-6 rounded-lg shadow-md h-56 w-80" style={{ zIndex: 10 }}>
             <CustomText className="text-xl text-center font-bold mb-4">{title}</CustomText>
-            <View className="flex-col justify-between">
+            <View className="flex-1 justify-center">
               {options.map((option, index) => (
                 <TouchableOpacity
                   key={index}

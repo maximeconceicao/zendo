@@ -21,6 +21,7 @@ export type UserSettings = {
   vibrateOnSessionEnd?: boolean;
   vibrateOnFocus?: boolean;
   showQuotes?: boolean;
+  lastSelectedDurationSeconds?: number;
 };
 
 export type MeditationStats = {

@@ -7,3 +7,5 @@ export enum MeditationFeeling {
   Neutral = 'neutral',
   Good = 'good'
 }
+
+export const DEFAULT_SESSION_DURATION_SECONDS = 20 * 60;
