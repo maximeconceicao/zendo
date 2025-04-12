@@ -16,7 +16,6 @@ export type FocusPoint = {
 };
 
 export type UserSettings = {
-  volume?: number;
   vibrateOnSessionStart?: boolean;
   vibrateOnSessionEnd?: boolean;
   vibrateOnFocus?: boolean;

@@ -11,6 +11,7 @@ import * as Sharing from 'expo-sharing';
 import { format } from 'date-fns';
 import 'react-native-get-random-values';
 import { v4 as uuidv4 } from 'uuid';
+import { DEFAULT_SESSION_DURATION_SECONDS } from 'src/constants/session.constants';
 
 const defaultMeditationQuotes = [
   { id: uuidv4(), text: 'Le calme est la clé de la maîtrise.', author: 'James Allen' },
@@ -22,6 +23,14 @@ const defaultMeditationQuotes = [
   },
   { id: uuidv4(), text: 'La paix vient de l’intérieur.', author: 'Bouddha' }
 ];
+
+const defaultUserSettings: UserSettings = {
+  vibrateOnFocus: true,
+  vibrateOnSessionStart: true,
+  vibrateOnSessionEnd: true,
+  showQuotes: true,
+  lastSelectedDurationSeconds: DEFAULT_SESSION_DURATION_SECONDS
+};
 
 export const storage = new MMKV();
 
@@ -38,6 +47,7 @@ export const initStorageIfFirstLaunch = () => {
   const hasBeenLaunched = storage.getBoolean('hasBeenLaunched');
   if (!hasBeenLaunched) {
     setItem('meditationQuotes', defaultMeditationQuotes);
+    setItem('userSettings', defaultUserSettings);
 
     storage.set('hasBeenLaunched', true);
   }
