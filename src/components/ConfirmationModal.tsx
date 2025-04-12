@@ -11,9 +11,12 @@ interface ConfirmationModalProps {
 export const ConfirmationModal = ({ visible, onClose, title, options }: ConfirmationModalProps) => (
   <Modal transparent={true} visible={visible} animationType="fade">
     <TouchableWithoutFeedback onPress={onClose}>
-      <View className="flex-1 justify-center items-center bg-black/50">
+      <View
+        className="flex-1 justify-center items-center bg-black/50"
+        style={{ position: 'absolute', top: -150, left: 0, right: 0, bottom: 0 }}
+      >
         <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
-          <View className="bg-white p-6 rounded-lg shadow-md w-80">
+          <View className="bg-white p-6 rounded-lg shadow-md h-56 w-80" style={{ zIndex: 10 }}>
             <CustomText className="text-xl text-center font-bold mb-4">{title}</CustomText>
             <View className="flex-col justify-between">
               {options.map((option, index) => (

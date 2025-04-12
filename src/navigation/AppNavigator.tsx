@@ -3,18 +3,17 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import React from 'react';
 
-import { StatusBar } from 'react-native';
 import ScreenName from 'src/constants/screenNames';
+import CalendarScreen from 'src/screens/CalendarScreen';
+import MeditationDetailScreen from 'src/screens/MeditationDetailScreen';
+import MeditationSummaryScreen from 'src/screens/MeditationSummaryScreen';
 import MeditationTimerScreen from 'src/screens/MeditationTimerScreen';
+import PixelYearScreen from 'src/screens/PixelYearScreen';
+import QuoteManagerScreen from 'src/screens/QuoteManagerScreen';
+import { MeditationSession } from 'src/types/storage.types';
 import ActivityScreen from '../screens/ActivityScreen';
 import HomeScreen from '../screens/HomeScreen';
 import SettingsScreen from '../screens/SettingsScreen';
-import MeditationSummaryScreen from 'src/screens/MeditationSummaryScreen';
-import CalendarScreen from 'src/screens/CalendarScreen';
-import PixelYearScreen from 'src/screens/PixelYearScreen';
-import { MeditationSession } from 'src/types/storage.types';
-import MeditationDetailScreen from 'src/screens/MeditationDetailScreen';
-import QuoteManagerScreen from 'src/screens/QuoteManagerScreen';
 
 export type StackParamList = {
   [ScreenName.MAIN_TABS]: undefined;

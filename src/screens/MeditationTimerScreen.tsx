@@ -4,6 +4,7 @@ import { TouchableOpacity, TouchableWithoutFeedback, Vibration, View } from 'rea
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { ConfirmationModal } from 'src/components/ConfirmationModal';
 import CustomText from 'src/components/CustomText';
+import FocusPointCounter from 'src/components/FocusPointCounter';
 import ScreenName from 'src/constants/screenNames';
 import {
   FOCUS_VIBRATION_PATTERN,
@@ -61,10 +62,14 @@ const MeditationTimerScreen = ({ navigation, route }) => {
       <SafeAreaView style={{ flex: 1, backgroundColor: PALETTE.background.light }}>
         <TouchableWithoutFeedback onPress={handleScreenPress}>
           <View className="flex-1 p-10 bg-platinium">
-            <View className="flex-1 justify-center items-center mt-10">
-              <CustomText className="text-5xl font-bold text-gray-600">
-                {meditationSession.focusPoints.length}
-              </CustomText>
+            <View className="flex-1 justify-center items-center ">
+              {/* Here we hide the counter so Animated.view doesn't interfere with ConfirmationModal */}
+              {!modalVisible && (
+                <FocusPointCounter
+                  count={meditationSession.focusPoints.length}
+                  isAnimating={isRunning}
+                />
+              )}
             </View>
 
             <View className="items-center pb-10">
