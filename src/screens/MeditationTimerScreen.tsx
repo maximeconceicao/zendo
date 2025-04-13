@@ -17,9 +17,9 @@ import { PALETTE } from 'src/theme/palette';
 import { MeditationSession } from 'src/types/storage.types';
 
 const formatTime = (seconds: number) => {
-  const minutes = Math.floor(seconds / 60);
-  const secs = seconds % 60;
-  return `${String(minutes).padStart(2, '0')}:${String(secs).padStart(2, '0')}`;
+  const minutes = Math.floor(Math.abs(seconds) / 60);
+  const secs = Math.abs(seconds) % 60;
+  return `${seconds < 0 ? '+' : ''}${String(minutes).padStart(2, '0')}:${String(secs).padStart(2, '0')}`;
 };
 
 const MeditationTimerScreen = ({ navigation, route }) => {

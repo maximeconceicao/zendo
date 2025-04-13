@@ -7,7 +7,7 @@ const useSessionTimer = (initialTime: number = 60) => {
 
   useEffect(() => {
     let timer: NodeJS.Timeout;
-    if (isRunning && timeLeft > 0) {
+    if (isRunning) {
       timer = setInterval(() => {
         setTimeLeft((prev) => {
           const newTimeLeft = prev - 1;
@@ -15,8 +15,6 @@ const useSessionTimer = (initialTime: number = 60) => {
           return newTimeLeft;
         });
       }, 1000);
-    } else if (timeLeft === 0) {
-      setIsRunning(false);
     }
     return () => clearInterval(timer);
   }, [isRunning, timeLeft, initialTime]);

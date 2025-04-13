@@ -18,10 +18,12 @@ const CalendarScreen = () => {
 
   const goToPreviousMonth = () => {
     setCurrentMonth((prevDate) => new Date(prevDate.getFullYear(), prevDate.getMonth() - 1, 1));
+    setSelectedDate(null);
   };
 
   const goToNextMonth = () => {
     setCurrentMonth((prevDate) => new Date(prevDate.getFullYear(), prevDate.getMonth() + 1, 1));
+    setSelectedDate(null);
   };
 
   const monthlySessions = useMemo(() => {
