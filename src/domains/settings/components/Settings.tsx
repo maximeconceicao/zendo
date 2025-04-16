@@ -1,0 +1,116 @@
+import { useNavigation } from '@react-navigation/native';
+import { StackNavigationProp } from '@react-navigation/stack';
+import React, { useState } from 'react';
+import { View } from 'react-native';
+import ScreenName from 'src/domains/shared/constants/screenNames';
+import { StackParamList } from 'src/app/navigation/AppNavigator';
+import { SettingOption } from 'src/domains/settings/setting.types';
+import { UserSettings } from 'src/data/storage.types';
+import { deleteMeditationSessions, exportMeditationSessions } from 'src/data/storage';
+import CustomAlert from '../../shared/components/CustomAlert';
+import SettingGroup from './SettingGroup';
+
+const Settings = ({
+  userSettings,
+  updateUserSettings
+}: {
+  userSettings: UserSettings | null;
+  updateUserSettings: (settings: Partial<UserSettings>) => void;
+}) => {
+  const navigation = useNavigation<StackNavigationProp<StackParamList>>();
+
+  const [alertVisible, setAlertVisible] = useState(false);
+
+  const sessionOptions: SettingOption[] = [
+    {
+      id: '1',
+      title: 'Vibration au recentrage',
+      type: 'switch',
+      value: Boolean(userSettings?.vibrateOnFocus),
+      onToggle: () => updateUserSettings({ vibrateOnFocus: !Boolean(userSettings?.vibrateOnFocus) })
+    },
+    {
+      id: '2',
+      title: 'Vibration en début de session',
+      type: 'switch',
+      value: Boolean(userSettings?.vibrateOnSessionStart),
+      onToggle: () =>
+        updateUserSettings({
+          vibrateOnSessionStart: !Boolean(userSettings?.vibrateOnSessionStart)
+        })
+    },
+    {
+      id: '3',
+      title: 'Vibration en fin de session',
+      type: 'switch',
+      value: Boolean(userSettings?.vibrateOnSessionEnd),
+      onToggle: () =>
+        updateUserSettings({
+          vibrateOnSessionEnd: !Boolean(userSettings?.vibrateOnSessionEnd)
+        })
+    }
+  ];
+
+  const quoteOptions: SettingOption[] = [
+    {
+      id: '1',
+      title: 'Afficher les citations',
+      type: 'switch',
+      value: Boolean(userSettings?.showQuotes),
+      onToggle: () =>
+        updateUserSettings({
+          showQuotes: !Boolean(userSettings?.showQuotes)
+        })
+    },
+    {
+      id: '2',
+      title: 'Gérer les citations',
+      type: 'link',
+      onPress: () => navigation.navigate(ScreenName.QUOTE_MANAGER)
+    }
+  ];
+
+  const dataOptions: SettingOption[] = [
+    {
+      id: '1',
+      title: 'Exporter les données',
+      type: 'button',
+      onPress: exportMeditationSessions
+    },
+    {
+      id: '2',
+      title: 'Supprimer les données',
+      type: 'button',
+      onPress: () => setAlertVisible(true),
+      className: 'text-red-400'
+    }
+  ];
+
+  return (
+    <View className="mt-4">
+      <SettingGroup
+        title="Session"
+        description="Personnalisez votre expérience"
+        settings={sessionOptions}
+      />
+      <SettingGroup
+        title="Citations"
+        description="Afficher et gérer vos citations"
+        settings={quoteOptions}
+      />
+      <SettingGroup title="Données" description="Gestion des données" settings={dataOptions} />
+      <CustomAlert
+        visible={alertVisible}
+        title="Confirmation"
+        message="Êtes-vous sûr de vouloir supprimer toutes les séances de méditation ? Cette action est irréversible."
+        onClose={() => setAlertVisible(false)}
+        onConfirm={() => {
+          deleteMeditationSessions();
+          setAlertVisible(false);
+        }}
+      />
+    </View>
+  );
+};
+
+export default Settings;
