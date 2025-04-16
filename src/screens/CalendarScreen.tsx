@@ -1,4 +1,12 @@
-import { format, isSameDay } from 'date-fns';
+import {
+  addMonths,
+  format,
+  getDaysInMonth,
+  isSameDay,
+  isWithinInterval,
+  parseISO,
+  subMonths
+} from 'date-fns';
 import { fr } from 'date-fns/locale';
 import React, { useMemo, useState } from 'react';
 import { View } from 'react-native';
@@ -25,6 +33,27 @@ const CalendarScreen = () => {
     setCurrentMonth((prevDate) => new Date(prevDate.getFullYear(), prevDate.getMonth() + 1, 1));
     setSelectedDate(null);
   };
+
+  const visibleSessions = useMemo(() => {
+    const lastMonth = subMonths(currentMonth, 1);
+    const nextMonth = addMonths(currentMonth, 1);
+
+    const lastMonthDays = getDaysInMonth(lastMonth);
+
+    const startOverflow = new Date(
+      lastMonth.getFullYear(),
+      lastMonth.getMonth(),
+      lastMonthDays - 5
+    );
+    const endOverflow = new Date(nextMonth.getFullYear(), nextMonth.getMonth(), 6);
+
+    return (
+      meditationSessions?.filter((session) => {
+        const date = parseISO(session.date);
+        return isWithinInterval(date, { start: startOverflow, end: endOverflow });
+      }) || []
+    );
+  }, [meditationSessions, currentMonth]);
 
   const monthlySessions = useMemo(() => {
     return (
@@ -65,7 +94,7 @@ const CalendarScreen = () => {
           setSelectedDate={setSelectedDate}
           currentMonth={currentMonth}
           setCurrentMonth={setCurrentMonth}
-          sessions={monthlySessions}
+          sessions={visibleSessions}
         />
         <View className="border-t border-gray-300 mt-9" />
 
