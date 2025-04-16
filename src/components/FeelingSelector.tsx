@@ -10,7 +10,6 @@ interface FeelingSelectorProps {
   onSelect: (feeling: MeditationFeeling) => void;
 }
 
-// Mapping des icônes et couleurs associées aux valeurs de l'énum
 const feelingOptions: { feeling: MeditationFeeling; Icon: any }[] = [
   { feeling: MeditationFeeling.Bad, Icon: Frown },
   { feeling: MeditationFeeling.Neutral, Icon: Meh },

@@ -7,6 +7,7 @@ import useMeditationMetrics from 'src/hooks/useMeditationMetrics';
 import ScreenLayout from 'src/layouts/ScreenLayout';
 import {
   formatMeditationMetrics,
+  getFocusPointsMetricData,
   getLast30DaysSessions,
   getLast365DaysSessions,
   MetricData
@@ -36,7 +37,7 @@ const ActivityScreen = () => {
   const pastMonthMetricsData = formatMeditationMetrics(pastMonthMetrics);
   const pastYearMetricsData = formatMeditationMetrics(pastYearMetrics);
 
-  const focusPointsMetricsData = [] as MetricData[];
+  const focusPointsMetricsData = getFocusPointsMetricData(sessions);
 
   const metricGroups = [
     { title: 'Général', data: globalMetricsData },

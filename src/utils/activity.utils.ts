@@ -123,6 +123,11 @@ export const calculateAverageWeeklyMeditationDuration = (sessions: MeditationSes
   };
 };
 
+export function getTotalFocusPoints(sessions: MeditationSession[]): number {
+  return sessions.reduce((total, session) => {
+    return total + (session.focusPoints?.length || 0);
+  }, 0);
+}
 /*
  * Meditation Metrics Formating
  */
@@ -154,4 +159,19 @@ export const formatMeditationMetrics = (metrics: Partial<MeditationMetrics>): Me
   return Object.entries(metricMap)
     .filter(([, value]) => value !== undefined)
     .map(([label, value]) => ({ label, value: value!, type: 'data' }));
+};
+
+export const getFocusPointsMetricData = (sessions: MeditationSession[]): MetricData[] => {
+  return [
+    {
+      label: 'Total de recentrages',
+      value: getTotalFocusPoints(sessions).toString(),
+      type: 'data'
+    },
+    {
+      label: 'Évolution des recentrages',
+      type: 'button',
+      onPress: () => {}
+    }
+  ];
 };
