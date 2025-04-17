@@ -52,8 +52,23 @@ export const calculateTotalMeditationTime = (
 
 export const calculateCurrentConsecutiveDays = (sessions: MeditationSession[]): number => {
   const dates = sessions.map((session) => new Date(session.date));
-  const sortedDates = dates.sort((a, b) => b.getTime() - a.getTime());
+  const sortedDates = dates.sort((a, b) => a.getTime() - b.getTime());
 
+  // Check if there is a session today
+  const today = new Date();
+  const todayStart = new Date(today.setHours(0, 0, 0, 0));
+  const todaySession = sortedDates.some((date) => date >= todayStart);
+
+  // Check if there is a session yesterday
+  const yesterday = new Date(today);
+  yesterday.setDate(today.getDate() - 1);
+  const yesterdayStart = new Date(yesterday.setHours(0, 0, 0, 0));
+  const yesterdaySession = sortedDates.some((date) => date >= yesterdayStart && date < todayStart);
+
+  if (!yesterdaySession && !todaySession) return 0; // No session yesterday or today
+  if (!yesterdaySession && todaySession) return 1; // No session yesterday, but there is a session today
+
+  // If there is a session yesterday and today, calculate the consecutive days
   return sortedDates.reduce((streak, current, index, arr) => {
     if (index === 0) return 1;
     const prev = arr[index - 1];
@@ -135,25 +150,30 @@ export function getTotalFocusPoints(sessions: MeditationSession[]): number {
 export const formatMeditationMetrics = (metrics: Partial<MeditationMetrics>): MetricData[] => {
   const metricMap: Record<string, string | undefined> = {
     'Total de sessions': metrics.totalSessions?.toString(),
-    'Temps total de méditation': metrics.totalMeditatedTimeSpent
-      ? `${metrics.totalMeditatedTimeSpent.days ? metrics.totalMeditatedTimeSpent.days + 'j ' : ''}${metrics.totalMeditatedTimeSpent.hours ? metrics.totalMeditatedTimeSpent.hours + 'h ' : ''}${metrics.totalMeditatedTimeSpent.minutes ?? 0}min`
-      : undefined,
+    'Temps total de méditation':
+      metrics.totalMeditatedTimeSpent !== undefined
+        ? `${metrics.totalMeditatedTimeSpent.days ? metrics.totalMeditatedTimeSpent.days + 'j ' : ''}${metrics.totalMeditatedTimeSpent.hours ? metrics.totalMeditatedTimeSpent.hours + 'h ' : ''}${metrics.totalMeditatedTimeSpent.minutes ?? 0}min`
+        : undefined,
     "Durée moyenne d'une session":
       metrics.averageSessionDurationMinutes !== undefined
         ? metrics.averageSessionDurationMinutes.toString() + 'min'
         : undefined,
-    'Moyenne par semaine': metrics.averageWeeklyMeditationDuration
-      ? `${metrics.averageWeeklyMeditationDuration.hours ? metrics.averageWeeklyMeditationDuration.hours + 'h ' : ''} ${metrics.averageWeeklyMeditationDuration.minutes}min`
-      : undefined,
-    'Série actuelle': metrics.currentConsecutiveDays
-      ? metrics.currentConsecutiveDays.toString() + ' jours'
-      : undefined,
-    'Plus longue série': metrics.longestConsecutiveDays
-      ? metrics.longestConsecutiveDays.toString() + ' jours'
-      : undefined,
-    'Record de la plus longue session': metrics.longestSessionMinutes
-      ? metrics.longestSessionMinutes.toString() + 'min'
-      : undefined
+    'Moyenne par semaine':
+      metrics.averageWeeklyMeditationDuration !== undefined
+        ? `${metrics.averageWeeklyMeditationDuration.hours ? metrics.averageWeeklyMeditationDuration.hours + 'h ' : ''} ${metrics.averageWeeklyMeditationDuration.minutes}min`
+        : undefined,
+    'Série actuelle':
+      metrics.currentConsecutiveDays !== undefined
+        ? metrics.currentConsecutiveDays.toString() + ' jours'
+        : undefined,
+    'Plus longue série':
+      metrics.longestConsecutiveDays !== undefined
+        ? metrics.longestConsecutiveDays.toString() + ' jours'
+        : undefined,
+    'Record de la plus longue session':
+      metrics.longestSessionMinutes !== undefined
+        ? metrics.longestSessionMinutes.toString() + 'min'
+        : undefined
   };
 
   return Object.entries(metricMap)
