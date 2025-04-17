@@ -16,26 +16,35 @@ import { DEFAULT_SESSION_DURATION_SECONDS } from 'src/domains/meditation/constan
 const defaultMeditationQuotes: MeditationQuote[] = [
   {
     id: uuidv4(),
-    text: 'Le calme est la clé de la maîtrise.',
-    author: 'James Allen',
+    text: "La pratique de la méditation n'a pas pour but de nous rejeter nous-même et de devenir meilleur. Son objet est de nous lier d'amitié avec la personne que nous sommes déjà.",
+    author: 'Pema Chödrön',
+    book: 'Entrer en amitié avec soi-même',
     createdAt: new Date().toISOString()
   },
   {
     id: uuidv4(),
-    text: 'Là où est ton attention, là est ton énergie.',
-    author: 'Joe Dispenza',
+    text: "Rien n'est plus important pour votre propre croissance personnelle que de prendre conscience que vous n'êtes pas la voix qui parle dans votre tête - vous êtes celui qui l'entend.",
+    author: 'Michael A. Singer',
+    book: "L'âme délivrée",
     createdAt: new Date().toISOString()
   },
   {
     id: uuidv4(),
-    text: 'Apprendre à méditer est le plus grand don que vous puissiez vous accorder dans cette vie. En effet, seule la méditation vous permettra de partir à la découverte de votre vraie nature et de trouver ainsi la stabilité et l’assurance nécessaire pour vivre bien et mourir bien.',
+    text: "Ce n'est donc pas seulement la pratique assise qui importe mais, bien plus, l'état d'esprit dans lequel vous vous trouvez après la méditation. C'est cet état d'esprit calme et centré qu'il vous faut prolonger dans chacune de vos actions.",
     author: 'Sogyal Rinpoché',
+    book: 'Le Livre tibétain de la vie et de la mort',
     createdAt: new Date().toISOString()
   },
   {
     id: uuidv4(),
-    text: 'La paix vient de l’intérieur.',
+    text: "Demeurez en vous-mêmes comme une île, comme un refuge. Ne cherchez pas d'autre refuge que vous-mêmes.",
     author: 'Bouddha',
+    createdAt: new Date().toISOString()
+  },
+  {
+    id: uuidv4(),
+    text: "Le sens de la vie, c'est simplement d'être en vie. C'est si clair, si évident, si simple. Et pourtant, tout le monde court dans tous les sens, pris de panique, comme s'il fallait absolument atteindre quelque chose au-delà de soi.",
+    author: 'Alan Watts',
     createdAt: new Date().toISOString()
   }
 ];
