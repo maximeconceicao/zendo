@@ -15,6 +15,7 @@ import { useAppData } from 'src/store/useAppData';
 import useSessionTimer from 'src/domains/meditation/hooks/useSessionTimer';
 import { PALETTE } from 'src/theme/palette';
 import { MeditationSession } from 'src/data/storage.types';
+import { useKeepAwake } from 'expo-keep-awake';
 
 const formatTime = (seconds: number) => {
   const minutes = Math.floor(Math.abs(seconds) / 60);
@@ -23,6 +24,7 @@ const formatTime = (seconds: number) => {
 };
 
 const MeditationTimerScreen = ({ navigation, route }) => {
+  useKeepAwake();
   const { durationSeconds } = route.params || { duration: 10 };
 
   const { userSettings, addSession } = useAppData();
