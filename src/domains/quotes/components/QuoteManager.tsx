@@ -48,17 +48,14 @@ const QuoteManager = ({ meditationQuotes, upsertQuote, deleteQuote }: QuoteManag
               >
                 <View className="p-4 my-2 rounded-md border border-gray-300">
                   <CustomText className="text-lg">{item.text}</CustomText>
-                  <View className="flex flex-row justify-end">
+                  <View className="flex flex-col justify-end items-end mt-2">
                     {item.author && (
                       <CustomText className="text-sm italic text-gray-600">
                         {item.author}
                       </CustomText>
                     )}
                     {item.book && (
-                      <CustomText className="text-sm italic text-gray-600">
-                        {' '}
-                        - {item.book}
-                      </CustomText>
+                      <CustomText className="text-sm italic text-gray-400">{item.book}</CustomText>
                     )}
                   </View>
                 </View>
