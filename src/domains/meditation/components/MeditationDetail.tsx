@@ -41,12 +41,12 @@ const MeditationDetail = ({
     <View>
       <View className="my-4">
         <CustomText className="text-lg text-center">Durée :</CustomText>
-        <CustomText className="text-4xl font-semibold text-center">{durationDisplay}</CustomText>
+        <CustomText className="text-3xl font-semibold text-center">{durationDisplay}</CustomText>
       </View>
 
       <View className="my-4">
         <CustomText className="text-lg text-center">Recentrages :</CustomText>
-        <CustomText className="text-4xl font-semibold text-center">{focusPoints.length}</CustomText>
+        <CustomText className="text-3xl font-semibold text-center">{focusPoints.length}</CustomText>
       </View>
 
       {focusPoints.length > 0 && (

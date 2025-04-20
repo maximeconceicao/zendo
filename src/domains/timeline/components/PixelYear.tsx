@@ -11,7 +11,7 @@ const PixelYear = ({ year, items }: { year: number; items: { date: string; color
     Array.from({ length: 31 }, (_, day) => {
       const daysInCurrentMonth = daysInMonth(year, month + 1);
       const isOutOfMonth = day + 1 > daysInCurrentMonth;
-      const currentDate = new Date(year, month, day + 1); // mois est 0-indexé, donc on ajoute 1 à `day`
+      const currentDate = new Date(year, month, day + 1);
       const item = items.find((item) => isSameDay(new Date(item.date), currentDate));
 
       return {
@@ -38,7 +38,7 @@ const PixelYear = ({ year, items }: { year: number; items: { date: string; color
                 )}
                 <View
                   className={`
-                    w-[1.375rem] h-[1.375rem] border-black 
+                    w-[1.25rem] h-[1.25rem] border-black 
                     ${cell.isOutOfMonth ? '' : 'border-b'} 
                     border-r 
                     ${isFirstRow ? 'border-t' : ''} 
