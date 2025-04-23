@@ -1,4 +1,4 @@
-import React, { createContext, useState, useEffect } from 'react';
+import React, { createContext, useState, useEffect, useMemo } from 'react';
 import {
   MeditationQuote,
   MeditationQuoteUpsert,
@@ -33,119 +33,72 @@ interface AppData {
 export const AppDataContext = createContext<AppData | undefined>(undefined);
 
 export const AppDataProvider = ({ children }: { children: React.ReactNode }) => {
-  const [appData, setAppData] = useState<AppData>({
-    meditationSessions: [],
-    userSettings: defaultUserSettings,
-    meditationQuotes: [],
-    addSession: () => {},
-    updateSession: () => {},
-    upsertQuote: () => {},
-    deleteQuote: () => {},
-    updateUserSettings: () => {},
-    deleteSession: () => {}
-  });
+  const [meditationSessions, setMeditationSessions] = useState<MeditationSession[] | null>(null);
+  const [userSettings, setUserSettings] = useState<UserSettings>(defaultUserSettings);
+  const [meditationQuotes, setMeditationQuotes] = useState<MeditationQuote[] | null>(null);
 
   useEffect(() => {
-    const fetchData = async () => {
-      const meditationSessions = getMeditationSessions();
-      const meditationQuotes = getMeditationQuotes();
-      const userSettings = getUserSettings();
-
-      setAppData((prevData) => ({
-        ...prevData,
-        meditationSessions,
-        meditationQuotes,
-        userSettings
-      }));
+    const fetchData = () => {
+      setMeditationSessions(getMeditationSessions());
+      setMeditationQuotes(getMeditationQuotes());
+      setUserSettings(getUserSettings());
     };
 
     fetchData();
   }, []);
 
   const addSession = async (session: MeditationSession) => {
-    const newSessions = appData.meditationSessions
-      ? [...appData.meditationSessions, session]
-      : [session];
-    setAppData((prevData) => ({
-      ...prevData,
-      meditationSessions: newSessions
-    }));
+    setMeditationSessions((prev) => (prev ? [...prev, session] : [session]));
     saveMeditationSession(session);
   };
 
   const updateSession = async (session: MeditationSession) => {
-    if (!appData.meditationSessions) return;
-
-    const updatedSessions = appData.meditationSessions.map((s) =>
-      s.id === session.id ? { ...s, ...session } : s
+    setMeditationSessions(
+      (prev) => prev?.map((s) => (s.id === session.id ? { ...s, ...session } : s)) || []
     );
-
-    setAppData((prevData) => ({
-      ...prevData,
-      meditationSessions: updatedSessions
-    }));
     updateMeditationSession(session);
   };
 
   const deleteSession = async (sessionId: string) => {
-    if (!appData.meditationSessions) return;
-
-    const filteredSessions = appData.meditationSessions.filter((s) => s.id !== sessionId);
-
-    setAppData((prevData) => ({
-      ...prevData,
-      meditationSessions: filteredSessions
-    }));
+    setMeditationSessions((prev) => prev?.filter((s) => s.id !== sessionId) || []);
     deleteMeditationSession(sessionId);
   };
 
   const upsertQuote = async (quote: MeditationQuoteUpsert) => {
-    setAppData((prevData) => {
-      const existingQuotes = prevData.meditationQuotes || [];
+    setMeditationQuotes((prev) => {
+      const existingQuotes = prev || [];
       const quoteExists = existingQuotes.some((q) => q.id === quote.id);
       const updatedQuotes = quoteExists
         ? existingQuotes.map((q) => (q.id === quote.id ? { ...q, ...quote } : q))
         : [...existingQuotes, { ...quote, id: uuidv4(), createdAt: new Date().toISOString() }];
-      return {
-        ...prevData,
-        meditationQuotes: updatedQuotes
-      };
+      return updatedQuotes;
     });
     upsertMeditationQuote(quote);
   };
 
   const deleteQuote = async (quoteId: string) => {
-    if (!appData.meditationQuotes) return;
-
-    const filteredQuotes = appData.meditationQuotes.filter((q) => q.id !== quoteId);
-
-    setAppData((prevData) => ({
-      ...prevData,
-      meditationQuotes: filteredQuotes
-    }));
+    setMeditationQuotes((prev) => prev?.filter((q) => q.id !== quoteId) || []);
   };
 
   const updateUserSettings = async (settings: Partial<UserSettings>) => {
-    setAppData((prevData) => ({
-      ...prevData,
-      userSettings: { ...prevData.userSettings, ...settings }
-    }));
+    setUserSettings((prev) => ({ ...prev, ...settings }));
     saveUserSettings(settings);
   };
 
-  return (
-    <AppDataContext.Provider
-      value={{
-        ...appData,
-        addSession,
-        updateSession,
-        upsertQuote,
-        deleteQuote,
-        updateUserSettings,
-        deleteSession
-      }}
-    >
-      {children}
-    </AppDataContext.Provider>
+  const contextValue = useMemo(
+    () => ({
+      meditationSessions,
+      userSettings,
+      meditationQuotes,
+      addSession,
+      updateSession,
+      upsertQuote,
+      deleteQuote,
+      updateUserSettings,
+      deleteSession
+    }),
+    [meditationSessions, userSettings, meditationQuotes]
   );
+
+  return <AppDataContext.Provider value={contextValue}>{children}</AppDataContext.Provider>;
 };
