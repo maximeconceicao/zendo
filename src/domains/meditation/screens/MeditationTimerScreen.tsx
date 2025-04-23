@@ -18,6 +18,9 @@ import { PALETTE } from 'src/theme/palette';
 import { MeditationSession } from 'src/data/storage.types';
 import { useKeepAwake } from 'expo-keep-awake';
 import { useSoundPlayer } from 'src/domains/shared/hooks/useSoundPlayer';
+import { useNavigation } from '@react-navigation/native';
+import { StackNavigationProp } from '@react-navigation/stack';
+import { StackParamList } from 'src/app/navigation/navigation.types';
 
 const formatTime = (seconds: number) => {
   const minutes = Math.floor(Math.abs(seconds) / 60);
@@ -25,10 +28,13 @@ const formatTime = (seconds: number) => {
   return `${seconds < 0 ? '+' : ''}${String(minutes).padStart(2, '0')}:${String(secs).padStart(2, '0')}`;
 };
 
-const MeditationTimerScreen = ({ navigation, route }) => {
+const MeditationTimerScreen = ({ route }) => {
   useKeepAwake();
   //const { durationSeconds } = route.params || { duration: 10 };
   const durationSeconds = 30;
+
+  const navigation = useNavigation<StackNavigationProp<StackParamList>>();
+
   const { userSettings, addSession } = useAppData();
   const { playSound } = useSoundPlayer();
 
@@ -63,6 +69,7 @@ const MeditationTimerScreen = ({ navigation, route }) => {
     if (userSettings.soundOnSessionStart) {
       playSound(userSettings.soundTypeOnSessionStart);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {

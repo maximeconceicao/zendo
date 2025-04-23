@@ -7,9 +7,9 @@ import FeelingSelector from 'src/domains/meditation/components/FeelingSelector';
 import ScreenName from 'src/domains/shared/constants/screenNames';
 import { MeditationFeeling } from 'src/domains/meditation/constants/session.constants';
 import { useAppData } from 'src/store/useAppData';
-import { StackParamList } from 'src/app/navigation/AppNavigator';
 import { MeditationSession } from 'src/data/storage.types';
 import FocusChart from 'src/domains/meditation/components/FocusChart';
+import { StackParamList } from 'src/app/navigation/navigation.types';
 
 type MeditationDetailMode = 'summary' | 'detail';
 

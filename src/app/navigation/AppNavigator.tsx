@@ -3,25 +3,17 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import React from 'react';
 
-import ScreenName from 'src/domains/shared/constants/screenNames';
-import CalendarScreen from 'src/domains/timeline/screens/CalendarScreen';
 import MeditationDetailScreen from 'src/domains/meditation/screens/MeditationDetailScreen';
 import MeditationSummaryScreen from 'src/domains/meditation/screens/MeditationSummaryScreen';
 import MeditationTimerScreen from 'src/domains/meditation/screens/MeditationTimerScreen';
-import PixelYearScreen from 'src/domains/timeline/screens/PixelYearScreen';
 import QuoteManagerScreen from 'src/domains/quotes/screens/QuoteManagerScreen';
-import { MeditationSession } from 'src/data/storage.types';
+import ScreenName from 'src/domains/shared/constants/screenNames';
+import CalendarScreen from 'src/domains/timeline/screens/CalendarScreen';
+import PixelYearScreen from 'src/domains/timeline/screens/PixelYearScreen';
 import ActivityScreen from '../../domains/activity/screens/ActivityScreen';
 import HomeScreen from '../../domains/meditation/screens/HomeScreen';
 import SettingsScreen from '../../domains/settings/screens/SettingsScreen';
-
-export type StackParamList = {
-  [ScreenName.MAIN_TABS]: undefined;
-  [ScreenName.MEDITATION_TIMER]: undefined;
-  [ScreenName.MEDITATION_SUMMARY]: { meditationSession: MeditationSession };
-  [ScreenName.MEDITATION_DETAIL]: { meditationSession: MeditationSession };
-  [ScreenName.QUOTE_MANAGER]: undefined;
-};
+import { StackParamList } from './navigation.types';
 
 const Tab = createMaterialTopTabNavigator();
 const Stack = createStackNavigator<StackParamList>();

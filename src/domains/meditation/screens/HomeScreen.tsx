@@ -1,6 +1,6 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import { TouchableOpacity, View, Platform, Pressable } from 'react-native';
-import DateTimePicker from '@react-native-community/datetimepicker';
+import DateTimePicker, { DateTimePickerEvent } from '@react-native-community/datetimepicker';
 import CustomText from 'src/domains/shared/components/CustomText';
 import ScreenName from 'src/domains/shared/constants/screenNames';
 import DailyQuote from 'src/domains/quotes/components/DailyQuote';
@@ -8,8 +8,13 @@ import ScreenLayout from 'src/domains/shared/layouts/ScreenLayout';
 import { Hourglass } from 'lucide-react-native';
 import { useAppData } from 'src/store/useAppData';
 import { DEFAULT_SESSION_DURATION_SECONDS } from 'src/domains/meditation/constants/session.constants';
+import { TabScreenNavigationProp } from 'src/app/navigation/navigation.types';
 
-const HomeScreen = ({ navigation }) => {
+type HomeScreenProps = {
+  navigation: TabScreenNavigationProp<typeof ScreenName.HOME>;
+};
+
+const HomeScreen = ({ navigation }: HomeScreenProps) => {
   const [selectedDate, setSelectedDate] = useState(new Date());
   const [showPicker, setShowPicker] = useState(false);
 
@@ -32,7 +37,7 @@ const HomeScreen = ({ navigation }) => {
     return hours > 0 ? `${hours} h ${minutes} min` : `${minutes} min`;
   }, [selectedDate]);
 
-  const onChange = (event, date) => {
+  const onChange = (event: DateTimePickerEvent, date?: Date | undefined) => {
     setShowPicker(Platform.OS === 'ios');
     if (date) {
       if (date.getHours() === 0 && date.getMinutes() === 0) {

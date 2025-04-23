@@ -1,4 +1,4 @@
-const enum ScreenName {
+enum ScreenName {
   MAIN_TABS = 'MainTabs',
   HOME = 'Home',
   MEDITATION_TIMER = 'MeditationTimer',

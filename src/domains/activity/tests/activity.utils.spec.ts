@@ -42,10 +42,6 @@ describe('Meditation Metrics', () => {
     yesterday.setDate(today.getDate() - 1);
     dayBeforeYesterday.setDate(today.getDate() - 2);
 
-    console.log('dayBeforeYesterday', dayBeforeYesterday.toISOString());
-    console.log('yesterday', yesterday.toISOString());
-    console.log('today', today.toISOString());
-
     const sessions = [
       makeSession(dayBeforeYesterday.toISOString(), 600),
       makeSession(yesterday.toISOString(), 600),

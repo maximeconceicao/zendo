@@ -3,7 +3,6 @@ import { StackNavigationProp } from '@react-navigation/stack';
 import { ChevronRight } from 'lucide-react-native';
 import React, { useState } from 'react';
 import { Pressable, Switch, View } from 'react-native';
-import { StackParamList } from 'src/app/navigation/AppNavigator';
 import { deleteMeditationSessions, exportMeditationSessions } from 'src/data/storage';
 import { UserSettings } from 'src/data/storage.types';
 import SoundSelectModal from 'src/domains/settings/components/SoundSelectModal';
@@ -12,6 +11,7 @@ import { soundLabels } from 'src/domains/shared/constants/common.constants';
 import ScreenName from 'src/domains/shared/constants/screenNames';
 import CustomAlert from '../../shared/components/CustomAlert';
 import { useSoundSelectModal } from '../hooks/useSoundSelectModal';
+import { StackParamList } from 'src/app/navigation/navigation.types';
 
 const Settings = ({
   userSettings,
