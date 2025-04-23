@@ -39,7 +39,9 @@ const CalendarRow: React.FC<CalendarRowProps> = ({
               isSelected ? 'bg-black' : today ? 'border border-black' : ''
             }`}
           >
-            <CustomText className={`${textColor} text-sm`}>{day}</CustomText>
+            <CustomText className={`${textColor} text-sm`} style={{ marginTop: 3 }}>
+              {day}
+            </CustomText>
           </View>
           {hasSession && (
             <View
