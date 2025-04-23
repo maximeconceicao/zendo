@@ -23,7 +23,7 @@ export const ConfirmationModal = ({ visible, onClose, title, options }: Confirma
                 <TouchableOpacity
                   key={index}
                   onPress={option.action}
-                  className={index !== options.length - 1 ? 'mb-2' : ''}
+                  className={index !== options.length - 1 ? 'mb-4' : ''}
                 >
                   <CustomText className={option.style}>{option.label}</CustomText>
                 </TouchableOpacity>

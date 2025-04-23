@@ -30,8 +30,7 @@ const formatTime = (seconds: number) => {
 
 const MeditationTimerScreen = ({ route }) => {
   useKeepAwake();
-  //const { durationSeconds } = route.params || { duration: 10 };
-  const durationSeconds = 30;
+  const { durationSeconds } = route.params || { duration: 10 };
 
   const navigation = useNavigation<StackNavigationProp<StackParamList>>();
 
