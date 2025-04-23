@@ -7,6 +7,7 @@ import CustomText from 'src/domains/shared/components/CustomText';
 import FocusPointCounter from 'src/domains/meditation/components/FocusPointCounter';
 import ScreenName from 'src/domains/shared/constants/screenNames';
 import {
+  END_SESSION_VIBRATION_PATTERN,
   FOCUS_VIBRATION_PATTERN,
   MeditationFeeling,
   START_SESSION_VIBRATION_PATTERN
@@ -16,6 +17,7 @@ import useSessionTimer from 'src/domains/meditation/hooks/useSessionTimer';
 import { PALETTE } from 'src/theme/palette';
 import { MeditationSession } from 'src/data/storage.types';
 import { useKeepAwake } from 'expo-keep-awake';
+import { useSoundPlayer } from 'src/domains/shared/hooks/useSoundPlayer';
 
 const formatTime = (seconds: number) => {
   const minutes = Math.floor(Math.abs(seconds) / 60);
@@ -25,9 +27,10 @@ const formatTime = (seconds: number) => {
 
 const MeditationTimerScreen = ({ navigation, route }) => {
   useKeepAwake();
-  const { durationSeconds } = route.params || { duration: 10 };
-
+  //const { durationSeconds } = route.params || { duration: 10 };
+  const durationSeconds = 30;
   const { userSettings, addSession } = useAppData();
+  const { playSound } = useSoundPlayer();
 
   const { timeLeft, elapsedTime, isRunning, start, pause } = useSessionTimer(durationSeconds);
   const [modalVisible, setModalVisible] = useState(false);
@@ -43,7 +46,7 @@ const MeditationTimerScreen = ({ navigation, route }) => {
 
   const handleScreenPress = () => {
     if (isRunning) {
-      if (userSettings?.vibrateOnFocus) {
+      if (userSettings.vibrateOnFocus) {
         Vibration.vibrate(FOCUS_VIBRATION_PATTERN);
       }
       setMeditationSession((prev) => ({
@@ -54,10 +57,25 @@ const MeditationTimerScreen = ({ navigation, route }) => {
   };
 
   useEffect(() => {
-    if (userSettings?.vibrateOnSessionStart) {
+    if (userSettings.vibrateOnSessionStart) {
       Vibration.vibrate(START_SESSION_VIBRATION_PATTERN);
     }
+    if (userSettings.soundOnSessionStart) {
+      playSound(userSettings.soundTypeOnSessionStart);
+    }
   }, []);
+
+  useEffect(() => {
+    if (timeLeft === 0) {
+      if (userSettings.vibrateOnSessionEnd) {
+        Vibration.vibrate(END_SESSION_VIBRATION_PATTERN);
+      }
+      if (userSettings.soundOnSessionEnd) {
+        playSound(userSettings.soundTypeOnSessionEnd);
+      }
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [timeLeft]);
 
   return (
     <>

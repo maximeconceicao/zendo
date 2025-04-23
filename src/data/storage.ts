@@ -12,6 +12,7 @@ import { format } from 'date-fns';
 import 'react-native-get-random-values';
 import { v4 as uuidv4 } from 'uuid';
 import { DEFAULT_SESSION_DURATION_SECONDS } from 'src/domains/meditation/constants/session.constants';
+import { SoundType } from 'src/domains/shared/constants/common.constants';
 
 const defaultMeditationQuotes: MeditationQuote[] = [
   {
@@ -49,8 +50,12 @@ const defaultMeditationQuotes: MeditationQuote[] = [
   }
 ];
 
-const defaultUserSettings: UserSettings = {
+export const defaultUserSettings: UserSettings = {
   vibrateOnFocus: true,
+  soundOnSessionStart: false,
+  soundTypeOnSessionStart: SoundType.BELL_BOWL,
+  soundOnSessionEnd: false,
+  soundTypeOnSessionEnd: SoundType.BELL_BOWL,
   vibrateOnSessionStart: true,
   vibrateOnSessionEnd: true,
   showQuotes: true,
@@ -190,15 +195,15 @@ export const upsertMeditationQuote = (quote: MeditationQuoteUpsert) => {
  * User Settings
  */
 
-export const getUserSettings = (): UserSettings | null => {
-  return getItem('userSettings');
+export const getUserSettings = (): UserSettings => {
+  const raw = getItem('userSettings');
+  return {
+    ...defaultUserSettings,
+    ...raw
+  };
 };
 
 export const saveUserSettings = (settings: Partial<UserSettings>) => {
   const currentSettings = getUserSettings();
-  if (!currentSettings) {
-    setItem('userSettings', settings);
-    return;
-  }
   setItem('userSettings', { ...currentSettings, ...settings });
 };

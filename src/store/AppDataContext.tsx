@@ -6,6 +6,7 @@ import {
   UserSettings
 } from 'src/data/storage.types';
 import {
+  defaultUserSettings,
   deleteMeditationSession,
   getMeditationQuotes,
   getMeditationSessions,
@@ -19,13 +20,13 @@ import { v4 as uuidv4 } from 'uuid';
 
 interface AppData {
   meditationSessions: MeditationSession[] | null;
-  userSettings: UserSettings | null;
+  userSettings: UserSettings;
   meditationQuotes: MeditationQuote[] | null;
   addSession: (session: MeditationSession) => void;
   updateSession: (session: MeditationSession) => void;
   upsertQuote: (quote: MeditationQuoteUpsert) => void;
   deleteQuote: (quoteId: string) => void;
-  updateUserSettings: (settings: UserSettings) => void;
+  updateUserSettings: (settings: Partial<UserSettings>) => void;
   deleteSession: (id: string) => void;
 }
 
@@ -34,7 +35,7 @@ export const AppDataContext = createContext<AppData | undefined>(undefined);
 export const AppDataProvider = ({ children }: { children: React.ReactNode }) => {
   const [appData, setAppData] = useState<AppData>({
     meditationSessions: [],
-    userSettings: null,
+    userSettings: defaultUserSettings,
     meditationQuotes: [],
     addSession: () => {},
     updateSession: () => {},
