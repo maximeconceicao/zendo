@@ -48,7 +48,7 @@ const HomeScreen = ({ navigation }: HomeScreenProps) => {
   };
 
   return (
-    <ScreenLayout title="Carnet de Méditation">
+    <ScreenLayout title="Zendō">
       <View className="flex-1 justify-center">
         {userSettings?.showQuotes && meditationQuotes?.length && (
           <DailyQuote quotes={meditationQuotes || []} />

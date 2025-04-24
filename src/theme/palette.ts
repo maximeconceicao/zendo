@@ -20,7 +20,6 @@ export const PALETTE = {
   },
   background: {
     light: '#E5E4E2',
-    //light: '#F0E5DE',
     dark: '#1F2937'
   },
   text: {
