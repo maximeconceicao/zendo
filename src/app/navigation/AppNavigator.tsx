@@ -14,26 +14,38 @@ import ActivityScreen from '../../domains/activity/screens/ActivityScreen';
 import HomeScreen from '../../domains/meditation/screens/HomeScreen';
 import SettingsScreen from '../../domains/settings/screens/SettingsScreen';
 import { StackParamList } from './navigation.types';
+import { PageIndicator } from './PageIndicator';
 
 const Tab = createMaterialTopTabNavigator();
 const Stack = createStackNavigator<StackParamList>();
 
-const MainTabs = () => (
-  <Tab.Navigator
-    initialRouteName={ScreenName.HOME}
-    screenOptions={{
-      tabBarShowLabel: false,
-      tabBarStyle: { height: 0 },
-      swipeEnabled: true
-    }}
-  >
-    <Tab.Screen name={ScreenName.SETTINGS} component={SettingsScreen} />
-    <Tab.Screen name={ScreenName.ACTIVITY} component={ActivityScreen} />
-    <Tab.Screen name={ScreenName.HOME} component={HomeScreen} />
-    <Tab.Screen name={ScreenName.CALENDAR} component={CalendarScreen} />
-    <Tab.Screen name={ScreenName.PIXEL_YEAR} component={PixelYearScreen} />
-  </Tab.Navigator>
-);
+const MainTabs = () => {
+  const [currentIndex, setCurrentIndex] = React.useState(2); // Home par défaut
+  return (
+    <>
+      <Tab.Navigator
+        initialRouteName={ScreenName.HOME}
+        screenOptions={{
+          tabBarShowLabel: false,
+          tabBarStyle: { height: 0 },
+          swipeEnabled: true
+        }}
+        screenListeners={{
+          state: (e) => {
+            setCurrentIndex(e.data.state.index);
+          }
+        }}
+      >
+        <Tab.Screen name={ScreenName.SETTINGS} component={SettingsScreen} />
+        <Tab.Screen name={ScreenName.ACTIVITY} component={ActivityScreen} />
+        <Tab.Screen name={ScreenName.HOME} component={HomeScreen} />
+        <Tab.Screen name={ScreenName.CALENDAR} component={CalendarScreen} />
+        <Tab.Screen name={ScreenName.PIXEL_YEAR} component={PixelYearScreen} />
+      </Tab.Navigator>
+      <PageIndicator currentIndex={currentIndex} total={5} />
+    </>
+  );
+};
 
 const AppNavigator = () => {
   return (
