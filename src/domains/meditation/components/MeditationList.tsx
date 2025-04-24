@@ -6,10 +6,10 @@ import { fr } from 'date-fns/locale';
 import { capitalizeFirstLetter } from 'src/domains/shared/utils/common.utils';
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
-import { StackParamList } from 'src/app/navigation/AppNavigator';
 import ScreenName from 'src/domains/shared/constants/screenNames';
 import { MeditationFeeling } from 'src/domains/meditation/constants/session.constants';
 import { Smile, Meh, Frown } from 'lucide-react-native';
+import { StackParamList } from 'src/app/navigation/navigation.types';
 
 const feelingIcons = {
   [MeditationFeeling.Good]: Smile,

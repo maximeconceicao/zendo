@@ -8,9 +8,9 @@ import CustomAlert from 'src/domains/shared/components/CustomAlert';
 import ScreenName from 'src/domains/shared/constants/screenNames';
 import { useAppData } from 'src/store/useAppData';
 import ScreenLayout from 'src/domains/shared/layouts/ScreenLayout';
-import { StackParamList } from 'src/app/navigation/AppNavigator';
 import { MeditationSession } from 'src/data/storage.types';
 import MeditationDetail from '../components/MeditationDetail';
+import { StackParamList } from 'src/app/navigation/navigation.types';
 
 type MeditationDetailProps = StackScreenProps<StackParamList, ScreenName.MEDITATION_DETAIL>;
 
