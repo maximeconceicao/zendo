@@ -47,7 +47,7 @@ export const PageIndicator = ({ currentIndex, total }: Props) => {
               borderRadius: CIRCLE_SIZE / 2,
               position: 'absolute',
               top: 0,
-              left: STEP / 2 - CIRCLE_SIZE / 2 // ✅ offset pour centrer sur le 1er cercle
+              left: STEP / 2 - CIRCLE_SIZE / 2 // offset to center the circle
             },
             indicatorStyle
           ]}

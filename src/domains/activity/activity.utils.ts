@@ -78,6 +78,7 @@ export const calculateCurrentConsecutiveDays = (sessions: MeditationSession[]): 
 };
 
 export const calculateLongestSessionMinutes = (sessions: MeditationSession[]): number => {
+  if (sessions.length === 0) return 0;
   const longestSessionSeconds = Math.max(
     ...sessions.map((session) => session.actualDurationSeconds)
   );
