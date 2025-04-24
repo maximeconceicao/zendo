@@ -24,9 +24,9 @@
         <action android:name="android.intent.action.VIEW"/>
         <category android:name="android.intent.category.DEFAULT"/>
         <category android:name="android.intent.category.BROWSABLE"/>
-        <data android:scheme="meditation-diary"/>
+        <data android:scheme="zendo"/>
         <data android:scheme="com.maximeconceicao.meditationdiary"/>
-        <data android:scheme="exp+meditation-diary"/>
+        <data android:scheme="exp+zendo"/>
       </intent-filter>
     </activity>
   </application>

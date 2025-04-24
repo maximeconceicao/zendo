@@ -1,13 +1,13 @@
 {
   "expo": {
-    "name": "meditation-diary",
-    "slug": "meditation-diary",
+    "name": "zendo",
+    "slug": "zendo",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
-    "scheme": "meditation-diary",
+    "scheme": "zendo",
     "ios": {
       "supportsTablet": true
     },
@@ -16,7 +16,7 @@
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
-      "package": "com.maximeconceicao.meditationdiary"
+      "package": "com.maximeconceicao.zendo"
     },
     "web": {
       "bundler": "metro",
