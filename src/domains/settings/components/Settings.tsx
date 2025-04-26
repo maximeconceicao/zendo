@@ -42,23 +42,24 @@ const Settings = ({
           </CustomText>
           <CustomText className="text-gray-600">Personnalisez votre expérience</CustomText>
         </View>
-        <Pressable
-          className="flex-row justify-between items-center py-3 border-b border-gray-300"
-          onPress={() => {
-            if (userSettings.soundOnSessionStart) {
-              open('start');
-            }
-          }}
-        >
-          <View className="flex-col">
-            <CustomText className={`text-lg text-gray-900`}>Son de début</CustomText>
-
-            <CustomText className={`text-lg text-gray-400`}>
-              {userSettings.soundOnSessionStart
-                ? soundLabels[userSettings.soundTypeOnSessionStart]
-                : 'Désactivé'}
-            </CustomText>
-          </View>
+        <View className="flex-row justify-between items-center py-3 border-b border-gray-300">
+          <Pressable
+            className="flex-1"
+            onPress={() => {
+              if (userSettings.soundOnSessionStart) {
+                open('start');
+              }
+            }}
+          >
+            <View>
+              <CustomText className="text-lg text-gray-900">Son de début</CustomText>
+              <CustomText className="text-lg text-gray-400">
+                {userSettings.soundOnSessionStart
+                  ? soundLabels[userSettings.soundTypeOnSessionStart]
+                  : 'Désactivé'}
+              </CustomText>
+            </View>
+          </Pressable>
 
           <Switch
             value={Boolean(userSettings.soundOnSessionStart)}
@@ -70,25 +71,26 @@ const Settings = ({
             trackColor={{ false: '#A0A0A0', true: '#505050' }}
             thumbColor={'#000000'}
           />
-        </Pressable>
+        </View>
 
-        <Pressable
-          className="flex-row justify-between items-center py-3 border-b border-gray-300"
-          onPress={() => {
-            if (userSettings.soundOnSessionEnd) {
-              open('end');
-            }
-          }}
-        >
-          <View className="flex-col">
-            <CustomText className={`text-lg text-gray-900`}>Son de fin</CustomText>
-            <CustomText className={`text-lg text-gray-400`}>
-              {userSettings.soundOnSessionEnd
-                ? soundLabels[userSettings.soundTypeOnSessionEnd]
-                : 'Désactivé'}
-            </CustomText>
-          </View>
-
+        <View className="flex-row justify-between items-center py-3 border-b border-gray-300">
+          <Pressable
+            className="flex-1"
+            onPress={() => {
+              if (userSettings.soundOnSessionEnd) {
+                open('end');
+              }
+            }}
+          >
+            <View className="flex-col">
+              <CustomText className={`text-lg text-gray-900`}>Son de fin</CustomText>
+              <CustomText className={`text-lg text-gray-400`}>
+                {userSettings.soundOnSessionEnd
+                  ? soundLabels[userSettings.soundTypeOnSessionEnd]
+                  : 'Désactivé'}
+              </CustomText>
+            </View>
+          </Pressable>
           <Switch
             value={Boolean(userSettings.soundOnSessionEnd)}
             onValueChange={() =>
@@ -99,10 +101,12 @@ const Settings = ({
             trackColor={{ false: '#A0A0A0', true: '#505050' }}
             thumbColor={'#000000'}
           />
-        </Pressable>
-        <Pressable className="flex-row justify-between items-center py-3 border-b border-gray-300">
-          <CustomText className={`text-lg text-gray-900`}>Vibration de début</CustomText>
+        </View>
 
+        <View className="flex-row justify-between items-center py-3 border-b border-gray-300">
+          <Pressable className="flex-1">
+            <CustomText className={`text-lg text-gray-900`}>Vibration de début</CustomText>
+          </Pressable>
           <Switch
             value={Boolean(userSettings?.vibrateOnSessionStart)}
             onValueChange={() =>
@@ -113,10 +117,12 @@ const Settings = ({
             trackColor={{ false: '#A0A0A0', true: '#505050' }}
             thumbColor={'#000000'}
           />
-        </Pressable>
-        <Pressable className="flex-row justify-between items-center py-3 border-b border-gray-300">
-          <CustomText className={`text-lg text-gray-900`}>Vibration de fin</CustomText>
+        </View>
 
+        <View className="flex-row justify-between items-center py-3 border-b border-gray-300">
+          <Pressable className="flex-1">
+            <CustomText className={`text-lg text-gray-900`}>Vibration de fin</CustomText>
+          </Pressable>
           <Switch
             value={Boolean(userSettings?.vibrateOnSessionEnd)}
             onValueChange={() =>
@@ -127,10 +133,12 @@ const Settings = ({
             trackColor={{ false: '#A0A0A0', true: '#505050' }}
             thumbColor={'#000000'}
           />
-        </Pressable>
-        <Pressable className="flex-row justify-between items-center py-3 border-b border-gray-300">
-          <CustomText className={`text-lg text-gray-900`}>Vibration au recentrage</CustomText>
+        </View>
 
+        <View className="flex-row justify-between items-center py-3 border-b border-gray-300">
+          <Pressable className="flex-1">
+            <CustomText className={`text-lg text-gray-900`}>Vibration au recentrage</CustomText>
+          </Pressable>
           <Switch
             value={Boolean(userSettings?.vibrateOnFocus)}
             onValueChange={() =>
@@ -141,7 +149,7 @@ const Settings = ({
             trackColor={{ false: '#A0A0A0', true: '#505050' }}
             thumbColor={'#000000'}
           />
-        </Pressable>
+        </View>
       </View>
 
       {/*
@@ -155,9 +163,10 @@ const Settings = ({
           </CustomText>
           <CustomText className="text-gray-600">Afficher et gérer vos citations</CustomText>
         </View>
-        <Pressable className="flex-row justify-between items-center py-3 border-b border-gray-300">
-          <CustomText className={`text-lg text-gray-900`}>Afficher les citations</CustomText>
-
+        <View className="flex-row justify-between items-center py-3 border-b border-gray-300">
+          <Pressable className="flex-1">
+            <CustomText className={`text-lg text-gray-900`}>Afficher les citations</CustomText>
+          </Pressable>
           <Switch
             value={Boolean(userSettings?.showQuotes)}
             onValueChange={() =>
@@ -168,7 +177,8 @@ const Settings = ({
             trackColor={{ false: '#A0A0A0', true: '#505050' }}
             thumbColor={'#000000'}
           />
-        </Pressable>
+        </View>
+
         <Pressable
           className="flex-row justify-between items-center py-3 border-b border-gray-300"
           onPress={() => navigation.navigate(ScreenName.QUOTE_MANAGER)}
