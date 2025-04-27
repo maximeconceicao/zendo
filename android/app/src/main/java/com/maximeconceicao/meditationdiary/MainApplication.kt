@@ -1,4 +1,4 @@
-package com.maximeconceicao.meditationdiary
+package com.maximeconceicao.zendo
 
 import android.app.Application
 import android.content.res.Configuration

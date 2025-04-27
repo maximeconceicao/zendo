@@ -1,4 +1,4 @@
-package com.maximeconceicao.meditationdiary
+package com.maximeconceicao.zendo
 import expo.modules.splashscreen.SplashScreenManager
 
 import android.os.Build
