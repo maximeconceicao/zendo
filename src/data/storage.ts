@@ -12,7 +12,7 @@ import { format } from 'date-fns';
 import 'react-native-get-random-values';
 import { v4 as uuidv4 } from 'uuid';
 import { DEFAULT_SESSION_DURATION_SECONDS } from 'src/domains/meditation/constants/session.constants';
-import { SoundType } from 'src/domains/shared/constants/common.constants';
+import { FocusSoundType, SoundType } from 'src/domains/shared/constants/common.constants';
 
 const defaultMeditationQuotes: MeditationQuote[] = [
   {
@@ -56,6 +56,8 @@ export const defaultUserSettings: UserSettings = {
   soundTypeOnSessionStart: SoundType.BELL_BOWL,
   soundOnSessionEnd: false,
   soundTypeOnSessionEnd: SoundType.BELL_BOWL,
+  soundOnFocus: false,
+  soundTypeOnFocus: FocusSoundType.TOMTOM,
   vibrateOnSessionStart: true,
   vibrateOnSessionEnd: true,
   showQuotes: true,

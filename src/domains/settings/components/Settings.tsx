@@ -7,7 +7,7 @@ import { deleteMeditationSessions, exportMeditationSessions } from 'src/data/sto
 import { UserSettings } from 'src/data/storage.types';
 import SoundSelectModal from 'src/domains/settings/components/SoundSelectModal';
 import CustomText from 'src/domains/shared/components/CustomText';
-import { soundLabels } from 'src/domains/shared/constants/common.constants';
+import { soundLabels, focusSoundLabels } from 'src/domains/shared/constants/common.constants';
 import ScreenName from 'src/domains/shared/constants/screenNames';
 import CustomAlert from '../../shared/components/CustomAlert';
 import { useSoundSelectModal } from '../hooks/useSoundSelectModal';
@@ -96,6 +96,36 @@ const Settings = ({
             onValueChange={() =>
               updateUserSettings({
                 soundOnSessionEnd: !Boolean(userSettings.soundOnSessionEnd)
+              })
+            }
+            trackColor={{ false: '#A0A0A0', true: '#505050' }}
+            thumbColor={'#000000'}
+          />
+        </View>
+
+        <View className="flex-row justify-between items-center py-3 border-b border-gray-300">
+          <Pressable
+            className="flex-1"
+            onPress={() => {
+              if (userSettings.soundOnFocus) {
+                open('focus');
+              }
+            }}
+          >
+            <View className="flex-col">
+              <CustomText className={`text-lg text-gray-900`}>Son au recentrage</CustomText>
+              <CustomText className={`text-lg text-gray-400`}>
+                {userSettings.soundOnFocus
+                  ? focusSoundLabels[userSettings.soundTypeOnFocus]
+                  : 'Désactivé'}
+              </CustomText>
+            </View>
+          </Pressable>
+          <Switch
+            value={Boolean(userSettings.soundOnFocus)}
+            onValueChange={() =>
+              updateUserSettings({
+                soundOnFocus: !Boolean(userSettings.soundOnFocus)
               })
             }
             trackColor={{ false: '#A0A0A0', true: '#505050' }}

@@ -1,8 +1,14 @@
 import { useState } from 'react';
 import { UserSettings } from 'src/data/storage.types';
-import { soundLabels, SoundType } from 'src/domains/shared/constants/common.constants';
+import {
+  AllSoundTypes,
+  focusSoundLabels,
+  FocusSoundType,
+  soundLabels,
+  SoundType
+} from 'src/domains/shared/constants/common.constants';
 
-type SoundKey = 'start' | 'end';
+type SoundKey = 'start' | 'end' | 'focus';
 
 export const useSoundSelectModal = ({
   userSettings,
@@ -15,31 +21,51 @@ export const useSoundSelectModal = ({
 
   const isVisible = selectedSoundKey !== null;
 
-  const soundOptions = Object.values(SoundType).map((type) => ({
-    label: soundLabels[type],
-    value: type
-  }));
-
-  const getValue = (): SoundType | undefined => {
-    if (!selectedSoundKey) return undefined;
-    return selectedSoundKey === 'start'
-      ? userSettings.soundTypeOnSessionStart
-      : userSettings.soundTypeOnSessionEnd;
+  const soundTypeMap = {
+    start: SoundType,
+    end: SoundType,
+    focus: FocusSoundType
   };
 
-  const onSelect = (value: SoundType) => {
-    if (selectedSoundKey === 'start') {
-      updateUserSettings({ soundTypeOnSessionStart: value });
-    } else if (selectedSoundKey === 'end') {
-      updateUserSettings({ soundTypeOnSessionEnd: value });
+  const labelMap = {
+    start: soundLabels,
+    end: soundLabels,
+    focus: focusSoundLabels
+  };
+
+  const enabledMap = {
+    start: userSettings.soundOnSessionStart,
+    end: userSettings.soundOnSessionEnd,
+    focus: userSettings.soundOnFocus
+  };
+
+  const getValueMap = {
+    start: userSettings.soundTypeOnSessionStart,
+    end: userSettings.soundTypeOnSessionEnd,
+    focus: userSettings.soundTypeOnFocus
+  };
+
+  const soundOptions = selectedSoundKey
+    ? Object.values(soundTypeMap[selectedSoundKey]).map((type) => ({
+        label: labelMap[selectedSoundKey][type as keyof (typeof labelMap)[SoundKey]],
+        value: type
+      }))
+    : [];
+
+  const onSelect = (value: AllSoundTypes) => {
+    if (!selectedSoundKey) return;
+    if (selectedSoundKey === 'focus') {
+      updateUserSettings({ soundTypeOnFocus: value as FocusSoundType });
+    } else {
+      updateUserSettings({
+        [selectedSoundKey === 'start' ? 'soundTypeOnSessionStart' : 'soundTypeOnSessionEnd']:
+          value as SoundType
+      });
     }
   };
 
   const open = (key: SoundKey) => {
-    const isEnabled =
-      key === 'start' ? userSettings.soundOnSessionStart : userSettings.soundOnSessionEnd;
-
-    if (isEnabled) {
+    if (enabledMap[key]) {
       setSelectedSoundKey(key);
     }
   };
@@ -49,7 +75,7 @@ export const useSoundSelectModal = ({
   return {
     isVisible,
     soundOptions,
-    value: getValue(),
+    value: selectedSoundKey ? getValueMap[selectedSoundKey] : undefined,
     onSelect,
     onClose: close,
     open

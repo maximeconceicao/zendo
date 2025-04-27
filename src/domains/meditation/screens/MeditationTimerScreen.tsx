@@ -54,6 +54,9 @@ const MeditationTimerScreen = ({ route }) => {
       if (userSettings.vibrateOnFocus) {
         Vibration.vibrate(FOCUS_VIBRATION_PATTERN);
       }
+      if (userSettings.soundOnFocus) {
+        playSound(userSettings.soundTypeOnFocus);
+      }
       setMeditationSession((prev) => ({
         ...prev,
         focusPoints: [...prev.focusPoints, { elapsedTime }]

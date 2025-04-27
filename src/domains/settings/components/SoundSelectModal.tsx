@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { Modal, TouchableOpacity, TouchableWithoutFeedback, View } from 'react-native';
-import { SoundType } from 'src/domains/shared/constants/common.constants';
+import { AllSoundTypes, SoundType } from 'src/domains/shared/constants/common.constants';
 import { useSoundPlayer } from 'src/domains/shared/hooks/useSoundPlayer';
 import CustomText from 'src/domains/shared/components/CustomText';
 
@@ -14,7 +14,7 @@ type SoundSelectModalProps = {
   options: ListOption[];
   value?: string;
   onClose: () => void;
-  onSelect: (value: SoundType) => void;
+  onSelect: (value: AllSoundTypes) => void;
 };
 
 const SoundSelectModal = ({

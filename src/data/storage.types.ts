@@ -1,5 +1,5 @@
 import { MeditationFeeling } from 'src/domains/meditation/constants/session.constants';
-import { SoundType } from 'src/domains/shared/constants/common.constants';
+import { FocusSoundType, SoundType } from 'src/domains/shared/constants/common.constants';
 
 export type MeditationSession = {
   id: string; // UUID ou timestamp
@@ -21,6 +21,8 @@ export type UserSettings = {
   soundTypeOnSessionStart: SoundType;
   soundOnSessionEnd: boolean;
   soundTypeOnSessionEnd: SoundType;
+  soundOnFocus: boolean;
+  soundTypeOnFocus: FocusSoundType;
   vibrateOnSessionStart: boolean;
   vibrateOnSessionEnd: boolean;
   vibrateOnFocus: boolean;

@@ -1,6 +1,6 @@
-import { useRef } from 'react';
 import { Audio, AVPlaybackStatus } from 'expo-av';
-import { soundFilePaths, SoundType } from '../constants/common.constants';
+import { useRef } from 'react';
+import { allSoundFilePaths, AllSoundTypes } from '../constants/common.constants';
 
 export const useSoundPlayer = () => {
   const currentSoundRef = useRef<Audio.Sound | null>(null);
@@ -13,10 +13,10 @@ export const useSoundPlayer = () => {
     }
   };
 
-  const playSound = async (type: SoundType) => {
+  const playSound = async (type: AllSoundTypes) => {
     await stopSound();
 
-    const { sound } = await Audio.Sound.createAsync(soundFilePaths[type], { shouldPlay: true });
+    const { sound } = await Audio.Sound.createAsync(allSoundFilePaths[type], { shouldPlay: true });
 
     sound.setOnPlaybackStatusUpdate((status: AVPlaybackStatus) => {
       if (status.isLoaded && status.didJustFinish) {
