@@ -15,6 +15,8 @@ import HomeScreen from '../../domains/meditation/screens/HomeScreen';
 import SettingsScreen from '../../domains/settings/screens/SettingsScreen';
 import { StackParamList } from './navigation.types';
 import { PageIndicator } from './PageIndicator';
+import { StatusBar } from 'react-native';
+import { PALETTE } from 'src/theme/palette';
 
 const Tab = createMaterialTopTabNavigator();
 const Stack = createStackNavigator<StackParamList>();
@@ -26,6 +28,8 @@ const MainTabs = () => {
       <Tab.Navigator
         initialRouteName={ScreenName.HOME}
         screenOptions={{
+          lazy: false,
+          lazyPreloadDistance: 1,
           tabBarShowLabel: false,
           tabBarStyle: { height: 0 },
           swipeEnabled: true
@@ -50,7 +54,7 @@ const MainTabs = () => {
 const AppNavigator = () => {
   return (
     <NavigationContainer>
-      {/* <StatusBar hidden /> */}
+      <StatusBar barStyle={'dark-content'} backgroundColor={PALETTE.background.light} />
       <Stack.Navigator screenOptions={{ headerShown: false, animation: 'fade' }}>
         <Stack.Screen name={ScreenName.MAIN_TABS} component={MainTabs} />
         <Stack.Screen name={ScreenName.MEDITATION_TIMER} component={MeditationTimerScreen} />
