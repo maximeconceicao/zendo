@@ -6,13 +6,17 @@ import { ScrollView } from 'react-native';
 import HorizontalLine from 'src/domains/shared/components/HorizontalLine';
 
 const SettingsScreen = () => {
-  const { userSettings, updateUserSettings } = useAppData();
+  const { userSettings, updateUserSettings, deleteAllSessions } = useAppData();
 
   return (
     <ScreenLayout title="Paramètres">
       <HorizontalLine />
       <ScrollView contentContainerStyle={{ paddingTop: 16 }} showsVerticalScrollIndicator={false}>
-        <Settings userSettings={userSettings} updateUserSettings={updateUserSettings} />
+        <Settings
+          userSettings={userSettings}
+          updateUserSettings={updateUserSettings}
+          deleteAllSessions={deleteAllSessions}
+        />
       </ScrollView>
       <HorizontalLine />
     </ScreenLayout>

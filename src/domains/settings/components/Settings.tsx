@@ -15,10 +15,12 @@ import { StackParamList } from 'src/app/navigation/navigation.types';
 
 const Settings = ({
   userSettings,
-  updateUserSettings
+  updateUserSettings,
+  deleteAllSessions
 }: {
   userSettings: UserSettings;
   updateUserSettings: (settings: Partial<UserSettings>) => void;
+  deleteAllSessions: () => void;
 }) => {
   const navigation = useNavigation<StackNavigationProp<StackParamList>>();
 
@@ -250,7 +252,7 @@ const Settings = ({
         message="Êtes-vous sûr de vouloir supprimer toutes les séances de méditation ? Cette action est irréversible."
         onClose={() => setAlertVisible(false)}
         onConfirm={() => {
-          deleteMeditationSessions();
+          deleteAllSessions();
           setAlertVisible(false);
         }}
       />

@@ -8,6 +8,7 @@ import {
 import {
   defaultUserSettings,
   deleteMeditationSession,
+  deleteMeditationSessions,
   getMeditationQuotes,
   getMeditationSessions,
   getUserSettings,
@@ -28,6 +29,7 @@ interface AppData {
   deleteQuote: (quoteId: string) => void;
   updateUserSettings: (settings: Partial<UserSettings>) => void;
   deleteSession: (id: string) => void;
+  deleteAllSessions: () => void;
 }
 
 export const AppDataContext = createContext<AppData | undefined>(undefined);
@@ -64,6 +66,11 @@ export const AppDataProvider = ({ children }: { children: React.ReactNode }) => 
     deleteMeditationSession(sessionId);
   };
 
+  const deleteAllSessions = async () => {
+    setMeditationSessions([]);
+    deleteMeditationSessions();
+  };
+
   const upsertQuote = async (quote: MeditationQuoteUpsert) => {
     setMeditationQuotes((prev) => {
       const existingQuotes = prev || [];
@@ -95,7 +102,8 @@ export const AppDataProvider = ({ children }: { children: React.ReactNode }) => 
       upsertQuote,
       deleteQuote,
       updateUserSettings,
-      deleteSession
+      deleteSession,
+      deleteAllSessions
     }),
     [meditationSessions, userSettings, meditationQuotes]
   );
