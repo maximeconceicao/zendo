@@ -14,7 +14,6 @@ import ActivityScreen from '../../domains/activity/screens/ActivityScreen';
 import HomeScreen from '../../domains/meditation/screens/HomeScreen';
 import SettingsScreen from '../../domains/settings/screens/SettingsScreen';
 import { StackParamList } from './navigation.types';
-import { PageIndicator } from './PageIndicator';
 import { StatusBar } from 'react-native';
 import { PALETTE } from 'src/theme/palette';
 
@@ -22,7 +21,7 @@ const Tab = createMaterialTopTabNavigator();
 const Stack = createStackNavigator<StackParamList>();
 
 const MainTabs = () => {
-  const [currentIndex, setCurrentIndex] = React.useState(2); // Home par défaut
+  const [currentIndex, setCurrentIndex] = React.useState(2);
   return (
     <>
       <Tab.Navigator
@@ -46,7 +45,7 @@ const MainTabs = () => {
         <Tab.Screen name={ScreenName.CALENDAR} component={CalendarScreen} />
         <Tab.Screen name={ScreenName.PIXEL_YEAR} component={PixelYearScreen} />
       </Tab.Navigator>
-      <PageIndicator currentIndex={currentIndex} total={5} />
+      {/* <PageIndicator currentIndex={currentIndex} total={5} /> */}
     </>
   );
 };
