@@ -188,11 +188,11 @@ export const getFocusPointsMetricData = (sessions: MeditationSession[]): MetricD
       label: 'Total de recentrages',
       value: getTotalFocusPoints(sessions).toString(),
       type: 'data'
-    },
-    {
-      label: 'Évolution des recentrages',
-      type: 'button',
-      onPress: () => {}
     }
+    // {
+    //   label: 'Évolution des recentrages',
+    //   type: 'button',
+    //   onPress: () => {}
+    // }
   ];
 };
