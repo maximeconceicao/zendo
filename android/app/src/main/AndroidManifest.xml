@@ -1,6 +1,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
   <uses-permission android:name="android.permission.INTERNET"/>
+  <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS"/>
   <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+  <uses-permission android:name="android.permission.RECORD_AUDIO"/>
   <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW"/>
   <uses-permission android:name="android.permission.VIBRATE"/>
   <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
@@ -27,6 +29,8 @@
         <data android:scheme="zendo"/>
         <data android:scheme="com.maximeconceicao.zendo"/>
         <data android:scheme="exp+zendo"/>
+        <data android:scheme="Zendō"/>
+        <data android:scheme="exp+meditation-diary"/>
       </intent-filter>
     </activity>
   </application>

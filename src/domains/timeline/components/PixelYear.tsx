@@ -2,11 +2,20 @@ import React from 'react';
 import { View } from 'react-native';
 import CustomText from 'src/domains/shared/components/CustomText';
 import { isSameDay } from 'date-fns';
+import { WeatherIcon } from 'src/domains/shared/components/WeatherIcon';
+import { InnerWeather } from 'src/domains/meditation/constants/inner-weather.constants';
+import { PALETTE } from 'src/theme/palette';
 
 const daysInMonth = (year: number, month: number) => new Date(year, month, 0).getDate();
 const monthLetters = ['J', 'F', 'M', 'A', 'M', 'J', 'J', 'A', 'S', 'O', 'N', 'D'];
 
-const PixelYear = ({ year, items }: { year: number; items: { date: string; color: string }[] }) => {
+const PixelYear = ({
+  year,
+  items
+}: {
+  year: number;
+  items: { date: string; color: string; weather: InnerWeather }[];
+}) => {
   const grid = Array.from({ length: 12 }, (_, month) =>
     Array.from({ length: 31 }, (_, day) => {
       const daysInCurrentMonth = daysInMonth(year, month + 1);
@@ -16,6 +25,7 @@ const PixelYear = ({ year, items }: { year: number; items: { date: string; color
 
       return {
         color: isOutOfMonth ? 'transparent' : item ? item.color : 'transparent',
+        weather: item?.weather,
         isOutOfMonth
       };
     })
@@ -38,14 +48,22 @@ const PixelYear = ({ year, items }: { year: number; items: { date: string; color
                 )}
                 <View
                   className={`
-                    w-[1.25rem] h-[1.25rem] border-black 
+                    w-[1.25rem] h-[1.25rem] border-black items-center justify-center
                     ${cell.isOutOfMonth ? '' : 'border-b'} 
                     border-r 
                     ${isFirstRow ? 'border-t' : ''} 
                     ${isFirstColumn ? 'border-l' : ''}
                   `}
                   style={{ backgroundColor: cell.color }}
-                />
+                >
+                  {cell.weather && (
+                    <WeatherIcon
+                      size={12}
+                      weather={cell.weather}
+                      color={PALETTE.background.light}
+                    />
+                  )}
+                </View>
               </View>
             );
           })}

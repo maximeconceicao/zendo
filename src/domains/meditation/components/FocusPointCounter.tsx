@@ -44,6 +44,7 @@ const HaloCircle = ({
     } else {
       scale.value = withTiming(1, { duration: 500 }); // Réduit progressivement la taille
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isAnimating]);
 
   const animatedStyle = useAnimatedStyle(() => ({

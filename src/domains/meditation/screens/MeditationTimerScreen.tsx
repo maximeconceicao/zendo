@@ -9,7 +9,6 @@ import ScreenName from 'src/domains/shared/constants/screenNames';
 import {
   END_SESSION_VIBRATION_PATTERN,
   FOCUS_VIBRATION_PATTERN,
-  MeditationFeeling,
   START_SESSION_VIBRATION_PATTERN
 } from 'src/domains/meditation/constants/session.constants';
 import { useAppData } from 'src/store/useAppData';
@@ -21,6 +20,7 @@ import { useSoundPlayer } from 'src/domains/shared/hooks/useSoundPlayer';
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { StackParamList } from 'src/app/navigation/navigation.types';
+import { InnerWeather } from '../constants/inner-weather.constants';
 
 const formatTime = (seconds: number) => {
   const minutes = Math.floor(Math.abs(seconds) / 60);
@@ -46,7 +46,7 @@ const MeditationTimerScreen = ({ route }) => {
     focusPoints: [],
     plannedDurationSeconds: durationSeconds,
     actualDurationSeconds: 0,
-    feeling: MeditationFeeling.Neutral
+    innerWeather: InnerWeather.Cloudy
   });
 
   const handleScreenPress = () => {

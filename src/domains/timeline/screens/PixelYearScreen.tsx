@@ -5,6 +5,8 @@ import ArrowButtons from 'src/domains/shared/components/ArrowButtons';
 import PixelYear from 'src/domains/timeline/components/PixelYear';
 import { useAppData } from 'src/store/useAppData';
 import ScreenLayout from 'src/domains/shared/layouts/ScreenLayout';
+import { InnerWeather } from 'src/domains/meditation/constants/inner-weather.constants';
+import { computeDailyInnerWeather } from 'src/domains/meditation/utils/inner-weather.utils';
 
 const PixelYearScreen = () => {
   const { meditationSessions } = useAppData();
@@ -17,6 +19,30 @@ const PixelYearScreen = () => {
       return sessionDate.getFullYear() === currentYear.getFullYear();
     });
   }, [meditationSessions, currentYear]);
+
+  const sessionsGroupedByDay = useMemo(() => {
+    const grouped: Record<string, { date: string; weathers: InnerWeather[] }> = {};
+
+    filteredSessions?.forEach((session) => {
+      const day = format(new Date(session.date), 'yyyy-MM-dd');
+      if (!grouped[day]) {
+        grouped[day] = { date: day, weathers: [] };
+      }
+      if (session.innerWeather) {
+        grouped[day].weathers.push(session.innerWeather);
+      }
+    });
+
+    return grouped;
+  }, [filteredSessions]);
+
+  const items = useMemo(() => {
+    return Object.values(sessionsGroupedByDay).map((group) => ({
+      date: group.date,
+      color: 'black',
+      weather: computeDailyInnerWeather(group.weathers)
+    }));
+  }, [sessionsGroupedByDay]);
 
   const earliestYear = useMemo(() => {
     if (!meditationSessions || meditationSessions.length === 0) return null;
@@ -43,10 +69,7 @@ const PixelYearScreen = () => {
       }
     >
       <View className="h-full justify-center">
-        <PixelYear
-          year={currentYear.getFullYear()}
-          items={filteredSessions?.map((item) => ({ date: item.date, color: 'black' })) || []}
-        />
+        <PixelYear year={currentYear.getFullYear()} items={items} />
       </View>
     </ScreenLayout>
   );

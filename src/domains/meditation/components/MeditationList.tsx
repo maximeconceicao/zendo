@@ -7,20 +7,8 @@ import { capitalizeFirstLetter } from 'src/domains/shared/utils/common.utils';
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import ScreenName from 'src/domains/shared/constants/screenNames';
-import { MeditationFeeling } from 'src/domains/meditation/constants/session.constants';
-import { Smile, Meh, Frown } from 'lucide-react-native';
 import { StackParamList } from 'src/app/navigation/navigation.types';
-
-const feelingIcons = {
-  [MeditationFeeling.Good]: Smile,
-  [MeditationFeeling.Neutral]: Meh,
-  [MeditationFeeling.Bad]: Frown
-};
-
-const FeelingIcon = ({ feeling }: { feeling: MeditationFeeling }) => {
-  const Icon = feelingIcons[feeling] || Meh; // Icône par défaut si feeling est invalide
-  return <Icon size={24} color="black" />;
-};
+import { WeatherIcon } from 'src/domains/shared/components/WeatherIcon';
 
 const MeditationList = ({ sessions }: { sessions: MeditationSession[] }) => {
   const navigation = useNavigation<StackNavigationProp<StackParamList>>();
@@ -66,7 +54,7 @@ const MeditationList = ({ sessions }: { sessions: MeditationSession[] }) => {
                   : `${Math.floor(item.actualDurationSeconds / 60)} minutes`}
               </CustomText>
             </View>
-            <FeelingIcon feeling={item.feeling} />
+            <WeatherIcon weather={item.innerWeather} size={24} />
           </View>
         </TouchableOpacity>
       )}

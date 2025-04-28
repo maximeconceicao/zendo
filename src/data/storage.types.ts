@@ -1,4 +1,4 @@
-import { MeditationFeeling } from 'src/domains/meditation/constants/session.constants';
+import { InnerWeather } from 'src/domains/meditation/constants/inner-weather.constants';
 import { FocusSoundType, SoundType } from 'src/domains/shared/constants/common.constants';
 
 export type MeditationSession = {
@@ -7,7 +7,7 @@ export type MeditationSession = {
   plannedDurationSeconds: number; // Duration in seconds
   actualDurationSeconds: number;
   focusPoints: FocusPoint[]; //List of moments when attention was refocused (in seconds)
-  feeling: MeditationFeeling;
+  innerWeather: InnerWeather;
   note?: string;
   deletedAt?: string;
 };

@@ -9,7 +9,7 @@ import {
   calculateAverageWeeklyMeditationDuration,
   getTotalFocusPoints
 } from '../activity.utils';
-import { MeditationFeeling } from 'src/domains/meditation/constants/session.constants';
+import { InnerWeather } from 'src/domains/meditation/constants/inner-weather.constants';
 
 const makeSession = (
   date: string,
@@ -22,7 +22,7 @@ const makeSession = (
   actualDurationSeconds: actual,
   plannedDurationSeconds: planned,
   focusPoints: new Array(focusPoints).fill(0),
-  feeling: MeditationFeeling.Neutral
+  innerWeather: InnerWeather.Cloudy
 });
 
 describe('Meditation Metrics', () => {

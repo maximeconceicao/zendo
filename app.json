@@ -9,12 +9,13 @@
     "newArchEnabled": true,
     "scheme": "Zendō",
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.maximeconceicao.zendo"
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
-        "backgroundColor": "#ffffff"
+        "backgroundColor": "#E5E4E2"
       },
       "package": "com.maximeconceicao.zendo"
     },
@@ -26,7 +27,7 @@
       [
         "expo-splash-screen",
         {
-          "backgroundColor": "#ffffff",
+          "backgroundColor": "#E5E4E2",
           "image": "./assets/splash-icon.png"
         }
       ],

@@ -171,7 +171,7 @@ export const formatMeditationMetrics = (metrics: Partial<MeditationMetrics>): Me
       metrics.longestConsecutiveDays !== undefined
         ? metrics.longestConsecutiveDays.toString() + ' jours'
         : undefined,
-    'Record de la plus longue session':
+    'Plus longue session':
       metrics.longestSessionMinutes !== undefined
         ? metrics.longestSessionMinutes.toString() + 'min'
         : undefined
