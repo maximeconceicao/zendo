@@ -1,8 +1,8 @@
-import React, { useEffect } from 'react';
-import { Modal, TouchableOpacity, TouchableWithoutFeedback, View } from 'react-native';
+import { useEffect } from 'react';
+import { Modal } from 'src/domains/shared/components/ui/Modal';
 import { AllSoundTypes, SoundType } from 'src/domains/shared/constants/common.constants';
 import { useSoundPlayer } from 'src/domains/shared/hooks/useSoundPlayer';
-import CustomText from 'src/domains/shared/components/CustomText';
+import { Text } from 'src/domains/shared/components/ui/Text';
 
 export type ListOption = {
   label: string;
@@ -17,13 +17,7 @@ type SoundSelectModalProps = {
   onSelect: (value: AllSoundTypes) => void;
 };
 
-const SoundSelectModal = ({
-  visible,
-  options,
-  value,
-  onClose,
-  onSelect
-}: SoundSelectModalProps) => {
+const SoundSelectModal = ({ visible, options, value, onClose, onSelect }: SoundSelectModalProps) => {
   const { playSound, stopSound } = useSoundPlayer();
 
   useEffect(() => {
@@ -36,40 +30,37 @@ const SoundSelectModal = ({
   if (!options) return null;
 
   return (
-    <Modal transparent visible={visible} animationType="fade">
-      <TouchableWithoutFeedback onPress={onClose}>
-        <View className="flex-1 justify-center items-center bg-black/50">
-          <View className="bg-white w-3/4 p-4 rounded-2xl shadow-lg">
-            {options.map((option) => {
-              const isSelected = option.value === value;
+    <Modal visible={visible} onRequestClose={onClose}>
+      <div className="flex flex-1 items-center justify-center bg-black/50" onClick={onClose}>
+        <div
+          className="flex w-3/4 max-w-sm flex-col rounded-2xl bg-white p-4 shadow-lg"
+          onClick={(e) => e.stopPropagation()}
+        >
+          {options.map((option) => {
+            const isSelected = option.value === value;
 
-              return (
-                <TouchableOpacity
-                  key={option.value}
-                  onPress={() => {
-                    const selected = option.value as SoundType;
-                    playSound(selected);
-                    onSelect(selected);
-                  }}
-                  className="py-3 rounded-xl"
-                  activeOpacity={0.6}
-                >
-                  <View className="flex-row items-center">
-                    <View className="w-5 h-5 rounded-full border-2 border-gray-400 items-center justify-center mr-3">
-                      {isSelected && <View className="w-3 h-3 rounded-full bg-gray-800" />}
-                    </View>
-                    <CustomText
-                      className={`text-lg text-gray-900 ${isSelected ? 'font-bold' : ''}`}
-                    >
-                      {option.label}
-                    </CustomText>
-                  </View>
-                </TouchableOpacity>
-              );
-            })}
-          </View>
-        </View>
-      </TouchableWithoutFeedback>
+            return (
+              <button
+                key={option.value}
+                type="button"
+                onClick={() => {
+                  const selected = option.value as SoundType;
+                  playSound(selected);
+                  onSelect(selected);
+                }}
+                className="flex flex-row items-center rounded-xl py-3 text-left"
+              >
+                <span className="mr-3 flex h-5 w-5 items-center justify-center rounded-full border-2 border-gray-400">
+                  {isSelected && <span className="block h-3 w-3 rounded-full bg-gray-800" />}
+                </span>
+                <Text weight={isSelected ? 'semibold' : 'light'} className="text-lg text-gray-900">
+                  {option.label}
+                </Text>
+              </button>
+            );
+          })}
+        </div>
+      </div>
     </Modal>
   );
 };

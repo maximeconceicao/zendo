@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1024" height="1024" viewBox="0 0 1024 1024">
+  <!--
+    Source unique des icônes PWA de Zendō (régénère public/* via `npm run generate-pwa-assets`).
+    Monogramme « Z » de marque en encre (#000000) sur fond platine (#E5E4E2).
+    Le « Z » est dessiné en formes pleines (pas de texte) pour un rendu fiable à la
+    rasterisation, sans dépendance à une police système.
+  -->
+  <rect width="1024" height="1024" fill="#E5E4E2" />
+  <g fill="#000000">
+    <!-- Barre supérieure -->
+    <rect x="300" y="300" width="424" height="96" />
+    <!-- Barre inférieure -->
+    <rect x="300" y="628" width="424" height="96" />
+    <!-- Diagonale (haut-droite vers bas-gauche) -->
+    <polygon points="724,396 628,396 300,628 396,628" />
+  </g>
+</svg>

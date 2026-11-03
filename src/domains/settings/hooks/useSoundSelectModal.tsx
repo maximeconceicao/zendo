@@ -2,13 +2,11 @@ import { useState } from 'react';
 import { UserSettings } from 'src/data/storage.types';
 import {
   AllSoundTypes,
-  focusSoundLabels,
-  FocusSoundType,
   soundLabels,
   SoundType
 } from 'src/domains/shared/constants/common.constants';
 
-type SoundKey = 'start' | 'end' | 'focus';
+type SoundKey = 'start' | 'end';
 
 const soundSettingsConfig = {
   start: {
@@ -24,13 +22,6 @@ const soundSettingsConfig = {
     labelMap: soundLabels,
     soundTypes: SoundType,
     updateKey: 'soundTypeOnSessionEnd' as const
-  },
-  focus: {
-    isEnabled: (settings: UserSettings) => settings.soundOnFocus,
-    getValue: (settings: UserSettings) => settings.soundTypeOnFocus,
-    labelMap: focusSoundLabels,
-    soundTypes: FocusSoundType,
-    updateKey: 'soundTypeOnFocus' as const
   }
 };
 

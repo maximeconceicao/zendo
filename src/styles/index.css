@@ -1,0 +1,211 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@font-face {
+  font-family: 'SFProDisplay-Light';
+  src: url('../assets/fonts/SF-Pro-Display-Light.otf') format('opentype');
+  font-weight: 300;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'SFProDisplay-Semibold';
+  src: url('../assets/fonts/SF-Pro-Display-Semibold.otf') format('opentype');
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'SFProDisplay-Bold';
+  src: url('../assets/fonts/SF-Pro-Display-Bold.otf') format('opentype');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+@layer base {
+  html,
+  body,
+  #root {
+    height: 100%;
+  }
+
+  /* #root en flex colonne pleine largeur : les écrans de premier niveau (flex-1)
+     remplissent la hauteur. Le responsive est géré dans les composants (rail de
+     navigation sur desktop, colonne de contenu centrée via max-width), plus de
+     cadre « téléphone » figé. */
+  #root {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    height: 100%;
+  }
+
+  body {
+    margin: 0;
+    font-family: 'SFProDisplay-Light', system-ui, sans-serif;
+    background-color: theme('colors.platinium');
+    color: #111827;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    overscroll-behavior: none;
+  }
+
+  /* Reset de base des boutons. :where() maintient la spécificité à 0 pour que les
+     classes utilitaires Tailwind (bg-*, p-*, text-*…) l'emportent toujours. */
+  :where(button) {
+    appearance: none;
+    background: none;
+    border: 0;
+    margin: 0;
+    padding: 0;
+    font: inherit;
+    color: inherit;
+    text-align: inherit;
+    cursor: pointer;
+  }
+
+  :where(button:disabled) {
+    cursor: default;
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* Visage méditatif de l'écran d'accueil (voir MeditatingFace.tsx) :
+   une vraie sphère 3D dont les traits orbitent autour du volume. */
+
+/* Respiration / lévitation verticale. */
+@keyframes zendoFloat {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+/* Dérive 3D : oscillations d'amplitude limitée sur Y et X, à paliers irréguliers.
+   Les deux périodes diffèrent (19s / 13s) → mouvement « errant » non-répétitif.
+   Les angles restent modérés pour ne jamais perdre le visage de vue. */
+@keyframes zendoDriftY {
+  0% {
+    transform: rotateY(0deg);
+  }
+  15% {
+    transform: rotateY(24deg);
+  }
+  33% {
+    transform: rotateY(-18deg);
+  }
+  50% {
+    transform: rotateY(28deg);
+  }
+  68% {
+    transform: rotateY(-22deg);
+  }
+  85% {
+    transform: rotateY(13deg);
+  }
+  100% {
+    transform: rotateY(0deg);
+  }
+}
+
+@keyframes zendoDriftX {
+  0% {
+    transform: rotateX(0deg);
+  }
+  20% {
+    transform: rotateX(-12deg);
+  }
+  42% {
+    transform: rotateX(15deg);
+  }
+  63% {
+    transform: rotateX(-10deg);
+  }
+  82% {
+    transform: rotateX(11deg);
+  }
+  100% {
+    transform: rotateX(0deg);
+  }
+}
+
+.zendo-face-scene {
+  position: relative;
+  perspective: 650px;
+}
+
+/* Conteneur de respiration : préserve l'espace 3D pour ses descendants. */
+.zendo-face-float {
+  position: absolute;
+  inset: 0;
+  transform-style: preserve-3d;
+  animation: zendoFloat 4s ease-in-out infinite;
+}
+
+/* Silhouette : disque noir plat et immobile (projection d'une sphère). */
+.zendo-face-disc {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  background-color: rgba(0, 0, 0, 0.9);
+}
+
+/* Dérive sur Y, puis sur X (imbriquée) : errance douce sur les deux axes. */
+.zendo-face-spin-y {
+  position: absolute;
+  inset: 0;
+  transform-style: preserve-3d;
+  animation: zendoDriftY 30s ease-in-out infinite;
+}
+
+.zendo-face-spin-x {
+  position: absolute;
+  inset: 0;
+  transform-style: preserve-3d;
+  animation: zendoDriftX 26s ease-in-out infinite;
+}
+
+/* Visage posé sur la sphère. */
+.zendo-face-side {
+  position: absolute;
+  inset: 0;
+  transform-style: preserve-3d;
+}
+
+/* Chaque trait est posé sur la surface ; masqué lorsqu'il passe derrière. */
+.zendo-face-feature {
+  position: absolute;
+  backface-visibility: hidden;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .zendo-face-float,
+  .zendo-face-spin-y,
+  .zendo-face-spin-x {
+    animation: none;
+  }
+}
+
+/* Masque la barre de défilement (conteneur d'onglets swipable). */
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}

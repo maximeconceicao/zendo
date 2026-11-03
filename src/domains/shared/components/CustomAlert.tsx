@@ -1,13 +1,13 @@
-import React from 'react';
-import { Modal, TouchableOpacity, TouchableWithoutFeedback, View } from 'react-native';
-import CustomText from './CustomText';
+import { ReactNode } from 'react';
+import { Modal } from 'src/domains/shared/components/ui/Modal';
+import { Text } from 'src/domains/shared/components/ui/Text';
 
 type CustomAlertProps = {
   visible: boolean;
   onClose: () => void;
   onConfirm: () => void;
   title: string;
-  message: string;
+  message: ReactNode;
   cancelText?: string;
   confirmText?: string;
   confirmButtonColor?: string;
@@ -24,27 +24,26 @@ const CustomAlert = ({
   confirmButtonColor = 'text-red-400'
 }: CustomAlertProps) => {
   return (
-    <Modal transparent visible={visible} animationType="fade">
-      <TouchableWithoutFeedback onPress={onClose}>
-        <View className="flex-1 bg-black/50 justify-center items-center">
-          <TouchableWithoutFeedback onPress={() => {}}>
-            <View className="bg-platinium p-5 rounded-lg w-80">
-              <CustomText className="text-black text-lg font-bold mb-2">{title}</CustomText>
-              <CustomText className="text-black text-base mb-4">{message}</CustomText>
-              <View className="flex-row justify-between">
-                <TouchableOpacity onPress={onClose} className="p-2">
-                  <CustomText className="text-black text-base">{cancelText}</CustomText>
-                </TouchableOpacity>
-                <TouchableOpacity onPress={onConfirm} className="px-4 py-2">
-                  <CustomText className={`${confirmButtonColor} text-base`}>
-                    {confirmText}
-                  </CustomText>
-                </TouchableOpacity>
-              </View>
-            </View>
-          </TouchableWithoutFeedback>
-        </View>
-      </TouchableWithoutFeedback>
+    <Modal visible={visible} onRequestClose={onClose}>
+      <div className="flex flex-1 items-center justify-center bg-black/50" onClick={onClose}>
+        <div
+          className="flex flex-col bg-platinium p-5 rounded-lg w-80"
+          onClick={(e) => e.stopPropagation()}
+        >
+          <Text weight="semibold" className="text-black text-lg mb-2">
+            {title}
+          </Text>
+          <Text className="text-black text-base mb-4">{message}</Text>
+          <div className="flex flex-row justify-between">
+            <button type="button" onClick={onClose} className="p-2">
+              <Text className="text-black text-base">{cancelText}</Text>
+            </button>
+            <button type="button" onClick={onConfirm} className="px-4 py-2">
+              <Text className={`${confirmButtonColor} text-base`}>{confirmText}</Text>
+            </button>
+          </div>
+        </div>
+      </div>
     </Modal>
   );
 };

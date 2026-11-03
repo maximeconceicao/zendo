@@ -3,36 +3,29 @@
 # dependencies
 node_modules/
 
-# Expo
-.expo/
+# build output
 dist/
-web-build/
-expo-env.d.ts
+dist-ssr/
+dev-dist/
 
-# Native
-*.orig.*
-*.jks
-*.p8
-*.p12
-*.key
-*.mobileprovision
+# vite / tooling cache
+.vite/
+*.tsbuildinfo
 
-# Metro
-.metro-health-check*
-
-# debug
+# logs
 npm-debug.*
 yarn-debug.*
 yarn-error.*
+*.log
 
 # macOS
 .DS_Store
-*.pem
 
 # local env files
-.env*.local
+.env
+.env.*.local
 
-# typescript
-*.tsbuildinfo
-
-app-example
+# editor
+.vscode/*
+!.vscode/extensions.json
+.idea/

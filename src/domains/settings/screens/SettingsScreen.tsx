@@ -1,8 +1,6 @@
-import React from 'react';
 import Settings from 'src/domains/settings/components/Settings';
 import { useAppData } from 'src/store/useAppData';
 import ScreenLayout from 'src/domains/shared/layouts/ScreenLayout';
-import { ScrollView } from 'react-native';
 import HorizontalLine from 'src/domains/shared/components/HorizontalLine';
 
 const SettingsScreen = () => {
@@ -11,13 +9,13 @@ const SettingsScreen = () => {
   return (
     <ScreenLayout title="Paramètres">
       <HorizontalLine />
-      <ScrollView contentContainerStyle={{ paddingTop: 16 }} showsVerticalScrollIndicator={false}>
+      <div className="min-h-0 flex-1 overflow-y-auto pt-4">
         <Settings
           userSettings={userSettings}
           updateUserSettings={updateUserSettings}
           deleteAllSessions={deleteAllSessions}
         />
-      </ScrollView>
+      </div>
       <HorizontalLine />
     </ScreenLayout>
   );

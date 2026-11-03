@@ -1,106 +1,57 @@
-import {
-  addMonths,
-  format,
-  getDaysInMonth,
-  isSameDay,
-  isWithinInterval,
-  parseISO,
-  subMonths
-} from 'date-fns';
-import { fr } from 'date-fns/locale';
-import React, { useMemo, useState } from 'react';
-import { View } from 'react-native';
-import ArrowButtons from 'src/domains/shared/components/ArrowButtons';
-
-import { Calendar } from 'src/domains/timeline/components/Calendar';
-import MeditationList from 'src/domains/meditation/components/MeditationList';
-import { useAppData } from 'src/store/useAppData';
+import { useMemo } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { Text } from 'src/domains/shared/components/ui/Text';
+import HorizontalLine from 'src/domains/shared/components/HorizontalLine';
 import ScreenLayout from 'src/domains/shared/layouts/ScreenLayout';
-import { capitalizeFirstLetter } from 'src/domains/shared/utils/common.utils';
+import ActivityRibbon from 'src/domains/timeline/components/ActivityRibbon';
+import { buildDailyActivity, buildContinuousWeeks } from 'src/domains/timeline/activity-calendar.utils';
+import { getWeekDays } from 'src/domains/shared/utils/date.utils';
+import { useAppData } from 'src/store/useAppData';
+import { DayRouteState, ROUTES } from 'src/app/navigation/routes';
 
 const CalendarScreen = () => {
+  const navigate = useNavigate();
   const { meditationSessions } = useAppData();
 
-  const [selectedDate, setSelectedDate] = useState<Date | null>(null);
-  const [currentMonth, setCurrentMonth] = useState(new Date());
+  const sessions = useMemo(() => meditationSessions ?? [], [meditationSessions]);
+  const activity = useMemo(() => buildDailyActivity(sessions), [sessions]);
+  const weekDays = useMemo(() => getWeekDays(), []);
 
-  const goToPreviousMonth = () => {
-    setCurrentMonth((prevDate) => new Date(prevDate.getFullYear(), prevDate.getMonth() - 1, 1));
-    setSelectedDate(null);
+  const weeks = useMemo(() => {
+    const today = new Date();
+    const earliest = sessions.reduce<Date>((min, s) => {
+      const date = new Date(s.date);
+      return date < min ? date : min;
+    }, today);
+    return buildContinuousWeeks(earliest, today);
+  }, [sessions]);
+
+  const totalCount = sessions.length;
+  const subtitle =
+    totalCount > 0
+      ? `${totalCount.toLocaleString('fr-FR')} ${totalCount > 1 ? 'méditations' : 'méditation'}`
+      : undefined;
+
+  const openDay = (date: string) => {
+    navigate(ROUTES.day, { state: { date } satisfies DayRouteState });
   };
-
-  const goToNextMonth = () => {
-    setCurrentMonth((prevDate) => new Date(prevDate.getFullYear(), prevDate.getMonth() + 1, 1));
-    setSelectedDate(null);
-  };
-
-  const visibleSessions = useMemo(() => {
-    const lastMonth = subMonths(currentMonth, 1);
-    const nextMonth = addMonths(currentMonth, 1);
-
-    const lastMonthDays = getDaysInMonth(lastMonth);
-
-    const startOverflow = new Date(
-      lastMonth.getFullYear(),
-      lastMonth.getMonth(),
-      lastMonthDays - 5
-    );
-    const endOverflow = new Date(nextMonth.getFullYear(), nextMonth.getMonth(), 6);
-
-    return (
-      meditationSessions?.filter((session) => {
-        const date = parseISO(session.date);
-        return isWithinInterval(date, { start: startOverflow, end: endOverflow });
-      }) || []
-    );
-  }, [meditationSessions, currentMonth]);
-
-  const monthlySessions = useMemo(() => {
-    return (
-      meditationSessions
-        ?.filter((session) => {
-          const sessionDate = new Date(session.date);
-          return (
-            sessionDate.getFullYear() === currentMonth.getFullYear() &&
-            sessionDate.getMonth() === currentMonth.getMonth()
-          );
-        })
-        .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()) || []
-    );
-  }, [meditationSessions, currentMonth]);
-
-  const filteredSessions = useMemo(() => {
-    if (!selectedDate) {
-      return monthlySessions;
-    }
-
-    return (
-      meditationSessions?.filter((session) => {
-        const sessionDate = new Date(session.date);
-        return isSameDay(sessionDate, selectedDate);
-      }) || []
-    );
-  }, [meditationSessions, monthlySessions, selectedDate]);
 
   return (
-    <ScreenLayout
-      title={capitalizeFirstLetter(format(currentMonth, 'MMMM', { locale: fr }))}
-      subtitle={format(currentMonth, 'yyyy')}
-      topRightComponent={<ArrowButtons onPrevious={goToPreviousMonth} onNext={goToNextMonth} />}
-    >
-      <View style={{ flex: 1 }}>
-        <Calendar
-          selectedDate={selectedDate}
-          setSelectedDate={setSelectedDate}
-          currentMonth={currentMonth}
-          setCurrentMonth={setCurrentMonth}
-          sessions={visibleSessions}
-        />
-        <View className="border-t border-gray-300 mt-9" />
+    <ScreenLayout title="Activités" subtitle={subtitle}>
+      <HorizontalLine />
 
-        <MeditationList sessions={filteredSessions} />
-        <View className="border-t border-gray-300 " />
-      </View>
+      <div className="min-h-0 flex-1 overflow-y-auto pt-5">
+        {totalCount === 0 ? (
+          <Text className="mb-4 text-base text-gray-500">Aucune méditation enregistrée.</Text>
+        ) : (
+          <ActivityRibbon
+            weeks={weeks}
+            weekDays={weekDays}
+            activity={activity}
+            onDayClick={openDay}
+          />
+        )}
+      </div>
     </ScreenLayout>
   );
 };
