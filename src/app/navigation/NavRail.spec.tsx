@@ -12,13 +12,13 @@ describe('NavRail', () => {
     );
     expect(html).toContain('href="/settings"');
     expect(html).toContain('href="/home"');
-    expect(html).toContain('href="/calendar"');
+    expect(html).toContain('href="/activity"');
     expect(html).toContain('aria-label="Navigation principale"');
   });
 
   it('marque l’écran courant comme actif', () => {
     const html = renderToStaticMarkup(
-      <MemoryRouter initialEntries={['/calendar']}>
+      <MemoryRouter initialEntries={['/activity']}>
         <NavRail />
       </MemoryRouter>
     );

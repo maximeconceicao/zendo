@@ -2,7 +2,7 @@
 export const ROUTES = {
   home: '/home',
   settings: '/settings',
-  calendar: '/calendar',
+  activity: '/activity',
   day: '/day'
 } as const;
 

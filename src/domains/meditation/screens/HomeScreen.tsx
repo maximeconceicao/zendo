@@ -79,6 +79,17 @@ const HomeScreen = () => {
   }, [durationSeconds]);
 
   const startMeditation = () => {
+    // Déclenché en premier, dans le geste utilisateur et avant tout changement
+    // d'état : passer en séance masque le rail, (dé)verrouille le scroll-snap et
+    // active le wake lock — ce remaniement de mise en page annule une vibration
+    // en cours sur Chrome Android. On vibre donc avant de re-rendre.
+    if (userSettings.vibrateOnSessionStart) {
+      vibrate(START_SESSION_VIBRATION_PATTERN);
+    }
+    if (userSettings.soundOnSessionStart) {
+      playSound(userSettings.soundTypeOnSessionStart);
+    }
+
     if (durationSeconds !== lastSelectedDurationSeconds) {
       updateUserSettings({ lastSelectedDurationSeconds: durationSeconds });
     }
@@ -96,13 +107,6 @@ const HomeScreen = () => {
     // valeur affichée pendant le fondu de sortie), on le fait donc ici.
     reset();
     start();
-
-    if (userSettings.vibrateOnSessionStart) {
-      vibrate(START_SESSION_VIBRATION_PATTERN);
-    }
-    if (userSettings.soundOnSessionStart) {
-      playSound(userSettings.soundTypeOnSessionStart);
-    }
   };
 
   // Retour à l'accueil : on repasse en mode non-méditation, la mise en page se
@@ -203,7 +207,10 @@ const HomeScreen = () => {
                   aria-label={isRunning ? 'Mettre en pause' : 'Reprendre'}
                   className="h-16 w-16 rounded-full"
                 >
-                  {isRunning ? (
+                  {/* En fin de séance le minuteur est mis en pause, mais on garde
+                      l'icône Pause : le bouton se contente de s'estomper au lieu de
+                      clignoter en Play juste avant de disparaître. */}
+                  {isRunning || isFinished ? (
                     <Pause size={24} strokeWidth={1.25} className="text-gray-500" />
                   ) : (
                     <Play size={24} strokeWidth={1.25} className="text-gray-500" />
@@ -211,12 +218,15 @@ const HomeScreen = () => {
                 </Button>
 
                 {/* Toujours présents (place réservée) pour que le bouton Pause ne
-                    bouge pas : on ne joue que sur l'opacité entre marche et pause. */}
+                    bouge pas : on ne joue que sur l'opacité entre marche et pause.
+                    Masqués en fin de séance pour ne pas réapparaître pendant que la
+                    couche de contrôles s'estompe (sinon on voit Quitter/Enregistrer
+                    surgir juste avant « Terminer la session »). */}
                 <div
                   className={`flex flex-row items-center justify-center gap-4 transition-opacity duration-300 ${
-                    isRunning ? 'pointer-events-none opacity-0' : 'opacity-100'
+                    isRunning || isFinished ? 'pointer-events-none opacity-0' : 'opacity-100'
                   }`}
-                  aria-hidden={isRunning}
+                  aria-hidden={isRunning || isFinished}
                 >
                   <Button
                     variant="outline"

@@ -4,7 +4,7 @@ import {
   format,
   isAfter,
   isBefore,
-  startOfMonth,
+  startOfDay,
   startOfWeek
 } from 'date-fns';
 import { MeditationSession } from 'src/data/storage.types';
@@ -39,15 +39,16 @@ export type CalendarWeek = { days: CalendarCell[]; labelDate: Date | null };
 
 /**
  * Construit un ruban d'activité continu façon GitLab : toutes les semaines du
- * mois de `earliest` jusqu'à aujourd'hui, empilées sans séparation, la plus
- * récente en premier. Les jours hors période (bords de grille) restent présents
- * pour garder un ruban rectangulaire, mais marqués `inRange: false`.
+ * jour de `earliest` (la première méditation) jusqu'à aujourd'hui, empilées sans
+ * séparation, la plus récente en premier. Les jours hors période (bords de
+ * grille et jours précédant la première méditation) restent présents pour garder
+ * un ruban rectangulaire, mais marqués `inRange: false`.
  *
  * L'étiquette de mois est posée sur la semaine la plus récente de chaque mois
  * (en parcourant du haut vers le bas), ce qui place le libellé en tête de bloc.
  */
 export const buildContinuousWeeks = (earliest: Date, today: Date): CalendarWeek[] => {
-  const rangeStart = startOfMonth(earliest);
+  const rangeStart = startOfDay(earliest);
   const gridStart = startOfWeek(rangeStart, { weekStartsOn: 1 });
   const gridEnd = endOfWeek(today, { weekStartsOn: 1 });
 

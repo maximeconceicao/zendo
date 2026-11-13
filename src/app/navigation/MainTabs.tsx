@@ -4,16 +4,16 @@ import TabIndicator from 'src/app/navigation/TabIndicator';
 import AppShell from 'src/app/navigation/AppShell';
 import { useMeditationActive } from 'src/store/MeditationActiveContext';
 
-export type TabKey = 'settings' | 'home' | 'calendar';
+export type TabKey = 'settings' | 'home' | 'activity';
 
 // Ordre horizontal des onglets.
-export const TAB_ORDER: TabKey[] = ['settings', 'home', 'calendar'];
+export const TAB_ORDER: TabKey[] = ['settings', 'home', 'activity'];
 
 // Libellés lisibles, partagés par l'indicateur mobile et le rail desktop.
 export const TAB_LABELS: Record<TabKey, string> = {
   settings: 'Réglages',
   home: 'Accueil',
-  calendar: 'Activités'
+  activity: 'Activités'
 };
 
 const isTabKey = (value: string | undefined): value is TabKey =>

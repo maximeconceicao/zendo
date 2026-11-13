@@ -176,7 +176,7 @@ Points d'attention lors du retrait de `[data-rnview]` :
 - **Verrou de navigation pendant une séance.** `MeditationActiveContext` n'existe aujourd'hui **que** pour que `MainTabs` bloque le swipe et masque l'indicateur pendant la méditation. Avec le routing classique, ce verrou (empêcher de **quitter** l'écran en pleine séance, pas seulement masquer la nav) doit être **réimplémenté explicitement** : désactiver/masquer les `<NavLink>` et, si besoin, bloquer la navigation (garde de route) tant que `isMeditating`.
 - **État préservé entre onglets.** Le montage permanent conserve aujourd'hui scroll + état de chaque onglet ; le routing classique les démonte. Décider explicitement ce qui doit survivre : séance en cours → déjà porté par le contexte (OK) ; scroll calendrier → perte acceptable. Documenter le choix.
 
-**Tests (convention équipe : tout changement de comportement = au moins un test)** : deep-links (`/settings`, `/calendar`), bouton retour navigateur, et verrou de navigation pendant `isMeditating`.
+**Tests (convention équipe : tout changement de comportement = au moins un test)** : deep-links (`/settings`, `/activity`), bouton retour navigateur, et verrou de navigation pendant `isMeditating`.
 
 **Décision à prendre en début de vague** : garder les 3 onglets montés en permanence (état préservé, transitions) vs routing classique (plus simple, plus web). Recommandation : routing classique + conservation d'état via le store si nécessaire.
 
@@ -221,7 +221,7 @@ Points d'attention lors du retrait de `[data-rnview]` :
 - **Scroll vertical** : le retrait de `[data-rnview]` (`min-height:0`) peut casser le défilement interne des écrans longs → vérifier Settings / Calendar / Day à chaque fichier migré.
 - **Overlays de modales** : `onClick` overlay + `stopPropagation` contenu à ne pas perdre.
 - **Animations HomeScreen** : la chorégraphie d'opacité (accueil ↔ séance) dépend du positionnement `absolute`/flux ; migrer `HomeScreen` en dernier et comparer visuellement.
-- **Navigation** : la sync URL ↔ scroll est subtile ; valider deep-links (`/settings`, `/calendar`) et bouton retour navigateur.
+- **Navigation** : la sync URL ↔ scroll est subtile ; valider deep-links (`/settings`, `/activity`) et bouton retour navigateur.
 - **Garde-fou** : à chaque fin de vague, `npm run lint` + `npm run test`, et revue visuelle des 3 écrans.
 
 ---

@@ -3,14 +3,14 @@ import { createBrowserRouter, Navigate } from 'react-router-dom';
 import MainTabs, { TabKey } from 'src/app/navigation/MainTabs';
 import AppShell from 'src/app/navigation/AppShell';
 import HomeScreen from 'src/domains/meditation/screens/HomeScreen';
-import CalendarScreen from 'src/domains/timeline/screens/CalendarScreen';
+import ActivityScreen from 'src/domains/timeline/screens/ActivityScreen';
 import DayScreen from 'src/domains/timeline/screens/DayScreen';
 import SettingsScreen from 'src/domains/settings/screens/SettingsScreen';
 
 const tabs: Record<TabKey, ReactNode> = {
   settings: <SettingsScreen />,
   home: <HomeScreen />,
-  calendar: <CalendarScreen />
+  activity: <ActivityScreen />
 };
 
 export const router = createBrowserRouter(

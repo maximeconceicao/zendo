@@ -9,7 +9,7 @@ import { getWeekDays } from 'src/domains/shared/utils/date.utils';
 import { useAppData } from 'src/store/useAppData';
 import { DayRouteState, ROUTES } from 'src/app/navigation/routes';
 
-const CalendarScreen = () => {
+const ActivityScreen = () => {
   const navigate = useNavigate();
   const { meditationSessions } = useAppData();
 
@@ -56,4 +56,4 @@ const CalendarScreen = () => {
   );
 };
 
-export default CalendarScreen;
+export default ActivityScreen;

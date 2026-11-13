@@ -5,7 +5,7 @@ import { TabKey, TAB_LABELS, TAB_ORDER } from 'src/app/navigation/MainTabs';
 const ICONS: Record<TabKey, typeof Home> = {
   settings: Settings,
   home: Home,
-  calendar: Calendar
+  activity: Calendar
 };
 
 /**

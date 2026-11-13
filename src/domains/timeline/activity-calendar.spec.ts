@@ -53,6 +53,21 @@ describe('buildContinuousWeeks', () => {
     expect(labels).toEqual(['2026-11', '2026-10', '2026-09', '2026-08']);
   });
 
+  test('le ruban démarre au jour de la première méditation, pas au début du mois', () => {
+    const earliest = new Date(2026, 10, 12); // jeudi 12 nov. : première méditation
+    const weeks = buildContinuousWeeks(earliest, new Date(2026, 10, 12));
+    const cells = weeks.flatMap((week) => week.days);
+
+    // Le jour de la première méditation est dans la période.
+    const earliestCell = cells.find((cell) => dayKey(cell.date) === dayKey(earliest));
+    expect(earliestCell?.inRange).toBe(true);
+
+    // Les jours de la même semaine qui la précèdent (lun.→mer.) restent hors période.
+    const before = cells.filter((cell) => cell.date < earliest);
+    expect(before.length).toBeGreaterThan(0);
+    before.forEach((cell) => expect(cell.inRange).toBe(false));
+  });
+
   test('les jours hors période sont marqués inRange: false', () => {
     const weeks = buildContinuousWeeks(new Date(2026, 10, 10), new Date(2026, 10, 12));
     const future = weeks[0].days.find((cell) => cell.date > new Date(2026, 10, 12));

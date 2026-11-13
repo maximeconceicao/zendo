@@ -26,7 +26,7 @@ const DayScreen = () => {
   }, [meditationSessions, date]);
 
   if (!date) {
-    return <Navigate to={ROUTES.calendar} replace />;
+    return <Navigate to={ROUTES.activity} replace />;
   }
 
   const parsed = parseISO(date);
